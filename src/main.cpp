@@ -16,6 +16,18 @@ constexpr uint8_t PIN_BUZ = 3;   // passziv piezo (tone)
 // Timer1 OCR1A = N, TX frekvencia = 500000 / N Hz
 // L_TX = 960 uH, L_RX = 931 uH, C = 1 uF -> f0 ~ 7,042 kHz -> N ~ 97
 constexpr uint8_t N_MIN = 71, N_MAX = 115, N_DEF = 97;
+constexpr uint8_t CLIP_COUNT =
+    5;  // ennyi telített mintától jelez TELITES-t (keretenként)
+
+// Érzékenység beállítások
+constexpr float THR_SIGMA =
+    4.0f;  // küszöb = THR_SIGMA x zajszórás (kisebb = érzékenyebb)
+constexpr float THR_MIN = 0.4f;  // a küszöb alsó határa
+constexpr float BAR_DIV = 25.0f;  // a FEM csík tele a küszöb ennyiszeresénél
+                                  // (kisebb = hamarabb telik)
+constexpr float SMOOTH = 0.3f;  // I/Q simítás (nagyobb = gyorsabb, de zajosabb)
+constexpr float DRIFT_DIV =
+    128.0f;  // lassú driftkövetés a nullpontnál (nagyobb = lassabb követés)
 
 U8G2_SSD1306_128X64_NONAME_1_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
 
@@ -35,7 +47,7 @@ static uint16_t halfN = N_DEF / 2;
 static uint8_t frameCycles = 91;
 static uint16_t nSamp = 0;
 static int32_t aI, aQ;
-static bool aClip;
+static uint8_t aClip;  // telített minták száma a keretben
 // static uint8_t curMode = 0;      // 0 = RX (A0), 1 = AC antenna (A1)
 // static uint8_t frameIdx = 0;     // 3 RX keret : 1 AC keret
 // static uint32_t aS, aSS, grp;
@@ -50,7 +62,7 @@ ISR(ADC_vect) {
   // a mintavetel helyzete: fel/le szamlalas x TX szint -> 0..3, idoben egymas
   // utan
   uint8_t ph = (t > halfN ? 1 : 0) + (lvl ? 0 : 2);
-  if (v < 8 || v > 1015) aClip = true;
+  if ((v < 8 || v > 1015) && aClip < 255) aClip++;
 
   switch (ph) {
     case 0:
@@ -79,11 +91,11 @@ ISR(ADC_vect) {
     rxF.i = aI;
     rxF.q = aQ;
     rxF.n = frameCycles;
-    rxF.clip = aClip;
+    rxF.clip = aClip >= CLIP_COUNT;
     rxSeq++;
     nSamp = 0;
     aI = aQ = 0;
-    aClip = false;
+    aClip = 0;
     /*
     frameIdx = (frameIdx + 1) & 3;
     uint8_t nm = (frameIdx == 3) ? 1 : 0;
@@ -107,7 +119,7 @@ static void setN(uint8_t n) {
   TCNT1 = 0;
   nSamp = 0;
   aI = aQ = 0;
-  aClip = false;
+  aClip = 0;
   ADMUX = _BV(REFS0);
   interrupts();
   skipRx = 2;
@@ -224,7 +236,7 @@ static void calibrate() {
   bI = sI / nr;
   bQ = sQ / nr;
   float var = sM2 / nr - (bI * bI + bQ * bQ);
-  thr = fmaxf(4.0f * sqrtf(fmaxf(var, 0)), 0.4f);
+  thr = fmaxf(THR_SIGMA * sqrtf(fmaxf(var, 0)), THR_MIN);
   /*
   if (na > 3) {
     acBase = sA / na;
@@ -355,14 +367,14 @@ void loop() {
       vQ = q;
       firstRx = false;
     }
-    vI += 0.3f * (i - vI);
-    vQ += 0.3f * (q - vQ);
+    vI += SMOOTH * (i - vI);
+    vQ += SMOOTH * (q - vQ);
     float dI = vI - bI, dQ = vQ - bQ;
     m = sqrtf(dI * dI + dQ * dQ);
     mRaw = sqrtf(vI * vI + vQ * vQ);
     if (m < thr) {
-      bI += (vI - bI) / 128.0f;
-      bQ += (vQ - bQ) / 128.0f;
+      bI += (vI - bI) / DRIFT_DIV;
+      bQ += (vQ - bQ) / DRIFT_DIV;
     }  // lassu drift-kovetes
     ang = atan2f(dQ, dI);
     ferrous = cosf(ang - cfg.ang) > 0;
@@ -378,7 +390,7 @@ void loop() {
 
   bool mAct = m > thr;
   // bool aAct = acD > acThr;
-  float mLevel = fminf(m / (thr * 25), 1.0f);
+  float mLevel = fminf(m / (thr * BAR_DIV), 1.0f);
   // float aLevel = fminf(fmaxf(acD, 0) / (acThr * 8), 1.0f);
   float nLevel = fminf(sqrtf(mRaw / 800.0f), 1.0f);
 
