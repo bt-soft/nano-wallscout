@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" font-family="Consolas, monospace" font-size="13">
+<rect width="1200" height="800" fill="#fff"/>
+<style>
+ .w{stroke:#222;stroke-width:1.6;fill:none}
+ .c{fill:#fff;stroke:#222;stroke-width:1.6}
+ .b{fill:#eef6ff;stroke:#036;stroke-width:1.6}
+ .t{fill:#111}.h{font-size:16px;font-weight:bold;fill:#036}
+ .n{fill:#a40;font-size:12px}
+ .dot{fill:#222}
+ .cu{stroke:#b5651d;stroke-width:2.2;fill:none}
+</style>
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#222"/></marker></defs>
+
+<text x="20" y="28" class="h">WallScout - IB (induction balance) kapcsolasi rajz, 2x 18650 (7,4 V)</text>
+
+<!-- ================= 1) TX ================= -->
+<text x="20" y="58" class="h">1) TX meghajto: soros rezgokor, Nano D9 (OC1A) kapcsolja</text>
+<line x1="40" y1="90" x2="520" y2="90" class="w"/>
+<text x="44" y="82" class="t">+7V4 (akku, kapcsolo utan)</text>
+<line x1="40" y1="350" x2="520" y2="350" class="w"/>
+<text x="44" y="368" class="t">GND</text>
+
+<!-- Rlim -->
+<line x1="120" y1="90" x2="120" y2="106" class="w"/>
+<rect x="112" y="106" width="16" height="30" class="c"/>
+<line x1="120" y1="136" x2="120" y2="156" class="w"/>
+<text x="136" y="126" class="t">2,2R / 2W</text>
+<!-- CTX -->
+<line x1="106" y1="156" x2="134" y2="156" class="w"/>
+<line x1="106" y1="164" x2="134" y2="164" class="w"/>
+<line x1="120" y1="164" x2="120" y2="186" class="w"/>
+<text x="140" y="164" class="t">CTX 1uF</text>
+<text x="140" y="180" class="n">MKP/MKT fólia, &gt;= 63V</text>
+<!-- LTX -->
+<path d="M120 186 q12 8 0 16 q12 8 0 16 q12 8 0 16 q12 8 0 16" class="cu"/>
+<line x1="120" y1="250" x2="120" y2="262" class="w"/>
+<circle cx="120" cy="262" r="3" class="dot"/>
+<text x="40" y="214" class="t">L_TX</text>
+<text x="20" y="230" class="n">60 menet</text>
+<line x1="120" y1="262" x2="230" y2="262" class="w"/>
+
+<!-- MOSFET -->
+<circle cx="230" cy="262" r="3" class="dot"/>
+<line x1="230" y1="262" x2="230" y2="272" class="w"/>
+<line x1="230" y1="272" x2="250" y2="272" class="w"/>
+<line x1="250" y1="272" x2="250" y2="276" class="w"/>
+<line x1="250" y1="284" x2="250" y2="296" class="w"/>
+<line x1="250" y1="304" x2="250" y2="308" class="w"/>
+<line x1="250" y1="308" x2="230" y2="308" class="w"/>
+<line x1="230" y1="308" x2="230" y2="350" class="w"/>
+<line x1="242" y1="270" x2="242" y2="310" class="w"/>
+<line x1="230" y1="290" x2="210" y2="290" class="w"/>
+<text x="262" y="270" class="t">D</text><text x="262" y="316" class="t">S</text>
+<text x="262" y="296" class="t">Q1 IRLZ44N</text>
+<text x="262" y="312" class="n">logikai szintu! (IRL540N, IRLZ34N)</text>
+<!-- gate -->
+<line x1="210" y1="290" x2="160" y2="290" class="w"/>
+<circle cx="180" cy="290" r="3" class="dot"/>
+<rect x="110" y="282" width="40" height="16" class="c"/><text x="114" y="294" class="t">100R</text>
+<line x1="110" y1="290" x2="60" y2="290" class="w"/>
+<text x="40" y="280" class="t">Nano D9</text>
+<line x1="180" y1="290" x2="180" y2="302" class="w"/>
+<rect x="172" y="302" width="16" height="30" class="c"/>
+<line x1="180" y1="332" x2="180" y2="350" class="w"/>
+<text x="192" y="326" class="t">10k</text>
+
+<!-- Schottky -->
+<line x1="230" y1="262" x2="350" y2="262" class="w"/>
+<line x1="350" y1="262" x2="350" y2="170" class="w"/>
+<polygon points="342,170 358,170 350,154" class="c"/>
+<line x1="342" y1="154" x2="358" y2="154" class="w"/>
+<line x1="350" y1="154" x2="350" y2="90" class="w"/>
+<text x="366" y="168" class="t">D1 1N5819</text>
+<text x="366" y="184" class="n">drain -&gt; +7V4 (katod fent)</text>
+<!-- bulk -->
+<line x1="440" y1="90" x2="440" y2="190" class="w"/>
+<line x1="426" y1="190" x2="454" y2="190" class="w"/><line x1="426" y1="198" x2="454" y2="198" class="w"/>
+<line x1="440" y1="198" x2="440" y2="350" class="w"/>
+<text x="458" y="200" class="t">470uF</text>
+<text x="458" y="216" class="n">+ 100nF a TX mellett</text>
+
+<!-- ================= 2) RX ================= -->
+<text x="20" y="410" class="h">2) RX lanc: rezgokor -&gt; 2 fokozatu eroslito -&gt; A0</text>
+<line x1="40" y1="760" x2="760" y2="760" class="w"/>
+<text x="44" y="778" class="t">GND (analog, csillagpont)</text>
+
+<!-- RX coil + C to GND -->
+<path d="M70 640 q12 8 0 16 q12 8 0 16 q12 8 0 16 q12 8 0 16" class="cu"/>
+<line x1="70" y1="704" x2="70" y2="760" class="w"/>
+<text x="20" y="670" class="t">L_RX</text><text x="14" y="686" class="n">60 menet</text>
+<line x1="70" y1="640" x2="70" y2="600" class="w"/>
+<circle cx="70" cy="600" r="3" class="dot"/>
+<text x="76" y="592" class="n">X csomopont</text>
+<line x1="70" y1="600" x2="130" y2="600" class="w"/>
+<circle cx="130" cy="600" r="3" class="dot"/>
+<line x1="130" y1="600" x2="130" y2="676" class="w"/>
+<line x1="116" y1="676" x2="144" y2="676" class="w"/><line x1="116" y1="684" x2="144" y2="684" class="w"/>
+<line x1="130" y1="684" x2="130" y2="760" class="w"/>
+<text x="150" y="684" class="t">CRX 1uF</text>
+<text x="150" y="700" class="n">fólia, a rezgokor tagja</text>
+
+<!-- signal chain -->
+<line x1="130" y1="600" x2="170" y2="600" class="w"/>
+<line x1="170" y1="586" x2="170" y2="614" class="w"/><line x1="178" y1="586" x2="178" y2="614" class="w"/>
+<line x1="178" y1="600" x2="230" y2="600" class="w"/>
+<text x="150" y="576" class="t">1uF</text>
+<circle cx="205" cy="600" r="3" class="dot"/>
+<line x1="205" y1="600" x2="205" y2="640" class="w"/>
+<rect x="197" y="640" width="16" height="30" class="c"/><text x="219" y="660" class="t">100k</text>
+<line x1="205" y1="670" x2="205" y2="690" class="w"/>
+<text x="177" y="706" class="n">VREF</text>
+
+<rect x="230" y="560" width="150" height="80" class="b"/>
+<text x="248" y="584" class="t">IC2A MCP6004</text>
+<text x="240" y="602" class="n">neminvertalo x11</text>
+<text x="240" y="618" class="n">Rf 10k / Rg 1k</text>
+<text x="240" y="632" class="n">Rg -&gt; 100uF -&gt; GND</text>
+<line x1="380" y1="600" x2="430" y2="600" class="w" marker-end="url(#ar)"/>
+
+<line x1="430" y1="600" x2="450" y2="600" class="w"/>
+<line x1="450" y1="586" x2="450" y2="614" class="w"/><line x1="458" y1="586" x2="458" y2="614" class="w"/>
+<line x1="458" y1="600" x2="500" y2="600" class="w"/>
+<text x="430" y="576" class="t">1uF</text>
+<circle cx="480" cy="600" r="3" class="dot"/>
+<line x1="480" y1="600" x2="480" y2="640" class="w"/>
+<rect x="472" y="640" width="16" height="30" class="c"/><text x="494" y="660" class="t">100k</text>
+<line x1="480" y1="670" x2="480" y2="690" class="w"/>
+<text x="452" y="706" class="n">VREF</text>
+
+<rect x="500" y="560" width="160" height="80" class="b"/>
+<text x="518" y="584" class="t">IC2B MCP6004</text>
+<text x="510" y="602" class="n">neminvertalo x1..x11</text>
+<text x="510" y="618" class="n">Rf = 10k trimmer (GAIN)</text>
+<text x="510" y="632" class="n">Rg 1k -&gt; 100uF -&gt; GND</text>
+<line x1="660" y1="600" x2="700" y2="600" class="w"/>
+<rect x="700" y="592" width="40" height="16" class="c"/><text x="706" y="604" class="t">1k</text>
+<line x1="740" y1="600" x2="790" y2="600" class="w" marker-end="url(#ar)"/>
+<circle cx="765" cy="600" r="3" class="dot"/>
+<line x1="765" y1="600" x2="765" y2="640" class="w"/>
+<line x1="751" y1="640" x2="779" y2="640" class="w"/><line x1="751" y1="648" x2="779" y2="648" class="w"/>
+<line x1="765" y1="648" x2="765" y2="760" class="w"/>
+<text x="700" y="636" class="t">10nF</text>
+<text x="720" y="580" class="t">-&gt; A0</text>
+
+<text x="40" y="420" class="n">VREF = 2x 100k a +5V_A es GND kozott, 10uF a kozeppontra, kb. 2,5 V</text>
+<text x="40" y="436" class="n">MCP6004: pin 4 = +5V_A, pin 11 = GND, 100nF a labnal. Tartsd a RX lancot a TX-tol tavol, arnyekolt kabellel.</text>
+
+<!-- ================= 3) AC antenna ================= -->
+<text x="20" y="470" class="h">3) 50 Hz elo vezetek antenna</text>
+<rect x="40" y="490" width="50" height="40" class="c"/><text x="46" y="514" class="t">ANT</text>
+<text x="24" y="548" class="n">5x5 cm rezlap</text>
+<line x1="90" y1="510" x2="160" y2="510" class="w"/>
+<circle cx="130" cy="510" r="3" class="dot"/>
+<text x="110" y="500" class="n">10M -&gt; VREF</text>
+<rect x="160" y="480" width="130" height="60" class="b"/>
+<text x="170" y="505" class="t">IC2C MCP6004</text>
+<text x="170" y="522" class="n">feszultsegkovet</text>
+<line x1="290" y1="510" x2="360" y2="510" class="w"/>
+<rect x="320" y="502" width="40" height="16" class="c"/><text x="324" y="514" class="t">100R</text>
+<line x1="360" y1="510" x2="400" y2="510" class="w" marker-end="url(#ar)"/>
+<text x="404" y="514" class="t">-&gt; A1 (+ 100nF GND-re)</text>
+
+<!-- ================= Nano ================= -->
+<rect x="840" y="70" width="330" height="440" class="b"/>
+<text x="940" y="96" class="h">Arduino Nano</text>
+<text x="856" y="128" class="t">D9  (OC1A)  -&gt; TX gate (100R)</text>
+<text x="856" y="154" class="t">A0          &lt;- RX eroslito kimenet</text>
+<text x="856" y="180" class="t">A1          &lt;- 50 Hz antenna</text>
+<text x="856" y="206" class="t">D2          &lt;- BTN1 (GND-re)</text>
+<text x="856" y="232" class="t">D4          &lt;- BTN2 (GND-re)</text>
+<text x="856" y="258" class="t">D3          -&gt; aktiv csipogo</text>
+<text x="856" y="284" class="t">A4 / A5     -- OLED SDA / SCL</text>
+<text x="856" y="310" class="t">VIN         &lt;- +7V4</text>
+<text x="856" y="336" class="t">5V          -&gt; 100R + 100uF -&gt; +5V_A</text>
+<text x="856" y="362" class="t">GND         -&gt; csillagpont</text>
+<text x="856" y="400" class="n">BTN1: rovid = kalibracio, hosszu = nullazo mod</text>
+<text x="856" y="418" class="n">BTN2: rovid = vas betanitas, hosszu = hangolas</text>
+<text x="856" y="446" class="n">Aktiv csipogo (nem passziv). OLED: SSD1306 0x3C</text>
+<text x="856" y="470" class="n">Az Arduino D5 / T1 mar nem kell.</text>
+
+<text x="840" y="550" class="h">Tap es kialakitas</text>
+<text x="840" y="574" class="t">- 2x 18650 sorosan, vedelmi aramkorrel</text>
+<text x="840" y="592" class="t">- TX aram a MOSFET-en at, kulon vastag</text>
+<text x="840" y="610" class="t">  GND ag, csak egy ponton a csillagpontra</text>
+<text x="840" y="628" class="t">- TX es RX tekercs fem- es ferritmentes</text>
+<text x="840" y="646" class="t">  merev vazra, egymasra atfedve</text>
+<text x="840" y="664" class="t">- Az RX eroslito legyen messze a TX-tol</text>
+<text x="840" y="682" class="t">- Kapcsolo + biztosito (1 A) a +7V4 agban</text>
+</svg>

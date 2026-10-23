@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150mm" height="190mm" viewBox="0 0 150 190" font-family="Consolas, monospace" font-size="4">
+<!-- 1:1 sablon egy D tekercshez. Nyomtasd 100%-ban (ne "illesztes oldalhoz"). 1 egyseg = 1 mm -->
+<rect width="150" height="190" fill="#fff"/>
+<text x="6" y="7" fill="#036" font-weight="bold">WallScout D-tekercs sablon 1:1 (egy tekercs)</text>
+
+<g transform="translate(0,10)">
+<!-- kulso fal (+3 mm) -->
+<path d="M140 7 L137 7 A128 78 0 0 0 137 163 L140 163 Z" fill="none" stroke="#999" stroke-width="0.3"/>
+<!-- belso fal (-3 mm) -->
+<path d="M134 13.03 A122 72 0 0 0 134 156.97 Z" fill="none" stroke="#999" stroke-width="0.3"/>
+<!-- huzal kozepvonala -->
+<path d="M137 10 V160 A125 75 0 0 1 137 10 Z" fill="none" stroke="#c00" stroke-width="0.4"/>
+
+<!-- szog/csap pontok a kozepvonalon (atmero 3 mm) -->
+<g fill="none" stroke="#036" stroke-width="0.3">
+<circle cx="137" cy="10" r="1.5"/><circle cx="137" cy="160" r="1.5"/>
+<circle cx="112" cy="11.5" r="1.5"/><circle cx="112" cy="158.5" r="1.5"/>
+<circle cx="87" cy="16.3" r="1.5"/><circle cx="87" cy="153.7" r="1.5"/>
+<circle cx="62" cy="25" r="1.5"/><circle cx="62" cy="145" r="1.5"/>
+<circle cx="37" cy="40" r="1.5"/><circle cx="37" cy="130" r="1.5"/>
+<circle cx="22" cy="55.6" r="1.5"/><circle cx="22" cy="114.4" r="1.5"/>
+<circle cx="12" cy="85" r="1.5"/>
+</g>
+<line x1="137" y1="0" x2="137" y2="170" stroke="#999" stroke-width="0.2" stroke-dasharray="2 2"/>
+<line x1="5" y1="85" x2="145" y2="85" stroke="#999" stroke-width="0.2" stroke-dasharray="2 2"/>
+<text x="60" y="88" fill="#a40">egyenes oldal: 150 mm</text>
+<text x="40" y="95" fill="#a40">melyseg: 125 mm</text>
+</g>
+
+<text x="6" y="185" fill="#a40">Csapok: 3 mm-es lyukak a piros kozepvonalon.</text>
+<line x1="90" y1="188" x2="140" y2="188" stroke="#000" stroke-width="0.5"/>
+<line x1="90" y1="186" x2="90" y2="190" stroke="#000" stroke-width="0.5"/>
+<line x1="140" y1="186" x2="140" y2="190" stroke="#000" stroke-width="0.5"/>
+<text x="102" y="186.5">50 mm</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 580" font-family="Consolas, monospace" font-size="13">
+<rect width="1000" height="520" fill="#fff"/>
+<style>
+ .d{stroke:#036;stroke-width:1;fill:none}
+ .t{fill:#111}.h{font-size:16px;font-weight:bold;fill:#036}.n{fill:#a40}
+</style>
+<text x="20" y="28" class="h">TX / RX D-tekercspar (felulnezet, 60 menet, 0,4 mm CuZ, 150 x 125 mm D)</text>
+
+<!-- Meretarany: 2 px = 1 mm. A D kozepvonala: 150 mm egyenes oldal + felellipszis (125 x 75 mm) -->
+<g fill="none" stroke-width="5">
+<path d="M310 70 V370 A250 150 0 0 1 310 70 Z" stroke="#b5651d" fill="#f8e6d2" fill-opacity="0.6"/>
+<path d="M248 70 V370 A250 150 0 0 0 248 70 Z" stroke="#2a6fb5" fill="#d6e8f8" fill-opacity="0.5"/>
+</g>
+<text x="130" y="225" class="t">TX</text>
+<text x="420" y="225" class="t">RX</text>
+<text x="212" y="58" class="n">atfedes 31 mm</text>
+
+<!-- egyenes oldalak -->
+<line x1="248" y1="60" x2="248" y2="380" class="d" stroke-dasharray="4 4"/>
+<line x1="310" y1="60" x2="310" y2="380" class="d" stroke-dasharray="4 4"/>
+
+<!-- meretek -->
+<line x1="60" y1="400" x2="310" y2="400" class="d"/>
+<line x1="60" y1="392" x2="60" y2="408" class="d"/><line x1="310" y1="392" x2="310" y2="408" class="d"/>
+<text x="110" y="418" class="t">TX melyseg: 125 mm</text>
+<line x1="248" y1="436" x2="498" y2="436" class="d"/>
+<line x1="248" y1="428" x2="248" y2="444" class="d"/><line x1="498" y1="428" x2="498" y2="444" class="d"/>
+<text x="300" y="454" class="t">RX melyseg: 125 mm</text>
+<line x1="60" y1="472" x2="498" y2="472" class="d"/>
+<line x1="60" y1="464" x2="60" y2="480" class="d"/><line x1="498" y1="464" x2="498" y2="480" class="d"/>
+<text x="200" y="490" class="t">osszes szelesseg: 219 mm</text>
+<line x1="530" y1="70" x2="530" y2="370" class="d"/>
+<line x1="522" y1="70" x2="538" y2="70" class="d"/><line x1="522" y1="370" x2="538" y2="370" class="d"/>
+<text x="472" y="224" class="t" transform="rotate(90 546 224)">magassag: 150 mm</text>
+<text x="20" y="530" class="n">A meretek a huzal KOZEPVONALARA vonatkoznak (a kotegk kozepe).</text>
+<text x="20" y="548" class="n">1:1 sablon: coil_sablon.svg (nyomtasd 100%-ban, ellenorizd a 50 mm-es vonalzot).</text>
+
+<text x="580" y="80" class="h">Menetek</text>
+<text x="580" y="104" class="t">- 60 menet 0,4 mm CuZ, szorosan, egy kotegben (~28 m)</text>
+<text x="580" y="122" class="t">- kb. 1 mH, a hozza tartozo soros 1 uF-fal kb. 5 kHz</text>
+<text x="580" y="140" class="t">  (a D alak L-je kicsit mas lehet)</text>
+<text x="580" y="158" class="t">- ha a rezonancia &gt; 5,5 kHz: 1 uF + 0,47 uF fólia</text>
+
+<text x="580" y="200" class="h">Nullazas (kezi, kulcsfontossagu)</text>
+<text x="580" y="224" class="t">1. Nullazo mod: BTN1 hosszan</text>
+<text x="580" y="242" class="t">2. Csuszd egymashoz a ket tekercset vizszintesen,</text>
+<text x="580" y="260" class="t">   amig az OLED-en az RX ertek minimalis</text>
+<text x="580" y="278" class="t">3. Kiindulas: 31 mm atfedes (a melyseg 25%-a),</text>
+<text x="580" y="296" class="t">   a nullpont kb. 25-38 mm kozott keresendo</text>
+<text x="580" y="314" class="t">4. Ragaszd vegleg (epoxi), ne mozduljon</text>
+<text x="580" y="332" class="t">5. Kalibralj (BTN1 rovid), majd tanitsd be a vasat</text>
+
+<text x="580" y="372" class="h">Vaz (egy tekercs)</text>
+<text x="580" y="396" class="t">- Horony: 6 mm szeles, 4 mm mely, a kozepvonalon</text>
+<text x="580" y="414" class="t">- Kulso fal: +3 mm, belso fal: -3 mm a kozepvonaltol</text>
+<text x="580" y="432" class="t">- Kulso meret kb. 156 x 131 mm, belso ablak 144 x 119 mm</text>
+<text x="580" y="450" class="t">- Fa, muanyag, textolit; ne fem, ne ferrit</text>
+<text x="580" y="468" class="t">- Merev, nem hajlik, nem huzodik</text>
+<text x="580" y="486" class="t">- A fal fele a tekercsek lapja nezzen</text>
+<text x="580" y="510" class="n">Az atfedes merteke becsles, a nullpont helyet</text>
+<text x="580" y="526" class="n">mindig mero muszerrel (OLED RX) kell megkeresni.</text>
+</svg>
