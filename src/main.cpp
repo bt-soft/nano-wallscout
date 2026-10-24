@@ -282,7 +282,7 @@ void loop() {
   static bool detOn = false;
   static bool calDone = false, zeroLong = false;
   bool &setupMode = g_setupMode;
-  const uint8_t ch = setupMode ? 2 : 0;  // beallito mod: A2 (U1A x10, csatolas-meres)
+  const uint8_t ch = 0;  // beallito mod is a normal (x100) jelutat meri, nullazatlanul
 
   uint32_t s1, s2;
   measure(s1, s2, ch);
@@ -299,7 +299,7 @@ void loop() {
   readSupply(vbat);
 
   // A beallito mod nyers (x1) vagy U1A (x10) jelet mer; a kijelzett ertek x100-as egyenertekesre skalazott
-  const float gainScale = setupMode ? SETUP_GAIN_RATIO : 1.0f;
+  const float gainScale = 1.0f;
   const float meanS1 = (float)s1 / N_PULSES;
   const float rawDiff = (float)((int32_t)s1 - (int32_t)s2) / N_PULSES;
   float diff = gainScale * rawDiff;
@@ -307,12 +307,12 @@ void loop() {
     // Simitas (EMA): az ADC-zajt elnyomja; csatornavaltaskor vagy nagy ugrasnal ujrainditja
     static float smooth = 0;
     static uint8_t smoothCh = 255;
-    const float jump = setupMode ? 8.0f * gainScale : 60.0f;
+    const float jump = 60.0f;
     if (ch != smoothCh || fabsf(diff - smooth) > jump) {
       smooth = diff;
       smoothCh = ch;
     } else {
-      smooth += (setupMode ? 0.15f : 0.3f) * (diff - smooth);
+      smooth += (setupMode ? 0.1f : 0.3f) * (diff - smooth);
     }
     diff = smooth;
   }
