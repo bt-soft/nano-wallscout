@@ -1,437 +1,222 @@
-// WallScout - induction balance (IB) detektor betonfalhoz
-// - TX: Timer1 hardveres OC1A (D9) ad ~4,5 kHz-es negyszoget a soros rezgokorre
-// - RX: A0, az ADC-t Timer1 inditja, tengelyenkent 4 minta / TX periodus
-//       -> szinkron demodulalas (I/Q), 20 ms (1 halozati periodus) integralas
-// - (az A1 50 Hz-es elo vezetek antenna kikommentezve)
+// Pulzusindukcios betonvas-kereso - Raspberry Pi Pico (RP2040)
+// core1: impulzus + mintavetelezes (idokritikus), core0: kijelzo, gombok, hang.
+
 #include <Arduino.h>
 #include <EEPROM.h>
 #include <U8g2lib.h>
 #include <Wire.h>
-#include <math.h>
+#include <hardware/adc.h>
+#include <hardware/gpio.h>
+#include <hardware/timer.h>
+#include <hardware/watchdog.h>
 
-constexpr uint8_t PIN_BTN1 = 2;  // rovid: kalibracio, hosszu: nullazo mod
-constexpr uint8_t PIN_BTN2 = 4;  // rovid: vas betanitas, hosszu: auto hangolas
-constexpr uint8_t PIN_BUZ = 3;   // passziv piezo (tone)
+// ---- Labkiosztas ----
+static const uint PIN_GATE = 2;   // IRLZ44N gate (47R soros)
+static const uint PIN_SDA = 4;
+static const uint PIN_SCL = 5;
+static const uint PIN_BTN_ZERO = 10;  // nullazas
+static const uint PIN_BTN_CAL = 11;   // kalibralas (hosszan nyomva)
+static const uint PIN_BUZZ = 15;      // passziv csipogo (BC547-en keresztul)
+// ADC0 = GP26 (jel), ADC1 = GP27 (akku osztó 100k/33k)
 
-// Timer1 OCR1A = N, TX frekvencia = 500000 / N Hz
-// L_TX = 960 uH, L_RX = 931 uH, C = 1 uF -> f0 ~ 7,042 kHz -> N ~ 97
-constexpr uint8_t N_MIN = 71, N_MAX = 115, N_DEF = 97;
-constexpr uint8_t CLIP_COUNT =
-    5;  // ennyi telített mintától jelez TELITES-t (keretenként)
+// ---- Idozites (us) - oszcilloszkoppal finomhangolando ----
+static const uint32_t T_ON = 60;       // gate bekapcsolt ido
+static const uint32_t T_PERIOD = 1000; // impulzus periodus (1 kHz)
+static const uint32_t T_SAMPLE1 = 50;  // 1. mintavetel a kikapcsolas utan
+static const uint32_t T_SAMPLE2 = 600; // referencia mintavetel (alapvonal)
+static const int N_SAMPLES = 4;        // minta / mintavetelezesi pont
+static const int N_PULSES = 100;       // impulzus / meres (100 ms)
 
-// Érzékenység beállítások
-constexpr float THR_SIGMA =
-    3.0f;  // küszöb = THR_SIGMA x zajszórás (kisebb = érzékenyebb)
-constexpr float THR_MIN = 0.3f;   // a küszöb alsó határa
-constexpr float BAR_DIV = 15.0f;  // a FEM csík tele a küszöb ennyiszeresénél
-                                  // (kisebb = hamarabb telik)
-constexpr float SMOOTH = 0.3f;  // I/Q simítás (nagyobb = gyorsabb, de zajosabb)
-constexpr float DRIFT_DIV =
-    128.0f;  // lassú driftkövetés a nullpontnál (nagyobb = lassabb követés)
+// ---- Erzekelesi / kijelzesi parameterek ----
+static const float DETECT_TH = 2.0f;    // ADC egyseg, ennel nagyobb jel = talalat
+static const float FULL_SCALE = 100.0f; // kalibralatlan oszlop teljes kitereses
+static const float CAL_DEPTH_CM = 5.0f; // kalibralasi melyseg
+static const float BATT_DIV = (100.0f + 33.0f) / 33.0f;
+static const int ZERO_UPDATES = 15;     // inditasi nullazas hossza (x100 ms)
 
-U8G2_SSD1306_128X64_NONAME_1_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
+// ---- Core1 -> core0 megosztott adatok ----
+static volatile float g_diff = 0;   // (S1 - S2) atlag, ADC egysegben
+static volatile float g_s1 = 0;     // S1 atlag (tulvezerles-ellenorzes)
+static volatile float g_vbat = 0;
+static volatile uint32_t g_seq = 0;
 
-struct Frame {
-  int32_t i, q;
-  uint32_t s, ss;
-  uint8_t n;
-  bool clip;
-};
+static inline uint32_t now_us() { return timer_hw->timerawl; }
 
-static Frame rxF;
-static volatile uint8_t rxSeq = 0;
-// static Frame acF;
-// static volatile uint8_t acSeq = 0;
-
-static uint16_t halfN = N_DEF / 2;
-static uint8_t frameCycles = 91;
-static uint16_t nSamp = 0;
-static int32_t aI, aQ;
-static uint8_t aClip;  // telített minták száma a keretben
-// static uint8_t curMode = 0;      // 0 = RX (A0), 1 = AC antenna (A1)
-// static uint8_t frameIdx = 0;     // 3 RX keret : 1 AC keret
-// static uint32_t aS, aSS, grp;
-// static uint8_t grpN;
-
-EMPTY_INTERRUPT(TIMER1_COMPB_vect);  // csak a trigger flag torlese miatt kell
-
-ISR(ADC_vect) {
-  uint16_t v = ADC;
-  uint16_t t = TCNT1;
-  bool lvl = PINB & _BV(PINB1);  // az OC1A (TX) aktualis szintje
-  // a mintavetel helyzete: fel/le szamlalas x TX szint -> 0..3, idoben egymas
-  // utan
-  uint8_t ph = (t > halfN ? 1 : 0) + (lvl ? 0 : 2);
-  if ((v < 8 || v > 1015) && aClip < 255) aClip++;
-
-  switch (ph) {
-    case 0:
-      aI += v;
-      break;
-    case 2:
-      aI -= v;
-      break;
-    case 1:
-      aQ += v;
-      break;
-    default:
-      aQ -= v;
-      break;
-  }
-  /*
-  if (curMode == 1) {
-    grp += v;                                    // 4 minta osszege: a TX es
-  harmonikusai kiesnek if (++grpN == 4) { aS += grp; aSS += grp * grp; grp = 0;
-      grpN = 0;
+static inline uint32_t sampleBurst() {
+  uint32_t sum = 0;
+  for (int i = 0; i < N_SAMPLES; i++) {
+    adc_hw->cs |= ADC_CS_START_ONCE_BITS;
+    while (!(adc_hw->cs & ADC_CS_READY_BITS)) {
     }
+    sum += adc_hw->result;
   }
-  */
+  return sum;
+}
 
-  if (++nSamp >= (uint16_t)frameCycles * 4) {
-    rxF.i = aI;
-    rxF.q = aQ;
-    rxF.n = frameCycles;
-    rxF.clip = aClip >= CLIP_COUNT;
-    rxSeq++;
-    nSamp = 0;
-    aI = aQ = 0;
-    aClip = 0;
-    /*
-    frameIdx = (frameIdx + 1) & 3;
-    uint8_t nm = (frameIdx == 3) ? 1 : 0;
-    if (nm != curMode) {
-      curMode = nm;
-      ADMUX = _BV(REFS0) | nm;
+static void __not_in_flash_func(pulse)(uint32_t &s1, uint32_t &s2) {
+  uint32_t t0 = now_us();
+  gpio_put(PIN_GATE, 1);
+  while (now_us() - t0 < T_ON) {
+  }
+  gpio_put(PIN_GATE, 0);
+  uint32_t toff = now_us();
+  while (now_us() - toff < T_SAMPLE1) {
+  }
+  s1 = sampleBurst();
+  while (now_us() - toff < T_SAMPLE2) {
+  }
+  s2 = sampleBurst();
+}
+
+void setup1() {
+  gpio_init(PIN_GATE);
+  gpio_set_dir(PIN_GATE, GPIO_OUT);
+  gpio_put(PIN_GATE, 0);
+  adc_init();
+  adc_gpio_init(26);
+  adc_gpio_init(27);
+  adc_select_input(0);
+}
+
+void loop1() {
+  static uint32_t next = now_us();
+  uint64_t sum1 = 0, sum2 = 0;
+  for (int i = 0; i < N_PULSES; i++) {
+    while ((int32_t)(now_us() - next) < 0) {
     }
-    */
+    next += T_PERIOD;
+    if ((int32_t)(now_us() - next) > (int32_t)T_PERIOD) next = now_us();  // lemaradas: nincs sorozat-impulzus
+    uint32_t a, b;
+    pulse(a, b);
+    sum1 += a;
+    sum2 += b;
   }
+  adc_select_input(1);
+  sleep_us(5);
+  (void)adc_read();
+  uint32_t vb = 0;
+  for (int i = 0; i < 8; i++) vb += adc_read();
+  adc_select_input(0);
+
+  const float n = (float)N_SAMPLES * N_PULSES;
+  g_s1 = sum1 / n;
+  g_diff = ((float)sum1 - (float)sum2) / n;
+  g_vbat = (vb / 8.0f) * 3.3f / 4095.0f * BATT_DIV;
+  g_seq = g_seq + 1;
+  watchdog_update();
 }
 
-static uint8_t skipRx = 0;
+// ---- Core0 ----
+static U8G2_SSD1306_128X64_NONAME_F_HW_I2C oled(U8G2_R0);
+static float g_zero = 0, g_calK = 0;  // g_calK: S ~ K / d^3
 
-static void setN(uint8_t n) {
-  uint8_t c = (10000 + n / 2) / n;  // ciklus / 20 ms
-  noInterrupts();
-  OCR1A = n;
-  OCR1B = n / 2;
-  halfN = n / 2;
-  frameCycles = c;
-  TCNT1 = 0;
-  nSamp = 0;
-  aI = aQ = 0;
-  aClip = 0;
-  ADMUX = _BV(REFS0);
-  interrupts();
-  skipRx = 2;
-}
-
-static void startHardware(uint8_t n) {
-  pinMode(9, OUTPUT);
-  digitalWrite(9, LOW);
-  TCCR1A = _BV(COM1A0) |
-           _BV(WGM10);  // mod 9: fazishelyes PWM, TOP=OCR1A, OC1A toggle
-  TCCR1B = _BV(WGM13);
-  TIMSK1 = _BV(OCIE1B);
-  ADMUX = _BV(REFS0);
-  ADCSRB = _BV(ADTS2) | _BV(ADTS0);  // trigger: Timer1 compare match B
-  ADCSRA =
-      _BV(ADEN) | _BV(ADATE) | _BV(ADIE) | _BV(ADPS2) |
-      _BV(ADPS0);  // clk/32 = 500 kHz, 26 us/konverzio < 45 us mintakoz (N=90)
-  setN(n);
-  TCCR1B |= _BV(CS11);  // clk/8
-}
-
-static bool pollRx(float& i, float& q, bool& clip) {
-  static uint8_t seen = 0;
-  if (rxSeq == seen) return false;
-  Frame f;
-  noInterrupts();
-  f = rxF;
-  seen = rxSeq;
-  interrupts();
-  if (skipRx) {
-    skipRx--;
-    return false;
-  }
-  i = (float)f.i / f.n;
-  q = (float)f.q / f.n;
-  clip = f.clip;
-  return true;
-}
-
-/*
-static bool pollAc(float &rms) {
-  static uint8_t seen = 0;
-  if (acSeq == seen) return false;
-  Frame f;
-  noInterrupts();
-  f = acF;
-  seen = acSeq;
-  interrupts();
-  int64_t n = f.n;
-  int64_t num = n * (int64_t)f.ss - (int64_t)f.s * (int64_t)f.s;
-  float var = num > 0 ? (float)num / (float)(n * n) : 0;
-  rms = sqrtf(var) / 4.0f;
-  return true;
-}
-*/
-
-// ---- beallitasok ----
-struct Cfg {
-  uint8_t magic;
-  uint8_t n;
-  uint8_t taught;
-  float ang;
-};
-static Cfg cfg;
-
-static void loadCfg() {
-  EEPROM.get(0, cfg);
-  if (cfg.magic != 0x5B || cfg.n < N_MIN || cfg.n > N_MAX) {
-    cfg.magic = 0x5B;
-    cfg.n = N_DEF;
-    cfg.taught = 0;
-    cfg.ang = 0;
-  }
-}
-static void saveCfg() { EEPROM.put(0, cfg); }
-
-static float bI = 0, bQ = 0, thr = 1;
-static float vI = 0, vQ = 0;
-// static float acBase = 0, acThr = 1, acD = 0;
-static bool firstRx = true;
-
-static void showMsg(const char* a, const char* b = nullptr,
-                    const char* c = nullptr) {
-  oled.firstPage();
-  do {
-    oled.setFont(u8g2_font_7x13B_tr);
-    oled.drawStr(4, 11, a);
-    oled.setFont(u8g2_font_6x10_tr);
-    if (b) oled.drawStr(4, 29, b);
-    if (c) oled.drawStr(4, 43, c);
-  } while (oled.nextPage());
-}
-
-static void calibrate() {
-  showMsg("KALIBRALAS", "Ne mozgasd a", "detektort");
-  float sI = 0, sQ = 0, sM2 = 0;
-  uint8_t nr = 0;
-  uint32_t t0 = millis();
-  float i, q;
-  bool clip;
-  while (nr < 50 && millis() - t0 < 8000) {
-    if (pollRx(i, q, clip)) {
-      sI += i;
-      sQ += q;
-      sM2 += i * i + q * q;
-      nr++;
-    }
-  }
-  if (nr < 10) {
-    showMsg("HIBA", "Nincs RX jel", "Ellenorizd a TX-et");
-    delay(2000);
-    return;
-  }
-  bI = sI / nr;
-  bQ = sQ / nr;
-  float var = sM2 / nr - (bI * bI + bQ * bQ);
-  thr = fmaxf(THR_SIGMA * sqrtf(fmaxf(var, 0)), THR_MIN);
-  /*
-  if (na > 3) {
-    acBase = sA / na;
-    float av = sA2 / na - acBase * acBase;
-    acThr = fmaxf(5.0f * sqrtf(fmaxf(av, 0)), 0.4f);
-  }
-  */
-  vI = bI;
-  vQ = bQ;
-  firstRx = false;
-}
-
-static void autoTune() {
-  showMsg("HANGOLAS", "Tarts femet a", "tekercs fole!");
-  delay(3000);
-  uint8_t bestN = cfg.n;
-  float best = -1;
-  char buf[20];
-  for (uint8_t n = N_MIN; n <= N_MAX; n++) {
-    setN(n);
-    float acc = 0, i, q;
-    bool clip;
-    uint8_t got = 0;
-    uint32_t t0 = millis();
-    while (got < 3 && millis() - t0 < 600) {
-      if (pollRx(i, q, clip)) {
-        acc += sqrtf(i * i + q * q);
-        got++;
-      }
-    }
-    if (got && acc / got > best) {
-      best = acc / got;
-      bestN = n;
-    }
-    if ((n - N_MIN) % 6 == 0) {
-      snprintf(buf, sizeof buf, "%u Hz", (unsigned)(500000UL / n));
-      showMsg("HANGOLAS", buf);
-    }
-  }
-  cfg.n = bestN;
-  saveCfg();
-  setN(bestN);
-  snprintf(buf, sizeof buf, "f = %u Hz", (unsigned)(500000UL / bestN));
-  showMsg("KESZ", buf, "Kalibralj ujra!");
-  delay(1500);
-}
-
-// ---- gombok ----
-static uint8_t readButton(uint8_t pin, uint32_t& pressedAt) {
-  bool down = digitalRead(pin) == LOW;
-  uint32_t now = millis();
-  if (down && !pressedAt) {
-    pressedAt = now ? now : 1;
-    return 0;
-  }
-  if (!down && pressedAt) {
-    uint32_t d = now - pressedAt;
-    pressedAt = 0;
-    if (d < 30) return 0;
-    return d >= 1200 ? 2 : 1;
-  }
-  return 0;
-}
-
-static uint32_t nextBeep = 0, beepOff = 0;
-static void updateBeeper(float level, bool active, uint16_t len) {
-  uint32_t now = millis();
-  if (beepOff && (int32_t)(now - beepOff) >= 0) {
-    noTone(PIN_BUZ);
-    beepOff = 0;
-  }
-  if (!active) return;
-  if ((int32_t)(now - nextBeep) >= 0) {
-    tone(PIN_BUZ, 2700);
-    beepOff = now + len;
-    nextBeep = now + (uint32_t)(600 - 550 * level);
-  }
+static void saveCal() {
+  EEPROM.put(0, g_calK);
+  EEPROM.commit();
 }
 
 void setup() {
-  pinMode(PIN_BTN1, INPUT_PULLUP);
-  pinMode(PIN_BTN2, INPUT_PULLUP);
-  pinMode(PIN_BUZ, OUTPUT);
   Serial.begin(115200);
+  pinMode(PIN_BTN_ZERO, INPUT_PULLUP);
+  pinMode(PIN_BTN_CAL, INPUT_PULLUP);
+  pinMode(PIN_BUZZ, OUTPUT);
+  digitalWrite(PIN_BUZZ, LOW);
+  EEPROM.begin(256);
+  EEPROM.get(0, g_calK);
+  if (!(g_calK > 0 && g_calK < 1e9f)) g_calK = 0;
+  Wire.setSDA(PIN_SDA);
+  Wire.setSCL(PIN_SCL);
   oled.begin();
-  Wire.setClock(400000);
-  loadCfg();
-  startHardware(cfg.n);
-  delay(1500);
-  calibrate();
+  oled.setBusClock(400000);
+  oled.setFont(u8g2_font_6x10_tf);
+  watchdog_enable(1000, 1);  // core1 etetja; lefagyaskor a gate lehuz
+}
+
+static float fullScale() {
+  return g_calK > 0 ? g_calK / (CAL_DEPTH_CM * CAL_DEPTH_CM * CAL_DEPTH_CM) * 1.5f : FULL_SCALE;
+}
+
+static void draw(const char *msg, float mag, float vbat, bool overload, bool det) {
+  char b[24];
+  oled.clearBuffer();
+  oled.setFont(u8g2_font_6x10_tf);
+  snprintf(b, sizeof b, "%.1fV", vbat);
+  oled.drawStr(0, 9, "PI Scout");
+  oled.drawStr(98, 9, b);
+  if (msg) {
+    oled.drawStr(0, 34, msg);
+  } else if (overload) {
+    oled.setFont(u8g2_font_10x20_tf);
+    oled.drawStr(0, 36, "TULVEZERLES");
+  } else {
+    oled.setFont(u8g2_font_logisoso24_tn);
+    snprintf(b, sizeof b, "%.0f", mag);
+    oled.drawStr(0, 40, b);
+    oled.setFont(u8g2_font_6x10_tf);
+    if (g_calK > 0 && det) {
+      snprintf(b, sizeof b, "~%.1f cm", cbrtf(g_calK / mag));
+      oled.drawStr(80, 34, b);
+    } else if (g_calK <= 0) {
+      oled.drawStr(70, 34, "nincs kal.");
+    }
+    float f = constrain(mag / fullScale(), 0.0f, 1.0f);
+    oled.drawFrame(0, 48, 128, 14);
+    oled.drawBox(2, 50, (int)(f * 124), 10);
+  }
+  oled.sendBuffer();
 }
 
 void loop() {
-  static uint32_t b1At = 0, b2At = 0, lastDraw = 0, clipUntil = 0;
-  static bool nullMode = false;
-  static float m = 0, mRaw = 0, ang = 0;
-  static bool ferrous = false;
-  float i, q;
-  bool clip;
+  static uint32_t lastSeq = 0, calPressStart = 0;
+  static int zeroCount = 0;
+  static float zeroAcc = 0;
+  static bool zeroPrev = false, calDone = false;
 
-  uint8_t b1 = readButton(PIN_BTN1, b1At);
-  uint8_t b2 = readButton(PIN_BTN2, b2At);
-  if (b1 == 1) {
-    nullMode = false;
-    calibrate();
+  bool bz = !digitalRead(PIN_BTN_ZERO);
+  if (bz && !zeroPrev) {
+    zeroCount = 0;
+    zeroAcc = 0;
   }
-  if (b1 == 2) nullMode = !nullMode;
-  if (b2 == 1) {
-    if (m > 3 * thr) {
-      cfg.ang = ang;
-      cfg.taught = 1;
-      saveCfg();
-      showMsg("VAS BETANITVA");
-      delay(1000);
-    } else {
-      showMsg("TUL KEVES JEL", "Vasat a tekercshez");
-      delay(1500);
-    }
-  }
-  if (b2 == 2) {
-    autoTune();
-    calibrate();
-  }
+  zeroPrev = bz;
 
-  while (pollRx(i, q, clip)) {
-    if (firstRx) {
-      vI = i;
-      vQ = q;
-      firstRx = false;
-    }
-    vI += SMOOTH * (i - vI);
-    vQ += SMOOTH * (q - vQ);
-    float dI = vI - bI, dQ = vQ - bQ;
-    m = sqrtf(dI * dI + dQ * dQ);
-    mRaw = sqrtf(vI * vI + vQ * vQ);
-    if (m < thr) {
-      bI += (vI - bI) / DRIFT_DIV;
-      bQ += (vQ - bQ) / DRIFT_DIV;
-    }  // lassu drift-kovetes
-    ang = atan2f(dQ, dI);
-    ferrous = cosf(ang - cfg.ang) > 0;
-    if (clip) clipUntil = millis() + 1000;
+  bool bc = !digitalRead(PIN_BTN_CAL);
+  if (bc && calPressStart == 0) {
+    calPressStart = millis();
+    calDone = false;
   }
-  /*
-  while (pollAc(r)) {
-    float d = r - acBase;
-    acD += 0.5f * (d - acD);
-    if (fabsf(d) < acThr) acBase += (r - acBase) / 32.0f;
-  }
-  */
+  if (!bc) calPressStart = 0;
 
-  bool mAct = m > thr;
-  // bool aAct = acD > acThr;
-  float mLevel = fminf(m / (thr * BAR_DIV), 1.0f);
-  // float aLevel = fminf(fmaxf(acD, 0) / (acThr * 8), 1.0f);
-  float nLevel = fminf(sqrtf(mRaw / 800.0f), 1.0f);
+  if (g_seq == lastSeq) return;
+  lastSeq = g_seq;
+  float diff = g_diff, vbat = g_vbat;
+  bool overload = g_s1 > 4000 || g_s1 < 20;
 
-  if (millis() - lastDraw >= 200) {
-    lastDraw = millis();
-    char buf[24];
-    oled.firstPage();
-    do {
-      oled.setFont(u8g2_font_6x10_tr);
-      if (nullMode) {
-        oled.drawStr(0, 9, "NULLAZAS");
-        oled.drawFrame(0, 14, 128, 14);
-        oled.drawBox(2, 16, (uint8_t)(124 * nLevel), 10);
-        snprintf(buf, sizeof buf, "RX = %d", (int)mRaw);
-        oled.drawStr(0, 44, buf);
-        oled.drawStr(0, 58, "Mozgasd a tekercset");
-      } else {
-        oled.drawStr(0, 9, "FEM");
-        oled.drawFrame(24, 1, 104, 9);
-        oled.drawBox(26, 3, (uint8_t)(100 * mLevel), 5);
-        // oled.drawStr(0, 31, "AC");
-        // oled.drawFrame(24, 23, 104, 9);
-        // oled.drawBox(26, 25, (uint8_t)(100 * aLevel), 5);
-        snprintf(buf, sizeof buf, "m=%d", (int)m);
-        oled.drawStr(0, 26, buf);
-        snprintf(buf, sizeof buf, "f=%uHz", (unsigned)(500000UL / cfg.n));
-        oled.drawStr(0, 40, buf);
-        oled.setFont(u8g2_font_7x13B_tr);
-        const char* txt = "-";
-        if (millis() < clipUntil) txt = "TELITES!";
-        // else if (aAct) txt = "ELO VEZETEK!";
-        else if (mAct)
-          txt = !cfg.taught ? "FEM (tanitsd be)"
-                            : (ferrous ? "VAS" : "NEM-VAS (Cu/Al)");
-        oled.drawStr(0, 63, txt);
-      }
-    } while (oled.nextPage());
+  if (zeroCount < ZERO_UPDATES) {
+    zeroAcc += diff;
+    zeroCount++;
+    if (zeroCount == ZERO_UPDATES) g_zero = zeroAcc / ZERO_UPDATES;
+    noTone(PIN_BUZZ);
+    draw("Nullazas - legben!", 0, vbat, false, false);
+    return;
   }
 
-  if (nullMode) updateBeeper(nLevel, true, 15);
-  // else if (aAct) updateBeeper(1.0f, true, 25);
-  else
-    updateBeeper(mLevel, mAct, ferrous || !cfg.taught ? 25 : 70);
+  float sig = diff - g_zero;
+  float mag = fabsf(sig);
+  if (mag < DETECT_TH) g_zero += 0.01f * sig;  // lassu driftkovetes
+
+  bool det = mag >= DETECT_TH && !overload;
+
+  if (bc && !calDone && calPressStart && millis() - calPressStart > 1000 && det) {
+    g_calK = mag * CAL_DEPTH_CM * CAL_DEPTH_CM * CAL_DEPTH_CM;
+    saveCal();
+    calDone = true;
+    tone(PIN_BUZZ, 3000, 300);
+  } else if (det) {
+    tone(PIN_BUZZ, 800 + (int)(constrain(mag / fullScale(), 0.0f, 1.0f) * 2200));
+  } else {
+    noTone(PIN_BUZZ);
+  }
+
+  draw(nullptr, mag, vbat, overload, det);
+  Serial.printf("diff=%.2f s1=%.0f zero=%.2f sig=%.2f vbat=%.2f\n", diff, g_s1, g_zero, sig, vbat);
 }
