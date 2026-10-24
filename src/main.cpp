@@ -21,9 +21,9 @@ constexpr uint8_t CLIP_COUNT =
 
 // Érzékenység beállítások
 constexpr float THR_SIGMA =
-    4.0f;  // küszöb = THR_SIGMA x zajszórás (kisebb = érzékenyebb)
-constexpr float THR_MIN = 0.4f;  // a küszöb alsó határa
-constexpr float BAR_DIV = 25.0f;  // a FEM csík tele a küszöb ennyiszeresénél
+    3.0f;  // küszöb = THR_SIGMA x zajszórás (kisebb = érzékenyebb)
+constexpr float THR_MIN = 0.3f;   // a küszöb alsó határa
+constexpr float BAR_DIV = 15.0f;  // a FEM csík tele a küszöb ennyiszeresénél
                                   // (kisebb = hamarabb telik)
 constexpr float SMOOTH = 0.3f;  // I/Q simítás (nagyobb = gyorsabb, de zajosabb)
 constexpr float DRIFT_DIV =
