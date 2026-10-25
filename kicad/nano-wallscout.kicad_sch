@@ -751,6 +751,183 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:C_Polarized"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.635 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Polarized"
+				(at 0.635 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0.9652 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Polarized capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "CP_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_Polarized_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.778 2.286) (xy -0.762 2.286)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.794) (xy -1.27 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start 2.286 -0.508)
+					(end -2.286 -1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "C_Polarized_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C_Polarized_Small"
 			(pin_numbers
 				(hide yes)
@@ -1451,6 +1628,216 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:Q_NPN"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 5.08 1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Q_NPN"
+				(at 5.08 -1.27 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "NPN bipolar junction transistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "BJT"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Q_NPN_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy 0.635 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 1.905) (xy 0.635 -1.905)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 0.635) (xy 2.54 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 -0.635) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.27 0)
+					(radius 2.8194)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.778) (xy 1.778 -1.27) (xy 2.286 -2.286) (xy 1.27 -1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "Q_NPN_1_1"
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "E"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "E"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3478,7 +3865,7 @@
 	)
 	(text "OLED"
 		(exclude_from_sim no)
-		(at 47.752 139.954 0)
+		(at 105.918 161.544 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3549,6 +3936,12 @@
 		(uuid "5eed100d-497f-48f0-87ad-8b21e6611e32")
 	)
 	(junction
+		(at 31.75 139.7)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "62891b3e-ddf4-45dd-a5f1-0dbc03496145")
+	)
+	(junction
 		(at 238.76 135.89)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3597,6 +3990,12 @@
 		(uuid "b6c5259e-3873-47e6-b969-c7862f004c35")
 	)
 	(junction
+		(at 31.75 147.32)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b7058ce1-753f-4466-ba96-d70fe1710099")
+	)
+	(junction
 		(at 118.11 127)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3621,6 +4020,18 @@
 		(uuid "d89f2069-55e8-4861-b2fe-ce688b9af5bd")
 	)
 	(junction
+		(at 22.86 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dce4eaba-04f2-4bab-b905-9e2f87ba0c69")
+	)
+	(junction
+		(at 256.54 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dfb3a871-793d-451a-8092-facfb85aa298")
+	)
+	(junction
 		(at 62.23 58.42)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3633,16 +4044,16 @@
 		(uuid "e8e6581d-0ce1-440e-9315-7c142d5fa5a1")
 	)
 	(junction
-		(at 22.86 90.17)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ed370d98-7e44-4f77-88b3-61a86232d9ee")
-	)
-	(junction
 		(at 190.5 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f540c1ca-80b4-42bb-87b0-2eb8829a6d5d")
+	)
+	(junction
+		(at 256.54 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f9ae8dec-f39b-4d7c-99a6-0c327d694ec1")
 	)
 	(no_connect
 		(at 77.47 110.49)
@@ -3718,6 +4129,26 @@
 	)
 	(wire
 		(pts
+			(xy 46.99 105.41) (xy 52.07 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "020e4be9-2fc9-4b28-8824-1be62894e35b")
+	)
+	(wire
+		(pts
+			(xy 256.54 54.61) (xy 251.46 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03d9c78c-012c-433a-8d97-b9b15681c435")
+	)
+	(wire
+		(pts
 			(xy 224.79 73.66) (xy 224.79 76.2)
 		)
 		(stroke
@@ -3735,6 +4166,16 @@
 			(type default)
 		)
 		(uuid "0586eba3-75b4-4f3e-9263-c514a301aae1")
+	)
+	(wire
+		(pts
+			(xy 261.62 49.53) (xy 261.62 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "059c6ade-4fe6-4151-a4b4-78a7512d2f3c")
 	)
 	(wire
 		(pts
@@ -3808,6 +4249,16 @@
 	)
 	(wire
 		(pts
+			(xy 261.62 41.91) (xy 261.62 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0bf6059a-a505-4f14-a111-5bc44c19a2ed")
+	)
+	(wire
+		(pts
 			(xy 201.93 93.98) (xy 201.93 120.65)
 		)
 		(stroke
@@ -3818,7 +4269,7 @@
 	)
 	(wire
 		(pts
-			(xy 43.18 137.16) (xy 43.18 140.97)
+			(xy 110.49 158.75) (xy 110.49 162.56)
 		)
 		(stroke
 			(width 0)
@@ -3848,13 +4299,23 @@
 	)
 	(wire
 		(pts
-			(xy 26.67 110.49) (xy 26.67 113.03)
+			(xy 31.75 146.05) (xy 31.75 147.32)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "1be6e8d3-1fdf-4a30-9b76-308b02502628")
+		(uuid "1726e806-54df-4a75-a127-49310cdbb19f")
+	)
+	(wire
+		(pts
+			(xy 45.72 158.75) (xy 46.99 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1c2b00db-8811-4642-b048-50292f46397f")
 	)
 	(wire
 		(pts
@@ -3875,6 +4336,16 @@
 			(type default)
 		)
 		(uuid "1d8ea141-c7de-4522-9878-b0130bbfeecd")
+	)
+	(wire
+		(pts
+			(xy 22.86 88.9) (xy 22.86 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1e744c49-0641-4a47-81f4-2adec7d3d341")
 	)
 	(wire
 		(pts
@@ -3908,6 +4379,16 @@
 	)
 	(wire
 		(pts
+			(xy 251.46 41.91) (xy 251.46 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "274738a8-21c3-422c-b0be-f93726e5410a")
+	)
+	(wire
+		(pts
 			(xy 86.36 102.87) (xy 77.47 102.87)
 		)
 		(stroke
@@ -3915,6 +4396,16 @@
 			(type default)
 		)
 		(uuid "27bd5096-4a3e-4d4e-ac43-98a1069f24f5")
+	)
+	(wire
+		(pts
+			(xy 31.75 139.7) (xy 35.56 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ec2d99c-9584-456e-b3d0-e33752a419f8")
 	)
 	(wire
 		(pts
@@ -3928,6 +4419,16 @@
 	)
 	(wire
 		(pts
+			(xy 256.54 38.1) (xy 256.54 34.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "32e14629-17ee-4181-b462-3f1d94b8609a")
+	)
+	(wire
+		(pts
 			(xy 93.98 81.28) (xy 93.98 82.55)
 		)
 		(stroke
@@ -3935,6 +4436,16 @@
 			(type default)
 		)
 		(uuid "3381a584-afd9-4fda-9130-3f7708bb65e1")
+	)
+	(wire
+		(pts
+			(xy 31.75 147.32) (xy 31.75 153.67)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "343a6b66-956c-43ef-888a-70db4c4e6f45")
 	)
 	(wire
 		(pts
@@ -4005,16 +4516,6 @@
 			(type default)
 		)
 		(uuid "40f70e21-f0de-481d-a278-371e969a82e4")
-	)
-	(wire
-		(pts
-			(xy 22.86 91.44) (xy 22.86 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "41566cd5-640c-4123-b793-a2fcdbe78beb")
 	)
 	(wire
 		(pts
@@ -4138,6 +4639,16 @@
 	)
 	(wire
 		(pts
+			(xy 38.1 158.75) (xy 39.37 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e003486-b617-422d-9024-719c288fb597")
+	)
+	(wire
+		(pts
 			(xy 77.47 92.71) (xy 93.98 92.71)
 		)
 		(stroke
@@ -4195,6 +4706,16 @@
 			(type default)
 		)
 		(uuid "72f0bf64-a7e8-42ac-a081-eabfe28d1539")
+	)
+	(wire
+		(pts
+			(xy 261.62 54.61) (xy 256.54 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73c1c67e-7b24-4264-9bd3-db64cc255267")
 	)
 	(wire
 		(pts
@@ -4258,6 +4779,16 @@
 	)
 	(wire
 		(pts
+			(xy 46.99 105.41) (xy 46.99 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83d3ff97-e76c-40cc-94aa-b400307d0fc0")
+	)
+	(wire
+		(pts
 			(xy 62.23 45.72) (xy 62.23 50.8)
 		)
 		(stroke
@@ -4318,7 +4849,7 @@
 	)
 	(wire
 		(pts
-			(xy 85.09 105.41) (xy 85.09 148.59)
+			(xy 85.09 105.41) (xy 85.09 170.18)
 		)
 		(stroke
 			(width 0)
@@ -4348,7 +4879,7 @@
 	)
 	(wire
 		(pts
-			(xy 86.36 153.67) (xy 86.36 102.87)
+			(xy 86.36 175.26) (xy 86.36 102.87)
 		)
 		(stroke
 			(width 0)
@@ -4365,6 +4896,16 @@
 			(type default)
 		)
 		(uuid "9316ae24-a2c4-4967-bcbb-facc192e9ff7")
+	)
+	(wire
+		(pts
+			(xy 251.46 38.1) (xy 261.62 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "94bb3e92-6beb-4172-9c48-0a4518e39c97")
 	)
 	(wire
 		(pts
@@ -4428,6 +4969,16 @@
 	)
 	(wire
 		(pts
+			(xy 256.54 54.61) (xy 256.54 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4e2e11d-6410-4713-9abd-2a6f1dbbc181")
+	)
+	(wire
+		(pts
 			(xy 86.36 69.85) (xy 93.98 69.85)
 		)
 		(stroke
@@ -4478,7 +5029,7 @@
 	)
 	(wire
 		(pts
-			(xy 22.86 90.17) (xy 22.86 87.63)
+			(xy 22.86 90.17) (xy 22.86 88.9)
 		)
 		(stroke
 			(width 0)
@@ -4508,13 +5059,23 @@
 	)
 	(wire
 		(pts
-			(xy 52.07 105.41) (xy 26.67 105.41)
+			(xy 31.75 139.7) (xy 31.75 140.97)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b895dadf-011e-4075-bf68-1f91abe918de")
+		(uuid "b90916d8-32e5-4d2f-96b3-700b44a2f7eb")
+	)
+	(wire
+		(pts
+			(xy 251.46 54.61) (xy 251.46 49.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b997193f-78e4-48eb-8f28-26ffccd0edc2")
 	)
 	(wire
 		(pts
@@ -4565,6 +5126,26 @@
 			(type default)
 		)
 		(uuid "c1ae7911-854d-4e20-8af6-4e256892fcff")
+	)
+	(wire
+		(pts
+			(xy 31.75 147.32) (xy 35.56 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c1ed1331-90b9-4aa7-94de-fd245d65da66")
+	)
+	(wire
+		(pts
+			(xy 21.59 88.9) (xy 22.86 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c2e9f921-d826-430a-82b3-af173b38ff37")
 	)
 	(wire
 		(pts
@@ -4628,7 +5209,7 @@
 	)
 	(wire
 		(pts
-			(xy 43.18 161.29) (xy 43.18 165.1)
+			(xy 110.49 182.88) (xy 110.49 186.69)
 		)
 		(stroke
 			(width 0)
@@ -4638,7 +5219,7 @@
 	)
 	(wire
 		(pts
-			(xy 53.34 153.67) (xy 86.36 153.67)
+			(xy 100.33 175.26) (xy 86.36 175.26)
 		)
 		(stroke
 			(width 0)
@@ -4738,6 +5319,26 @@
 	)
 	(wire
 		(pts
+			(xy 31.75 132.08) (xy 31.75 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e77172ec-21b9-479e-87f2-86320d0b7704")
+	)
+	(wire
+		(pts
+			(xy 31.75 121.92) (xy 31.75 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9c4a5cc-70e5-4551-a689-325ae0b4a18a")
+	)
+	(wire
+		(pts
 			(xy 129.54 90.17) (xy 124.46 90.17)
 		)
 		(stroke
@@ -4748,7 +5349,7 @@
 	)
 	(wire
 		(pts
-			(xy 53.34 148.59) (xy 85.09 148.59)
+			(xy 100.33 170.18) (xy 85.09 170.18)
 		)
 		(stroke
 			(width 0)
@@ -4838,8 +5439,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 43.18 165.1 0)
-		(mirror y)
+		(at 110.49 186.69 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4849,8 +5449,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0478fd7f-e302-431d-bd70-361b47cae638")
-		(property "Reference" "#PWR04"
-			(at 43.18 171.45 0)
+		(property "Reference" "#PWR011"
+			(at 110.49 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4861,7 +5461,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 43.18 170.18 0)
+			(at 110.49 191.77 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4871,7 +5471,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 43.18 165.1 0)
+			(at 110.49 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4882,7 +5482,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 43.18 165.1 0)
+			(at 110.49 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4893,7 +5493,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 43.18 165.1 0)
+			(at 110.49 186.69 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4909,7 +5509,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR04")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -4926,7 +5526,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "054c0a74-ac2f-441f-a27e-79b15db22317")
-		(property "Reference" "R9"
+		(property "Reference" "R11"
 			(at 168.656 99.314 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4990,7 +5590,85 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R9")
+					(reference "R11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 31.75 163.83 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "08d16a6a-b7c7-4a5e-8a7d-49f7c97e06fd")
+		(property "Reference" "#PWR03"
+			(at 31.75 170.18 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 31.75 168.91 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 31.75 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e986cc36-3e8a-490d-bab1-885f362fc52b")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR03")
 					(unit 1)
 				)
 			)
@@ -5007,7 +5685,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "0a0242fb-de1b-472f-a3b7-59572c92da6c")
-		(property "Reference" "R8"
+		(property "Reference" "R10"
 			(at 152.146 84.582 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5071,7 +5749,86 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R8")
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 251.46 45.72 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0c6b5659-5602-40ab-8b5a-38f6e5c91abb")
+		(property "Reference" "C5"
+			(at 248.666 41.91 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100nF"
+			(at 247.65 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 250.4948 41.91 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 251.46 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 251.46 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "2164f0d7-4df0-4caa-8255-83f101e2bc17")
+		)
+		(pin "1"
+			(uuid "1d438f1b-bc1e-46ea-a2ca-05004acd5e65")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -5167,7 +5924,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "134cf852-688b-4c72-b48d-0d874ebcc3f6")
-		(property "Reference" "R6"
+		(property "Reference" "R8"
 			(at 137.16 99.314 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5231,7 +5988,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R6")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -5354,6 +6111,110 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D")
+		(at 35.56 143.51 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1da9f8ff-da5b-45ab-80cd-7db429b9c4ac")
+		(property "Reference" "D1"
+			(at 38.1 142.2399 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1N4148"
+			(at 38.1 144.7799 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 35.56 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 35.56 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Diode"
+			(at 35.56 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" "D"
+			(at 35.56 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 35.56 143.51 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "232f294c-bb8c-4413-be90-a25ae45abcb4")
+		)
+		(pin "1"
+			(uuid "97b5be22-26fa-4b7b-a4a9-c895d7d7fb44")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 118.11 115.57 0)
 		(mirror y)
@@ -5366,7 +6227,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "20bbf04a-51ad-415e-b603-cd35ff01b708")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR012"
 			(at 118.11 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -5426,7 +6287,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR011")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)
@@ -5527,7 +6388,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "297abd6c-955c-4cd4-9c4f-76f5bec79e65")
-		(property "Reference" "#PWR017"
+		(property "Reference" "#PWR020"
 			(at 269.24 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -5587,7 +6448,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR017")
+					(reference "#PWR020")
 					(unit 1)
 				)
 			)
@@ -5686,7 +6547,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "2d38d0e3-9e69-49cf-867c-588fd45a20fd")
-		(property "Reference" "R16"
+		(property "Reference" "R18"
 			(at 241.046 143.256 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5750,7 +6611,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R16")
+					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -5851,7 +6712,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3a0d489b-4bfb-47cc-8fb4-674169318c9e")
-		(property "Reference" "R4"
+		(property "Reference" "R6"
 			(at 115.57 120.6499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5915,7 +6776,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R4")
+					(reference "R6")
 					(unit 1)
 				)
 			)
@@ -5933,7 +6794,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4540f2c3-e17a-48f6-a4e0-13741799ba76")
-		(property "Reference" "#PWR08"
+		(property "Reference" "#PWR07"
 			(at 69.85 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -5993,7 +6854,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR08")
+					(reference "#PWR07")
 					(unit 1)
 				)
 			)
@@ -6010,7 +6871,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "46e3e10c-670d-4fd0-8ffa-d04299108aff")
-		(property "Reference" "R7"
+		(property "Reference" "R9"
 			(at 150.114 107.696 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6074,7 +6935,84 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R7")
+					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 31.75 121.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "4f100a00-b073-4c3f-ab4c-0919279f2f7c")
+		(property "Reference" "#PWR02"
+			(at 31.75 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 28.194 119.888 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 31.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "ea82a7e2-42f4-4639-9a51-df6d766f4aa8")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR02")
 					(unit 1)
 				)
 			)
@@ -6209,7 +7147,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5cbdde54-ac71-4a22-a94c-f2f0cc4c40cf")
-		(property "Reference" "#PWR012"
+		(property "Reference" "#PWR013"
 			(at 118.11 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -6269,7 +7207,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR012")
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
@@ -6286,7 +7224,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "5fa3dcef-1b8e-4ad2-8466-a2ea09a12676")
-		(property "Reference" "R10"
+		(property "Reference" "R12"
 			(at 179.324 107.696 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6350,7 +7288,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R10")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -6474,6 +7412,85 @@
 	)
 	(symbol
 		(lib_id "power:+5V")
+		(at 256.54 34.29 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6296fbd2-2336-4624-8d81-c2fbf10317a2")
+		(property "Reference" "#PWR017"
+			(at 256.54 38.1 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 256.54 29.21 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 256.54 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 256.54 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+5V\""
+			(at 256.54 34.29 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b1b2430a-4811-42e5-af02-d83c2fe858e4")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR017")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
 		(at 269.24 71.12 0)
 		(mirror y)
 		(unit 1)
@@ -6485,7 +7502,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6316c295-f3d8-487b-bba3-2e183a6620ca")
-		(property "Reference" "#PWR016"
+		(property "Reference" "#PWR019"
 			(at 269.24 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -6545,7 +7562,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR016")
+					(reference "#PWR019")
 					(unit 1)
 				)
 			)
@@ -6563,7 +7580,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "64aa5be8-ef3c-42b9-b4b0-9cd39044175e")
-		(property "Reference" "R5"
+		(property "Reference" "R7"
 			(at 122.174 134.874 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6627,7 +7644,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R5")
+					(reference "R7")
 					(unit 1)
 				)
 			)
@@ -6646,7 +7663,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "69862f7c-fd7e-4c56-9e77-4b7a65fced96")
-		(property "Reference" "#PWR015"
+		(property "Reference" "#PWR016"
 			(at 238.76 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -6706,7 +7723,88 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR015")
+					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 31.75 128.27 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6b2d4eb7-ba91-4479-b6bc-c1d26b355f32")
+		(property "Reference" "R1"
+			(at 25.654 125.476 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "150"
+			(at 25.908 128.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 33.528 128.27 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 31.75 128.27 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "05dd2a18-3372-4de8-86c7-bf802118274b")
+		)
+		(pin "2"
+			(uuid "905f8811-be2b-46df-9196-e8d6fd7a2fc4")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "R1")
 					(unit 1)
 				)
 			)
@@ -6725,7 +7823,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6c88dddf-6436-4295-8a57-0539b1b2338c")
-		(property "Reference" "R14"
+		(property "Reference" "R16"
 			(at 227.33 91.4399 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6789,7 +7887,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R14")
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -6806,7 +7904,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "775f0e23-4680-41aa-91f9-1203f4f0c906")
-		(property "Reference" "R15"
+		(property "Reference" "R17"
 			(at 244.348 125.984 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6870,7 +7968,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R15")
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -6888,7 +7986,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "777f0ffe-ac50-4a50-83c0-5586351344d4")
-		(property "Reference" "R1"
+		(property "Reference" "R3"
 			(at 96.52 63.4999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6952,7 +8050,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R1")
+					(reference "R3")
 					(unit 1)
 				)
 			)
@@ -6970,7 +8068,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "77eff790-00c2-48c2-88be-7a38ef862f33")
-		(property "Reference" "#PWR05"
+		(property "Reference" "#PWR04"
 			(at 45.72 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -7030,7 +8128,88 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR05")
+					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 41.91 158.75 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8ad3e396-5c02-4acf-9cec-030de8768a43")
+		(property "Reference" "R2"
+			(at 43.434 161.798 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "1k"
+			(at 43.688 155.702 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 41.91 156.972 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 41.91 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 41.91 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c34a479b-ca97-4729-9b6c-b9c05a0e426d")
+		)
+		(pin "2"
+			(uuid "b56b9b11-cd58-4961-bcb3-bfb6cbfe3740")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "R2")
 					(unit 1)
 				)
 			)
@@ -7163,7 +8342,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "8b2f254f-e174-4fd7-aeb1-d7e27a8192bd")
-		(property "Reference" "Q1"
+		(property "Reference" "Q2"
 			(at 225.044 130.556 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7233,7 +8412,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "Q1")
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -7252,7 +8431,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8e09daab-0a3e-4127-9fb1-5b6002578f59")
-		(property "Reference" "R12"
+		(property "Reference" "R14"
 			(at 193.04 107.9499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7316,7 +8495,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R12")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -7334,7 +8513,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "920448a6-d2af-41dc-997d-bcf7e5bb7b92")
-		(property "Reference" "#PWR06"
+		(property "Reference" "#PWR05"
 			(at 62.23 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -7394,7 +8573,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR06")
+					(reference "#PWR05")
 					(unit 1)
 				)
 			)
@@ -7413,7 +8592,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "97a226aa-7841-47a4-9967-aaafc19a06a5")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR09"
 			(at 109.22 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -7473,7 +8652,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR010")
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -7491,7 +8670,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9d584222-c242-4cac-88bf-201c05cfca46")
-		(property "Reference" "D2"
+		(property "Reference" "D3"
 			(at 203.2 140.9699 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7555,7 +8734,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "D2")
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -7642,7 +8821,7 @@
 	)
 	(symbol
 		(lib_id "Device:Buzzer")
-		(at 24.13 107.95 0)
+		(at 29.21 143.51 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -7653,7 +8832,7 @@
 		(dnp no)
 		(uuid "a2974f2e-3c7b-408a-a770-b1d42c6f1aba")
 		(property "Reference" "BZ1"
-			(at 29.972 108.966 0)
+			(at 23.368 145.542 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7663,7 +8842,7 @@
 			)
 		)
 		(property "Value" "Buzzer"
-			(at 31.242 106.934 0)
+			(at 23.622 139.954 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7673,7 +8852,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 24.765 105.41 90)
+			(at 29.845 140.97 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7684,7 +8863,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 24.765 105.41 90)
+			(at 29.845 140.97 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7695,7 +8874,7 @@
 			)
 		)
 		(property "Description" "Buzzer, polarized"
-			(at 24.13 107.95 0)
+			(at 29.21 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7851,7 +9030,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b38b89ef-1eca-4a5e-a39d-7c506bcbd4ab")
-		(property "Reference" "R2"
+		(property "Reference" "R4"
 			(at 96.52 74.9299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7915,7 +9094,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R2")
+					(reference "R4")
 					(unit 1)
 				)
 			)
@@ -7932,7 +9111,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "b5da15d2-49fa-41cd-bcef-5f5fbf2c73a2")
-		(property "Reference" "R11"
+		(property "Reference" "R13"
 			(at 184.404 80.01 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7996,7 +9175,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R11")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -8013,7 +9192,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "b6cb76d4-20f8-4bae-99ae-630ffaed41ea")
-		(property "Reference" "R3"
+		(property "Reference" "R5"
 			(at 96.266 89.662 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8077,7 +9256,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R3")
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -8095,7 +9274,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b6fa600a-c99b-45dd-bdea-8fb1b6d4bb18")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR08"
 			(at 93.98 88.9 0)
 			(hide yes)
 			(show_name no)
@@ -8155,7 +9334,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR09")
+					(reference "#PWR08")
 					(unit 1)
 				)
 			)
@@ -8173,7 +9352,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c30d9d5b-f7dc-4e5a-884e-dc457db186ee")
-		(property "Reference" "D1"
+		(property "Reference" "D2"
 			(at 203.2 129.5399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8259,7 +9438,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "D1")
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -8346,7 +9525,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 22.86 91.44 0)
+		(at 21.59 88.9 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8354,10 +9533,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "cf118018-bbd2-4caf-9bd8-4580849e5721")
 		(property "Reference" "#PWR01"
-			(at 22.86 97.79 0)
+			(at 15.24 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8368,7 +9546,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 22.86 96.52 0)
+			(at 16.002 89.154 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8378,7 +9556,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 22.86 91.44 0)
+			(at 21.59 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8389,7 +9567,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 22.86 91.44 0)
+			(at 21.59 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8400,7 +9578,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 22.86 91.44 0)
+			(at 21.59 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8423,8 +9601,9 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 26.67 113.03 0)
+		(lib_id "Device:Q_NPN")
+		(at 34.29 158.75 0)
+		(mirror y)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8433,30 +9612,31 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "d0e192c2-a770-4d54-8f55-ae90bb9b63ee")
-		(property "Reference" "#PWR02"
-			(at 26.67 119.38 0)
-			(hide yes)
+		(uuid "d1d15992-9a35-4c7c-99f5-64e4365089d1")
+		(property "Reference" "Q1"
+			(at 29.21 157.4799 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "GND"
-			(at 26.67 118.11 0)
+		(property "Value" "2N2222"
+			(at 29.21 160.0199 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 26.67 113.03 0)
+			(at 29.21 156.21 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8467,7 +9647,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 26.67 113.03 0)
+			(at 34.29 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8477,8 +9657,8 @@
 				)
 			)
 		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 26.67 113.03 0)
+		(property "Description" "NPN bipolar junction transistor"
+			(at 34.29 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8488,13 +9668,19 @@
 				)
 			)
 		)
-		(pin "1"
-			(uuid "31709bda-f10c-46f1-91a5-6cd6e25ecbe6")
+		(pin "B"
+			(uuid "456e4d0a-2d78-46c3-890a-69e6f9657a53")
+		)
+		(pin "C"
+			(uuid "07302145-41e2-4ec8-a925-aef8ca0786db")
+		)
+		(pin "E"
+			(uuid "f8aad0a1-57a9-4edc-92dc-7d2f4efaff32")
 		)
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR02")
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -8512,7 +9698,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d3a34540-7c56-41cc-b198-3985fd719911")
-		(property "Reference" "#PWR07"
+		(property "Reference" "#PWR06"
 			(at 66.04 129.54 0)
 			(hide yes)
 			(show_name no)
@@ -8572,7 +9758,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR07")
+					(reference "#PWR06")
 					(unit 1)
 				)
 			)
@@ -8757,7 +9943,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d82219c3-ad16-4944-9878-eb1c63fdf6f5")
-		(property "Reference" "#PWR013"
+		(property "Reference" "#PWR014"
 			(at 200.66 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -8817,7 +10003,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR013")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -8836,7 +10022,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dd480820-24b6-4473-86f0-3e14c67b070d")
-		(property "Reference" "#PWR014"
+		(property "Reference" "#PWR015"
 			(at 219.71 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -8896,7 +10082,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR014")
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -8985,6 +10171,85 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 256.54 57.15 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ddb3fdff-05e7-428e-9875-b97347b34c6f")
+		(property "Reference" "#PWR018"
+			(at 256.54 63.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 256.54 62.23 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 256.54 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 256.54 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 256.54 57.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "485a773a-df7f-4741-96d8-4295961eacbf")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 224.79 80.01 180)
 		(unit 1)
@@ -8995,7 +10260,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "de980abe-8b48-45ef-ab1e-0e6ab670fadf")
-		(property "Reference" "R13"
+		(property "Reference" "R15"
 			(at 227.584 78.486 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9059,7 +10324,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R13")
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -9067,8 +10332,7 @@
 	)
 	(symbol
 		(lib_id "Display_Graphic:ER_OLEDM0.91_1x-I2C")
-		(at 43.18 151.13 0)
-		(mirror y)
+		(at 110.49 172.72 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9078,7 +10342,7 @@
 		(dnp no)
 		(uuid "e8a01996-f1d5-4b02-a6d1-ed747c7ee819")
 		(property "Reference" "U1"
-			(at 34.29 152.4001 0)
+			(at 119.38 173.9901 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9089,7 +10353,7 @@
 			)
 		)
 		(property "Value" "SSD1306"
-			(at 34.29 149.8601 0)
+			(at 119.38 171.4501 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9100,7 +10364,7 @@
 			)
 		)
 		(property "Footprint" "Display:ER_OLEDM0.91_1x-I2C"
-			(at 25.146 163.83 0)
+			(at 128.524 185.42 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9111,7 +10375,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.buydisplay.com/download/manual/ER-OLEDM0.91-1_Datasheet.pdf"
-			(at 0.508 165.862 0)
+			(at 153.162 187.452 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9122,7 +10386,7 @@
 			)
 		)
 		(property "Description" "SSD1306 OLED module, 0.91 inch, 128x32, I2C"
-			(at 16.51 167.894 0)
+			(at 137.16 189.484 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9236,8 +10500,8 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 43.18 137.16 0)
+		(lib_id "Device:C_Polarized")
+		(at 261.62 45.72 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9246,30 +10510,31 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "fcb59036-11ed-4e23-9050-9ce882bf2188")
-		(property "Reference" "#PWR03"
-			(at 43.18 140.97 0)
-			(hide yes)
+		(uuid "f0bc08ee-78a8-4259-a4db-31e2e387b666")
+		(property "Reference" "C6"
+			(at 265.43 43.5609 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "+5V"
-			(at 43.18 132.08 0)
+		(property "Value" "1000uF/16V"
+			(at 265.43 46.1009 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 43.18 137.16 0)
+			(at 262.5852 49.53 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9280,7 +10545,89 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 43.18 137.16 0)
+			(at 261.62 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Polarized capacitor"
+			(at 261.62 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c0121957-ba02-41fc-b5bf-8015ce63e1fd")
+		)
+		(pin "2"
+			(uuid "1c947afb-82b3-499f-af1f-1adead9aaeac")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "C6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+5V")
+		(at 110.49 158.75 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fcb59036-11ed-4e23-9050-9ce882bf2188")
+		(property "Reference" "#PWR010"
+			(at 110.49 162.56 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+5V"
+			(at 110.49 153.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 110.49 158.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 110.49 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9291,7 +10638,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 43.18 137.16 0)
+			(at 110.49 158.75 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9307,7 +10654,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR03")
+					(reference "#PWR010")
 					(unit 1)
 				)
 			)
