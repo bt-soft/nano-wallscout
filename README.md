@@ -86,11 +86,13 @@ Két azonos tekercs kell: **80 menet, 0,3 mm-es zománcozott rézhuzal (CuZ)**, 
 6. A vevő tekercset érdemes árnyékolni: egy szigetelésmentes vékony rézdróttal körbe kell tekerni a köteget, de **ne alkosson vezető kört**, azaz a vége ne érjen össze az elejével. Erre egy vékony szalagokra vágott [alufóliát tekerjünk](doc/tekercs-5-1-Árnyékolás.jpg), ami a szigeteletlen rézvezetékkel érintkezve leföldelhető. Ezzel a kapacitív hatások ellen árnyékolhatjuk a tekercset. Nagyon kell figyelni arra, hogy **az alufólia ne alkosson egy vezető hurkot**, azaz ne érjen össze az eleje és a vége, legyen egy kis [rés az alufólia árnyékoláson](doc/tekercs-5-2-Árnyékolás_hézag.jpg)!
 7. A 'D átfedés' behangolás után a tekercseket tekercseket **merev, fém- és ferritmentes vázra** (fa, műanyag, textolit) kell rögzíteni. Igen érzékeny a behangolás, miután belőttük a tekercsek egymáshoz képesti helyzetét, azok nem mozdulhatnak már el!
 
-![induktivitás mérés]()
-<img src="https://github.com/bt-soft/nano-wallscout/doc/tekercs-6-L_mérés.jpg" width="48">
-### DD átfedés beállítása (firmware-es segítség)
+<img src="https://raw.githubusercontent.com/bt-soft/nano-wallscout/refs/heads/main/doc/tekercs-6-L_m%C3%A9r%C3%A9s.jpg" width="80%">
 
-1. Tartsd a keresőt levegőben, fémtől legalább fél méterre.
+### DD átfedés beállítása (firmware-es segítség a beállításhoz)
+
+Ez egy igen kényelmes művelet, a tekercsek által gerjesztett mágneses tér igen könnyen összeomlik a kritikus távolság közelében, nagyon éles a határvonal. Sok türelmet és ismételt beállítást igényel a beállítás. A sok próbálkozás (bár inkább kínlódás) után belőtt tekercseket ezután stabilan rögzíteni kell, nem mozdulhatnak már el.
+
+1. A tekercsek éegyenek fémtől távol.
 2. Tartsd lenyomva az **Arduino D5-re kötött NULLÁZÁS** gombot 1 másodpercig: a kijelzőn `DD beallitas` jelenik meg.
 3. A kereső és a DD beállító mód is az **A0** bemenetet használja, az U2D bufferelt kimenetéről. A jelút két, a KiCad-rajzon 100 kΩ / 10 kΩ ellenállásokkal beállított neminvertáló fokozata névlegesen kb. 11 × 11 = 121-szeres erősítést ad; U2D követőként puffereli a jelet, az R3 (390 Ω) pedig soros ellenállás az A0 felé. A kijelzőn a közvetlen áthallás látszik **előjelesen** (S1 − S2), alatta külön sorban a `min` (az eddigi legkisebb abszolút érték) és a nyers `S1` (nyugalmi értéke ≈ 512), legalul középre nullázott logaritmikus oszlop. A csipogó annál magasabb, minél nagyobb az áthallás, és elhallgat, ha az érték 1,5 alá esik (`NULL OK`).
 4. Csúsztasd az egyik tekercset a másikhoz képest. Az érték **előjelet vált**, ezen a ponton kell a minimumot keresni. A kezdeti átfedés a D egyenes oldalának néhány mm–1,5 cm-e.
