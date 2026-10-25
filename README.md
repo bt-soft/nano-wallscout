@@ -150,7 +150,7 @@ Röviden: a Q1 kikapcsolásakor a tekercs árama nem tud azonnal megszűnni, ez�
      - Elvárás: a jel a kikapcsolás után **60 µs-mal** (`T_SAMPLE1`) már közel az alapszinten legyen. Ha nem, az 5. pontnál a `T_SAMPLE1`-et kell növelni.
    - **Ellenőrzés:** az `Rd` vagy `R3` módosítása után a 2. és 3. pontot is ellenőrizd újra, mert a két csillapítás hat egymásra.
 4. A DD beállító móddal állítsd az átfedést minimális áthallásra (lásd fent), és rögzítsd.
-5. Nézd meg az U1A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([main.cpp](src/main.cpp) tetején).
+5. Nézd meg az U1A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](src/config.h)).
 6. Tarts egy vasat a tekercshez: a jel nőjön. Az `abs()` miatt a polaritás nem számít, de a soros monitoron (`sig`) látod.
 7. Ha telít (`TULVEZERLES`), javítsd az átfedést, vagy a második fok Rf-jét cseréld 47 kΩ-ra.
 8. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
