@@ -2,6 +2,10 @@
 
 Célmélység: 5–6 cm biztosan, 8 cm határeset (Ø8–12 mm betonvas, a tekercsek méretétől függően). Platform: **Arduino Nano (ATmega328P)**.
 
+## Az induction balance működési elve
+Két tekercs van: egy **adó (TX)** és egy **vevő (RX)**. A két D alakú tekercs részben átfedi egymást úgy, hogy a TX fluxusa az RX-ben **kioltódik**. Fém nélkül az RX alig kap jelet. Ha fém kerül a tekercsek elé, a mező megbomlik, és az RX jele megnő. A jel tehát a nulláról indul, ezért nagy az érzékenység, és a mélység a tekercs méretével nő. Egy a projektben is használt kisebb D tekercs ( 6cm x 5cm) esetén kb 8cm.
+A fém típusát a jel **fázisa** adja. Egy adott fázishelyzet a vasat jelenti (ferromágneses), az ellentétes a nem vas fémet (réz, alumínium). Ezt a 'tudást' a frimware-ből kiszedtem, sok előnyt nem hozott a számomra.
+
 ## Működés
 
 1. Az IRLZ44N (Q1) 60 µs-ra bekapcsol, a **Tx tekercs** (Ltx1) árama nő.
@@ -63,13 +67,27 @@ A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A KiCad-rajz szerinti két erősít�
 
 | Paraméter | Érték |
 |---|---|
-| Tekercsek | 2 db D-tekercs, egyenként 1 mH, 6 cm egyenes oldal, 5 cm D-magasság |
+| Tekercsek | 2 db D-tekercs, egyenként 1 mH, 6 cm egyenes oldal, 5 cm D-magasság, 80 menet, Ø0.3mm CuZ  |
 | Szerep | Ltx1 = Tx (adó), Lrx1 = Rx (vevő) |
 | Elrendezés | az egyenes oldalaikkal részben egymásra csúsztatva (DD) |
 | Csúcsáram (12 V / 60 µs) | ≈ 0,6 A (9 V-nál ≈ 0,45 A), a tekercs R-jétől függően |
 
 **Mérd meg az L és R értéket** (a tekercs egyenáramú ellenállása sokat számít, ha 6 Ω fölött van, a csúcsáram kisebb lesz). Az átfedést a DD beállító móddal keresd meg, majd ragaszd/fixáld. A két tekercs síkja azonos legyen. Rövid, csavart, árnyékolt vezeték a vezérlőig.
 
+### A tekercsek elkészítése
+Két azonos tekercs kell: **80 menet, 0,3 mm-es zománcozott rézhuzal (CuZ)**, D alakú, **60 mm magas × 50 mm mély** (a huzal középvonalán mérve). Az 1:1 nyomtatható sablon: [kicsi sablon](doc/tekercs-sablon-kicsi.svg). A vevő tekercs alufóliával és föld vezetékkel kapacitíven árnyékolva. 
+ 
+#### Lépések
+1. Tekerj **80 menetet** szorosan, egymás mellé a [sablon hornyaiba illesztett - pl.: fogpiszkáló - csapok](doc/tekercs-1-Sablonra.jpg) köré. A végén hagyj mindkét végén kb. 30 cm-es kivezetést. 
+2. [Kösd át a tekercset ideiglenesen](doc/tekercs-2-Átmeneti_bandázs.jpg) valamilyen szalaggal (pl.: vékony maszkolószalag csíkkal) **több helyen**, így a köteg együtt marad.
+3. A csapok közül [kiemelheted](doc/tekercs-3-Sablonról_leszedve.jpg) a köteget. Az alak már D, külön hajlítani nem kell.
+4. Az ideiglenes bandázskötéseket fokozatosan eltávolítva [tekerd körbe a tekercset pl.: teflon szalaggal](doc/tekercs-4-TeflonSzalag.jpg).
+5. Mérj induktivitást, ha tudsz (én ezért dobtam össze egy [induktivitás mérőt](https://github.com/bt-soft/nano-inductance-meter) 😅). A számított/várt érték kb. **1 mH**. 
+6. A vevő tekercset érdemes árnyékolni: egy szigetelésmentes vékony rézdróttal körbe kell tekerni a köteget, de **ne alkosson vezető kört**, azaz a vége ne érjen össze az elejével. Erre egy vékony szalagokra vágott [alufóliát tekerjünk](doc/tekercs-5-1-Árnyékolás.jpg), ami a szigeteletlen rézvezetékkel érintkezve leföldelhető. Ezzel a kapacitív hatások ellen árnyékolhatjuk a tekercset. Nagyon kell figyelni arra, hogy **az alufólia ne alkosson egy vezető hurkot**, azaz ne érjen össze az eleje és a vége, legyen egy kis [rés az alufólia árnyékoláson](doc/tekercs-5-2-Árnyékolás_hézag.jpg)!
+7. A 'D átfedés' behangolás után a tekercseket tekercseket **merev, fém- és ferritmentes vázra** (fa, műanyag, textolit) kell rögzíteni. Igen érzékeny a behangolás, miután belőttük a tekercsek egymáshoz képesti helyzetét, azok nem mozdulhatnak már el!
+
+![induktivitás mérés]()
+<img src="https://github.com/bt-soft/nano-wallscout/doc/tekercs-6-L_mérés.jpg" width="48">
 ### DD átfedés beállítása (firmware-es segítség)
 
 1. Tartsd a keresőt levegőben, fémtől legalább fél méterre.
