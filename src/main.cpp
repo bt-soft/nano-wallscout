@@ -77,6 +77,13 @@ struct State {
   float runTh = DETECT_TH;
   /** A hiszterézises találatjelzés aktuális állapota. */
   bool detOn = false;
+  /** Az aktuális találat előjele; ellenkező előjelnél a jel el van nyomva. */
+  int8_t signalPolarity = 0;
+  /** A küszöb alatti állapot kezdete az előjelzár feloldásához. */
+  uint32_t polarityQuietSince = 0;
+  /** Az előző simított különbség és az egymás utáni állandó mérések száma. */
+  float prevDiff = 0;
+  uint16_t steadyCount = 0;
   /** A DD-beállító módban eddig mért legkisebb abszolút áthallás. */
   float best = 1e9f;
   /** Az exponenciálisan simított mérési érték és annak csatornája. */
@@ -146,6 +153,10 @@ static Measurement acquire() {
 static void restartZeroing() {
   st.zeroCount = 0;
   st.zeroAcc = 0;
+  st.signalPolarity = 0;
+  st.polarityQuietSince = 0;
+  st.steadyCount = 0;
+  st.detOn = false;
 }
 
 /**
@@ -270,8 +281,42 @@ static void handleCalibration(const Measurement& m, uint32_t now, Outcome& out) 
  */
 static void runDetect(const Measurement& m, uint32_t now, Outcome& out) {
   out.sig = m.diff - st.zero;
+  const float rawSig = out.sig;
+  const float rawMag = fabsf(rawSig);
+
+  if (st.signalPolarity == 0 && rawMag >= st.runTh) {
+    st.signalPolarity = rawSig < 0 ? -1 : 1;
+  }
+  if (st.signalPolarity != 0) {
+    if (rawMag < st.runTh) {
+      if (!st.polarityQuietSince) st.polarityQuietSince = now;
+      if (now - st.polarityQuietSince >= POLARITY_RELEASE_MS) {
+        st.signalPolarity = 0;
+        st.polarityQuietSince = 0;
+      }
+    } else {
+      st.polarityQuietSince = 0;
+    }
+    if (st.signalPolarity != 0 && rawSig * st.signalPolarity < 0) out.sig = 0;
+  }
+
+  // Hosszan álló jel nem mozgó fém, hanem nullpont-eltolódás: lassan újranullázunk.
+  const bool steady = fabsf(m.diff - st.prevDiff) < 0.3f * st.runTh;
+  st.prevDiff = m.diff;
+  if (steady) {
+    if (st.steadyCount < 255) st.steadyCount++;
+  } else {
+    st.steadyCount = 0;
+  }
+  const bool rezero = st.steadyCount >= STEADY_CYCLES;
+  if (rezero) {
+    st.zero += REZERO_FOLLOW * rawSig;
+    out.sig = m.diff - st.zero;
+    if (fabsf(out.sig) < st.runTh) st.signalPolarity = 0;
+  }
+
   out.mag = fabsf(out.sig);
-  if (out.mag < st.runTh) st.zero += DRIFT_FOLLOW * out.sig;
+  if (!rezero && out.mag < st.runTh) st.zero += DRIFT_FOLLOW * out.sig;
   st.detOn = out.mag >= (st.detOn ? 0.6f * st.runTh : st.runTh);
   out.det = st.detOn && !m.overload;
 

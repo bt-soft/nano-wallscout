@@ -52,7 +52,7 @@ A fázis (azaz az S1 és S2 időbeli viszonya) elvileg megkülönbözteti a vasa
 4. A **külön Rx tekercs** (Lrx1) az Ltx1-gyel DD elrendezésben (részben egymásra csúsztatva) helyezkedik el, így a közvetlen áthallás közel nulla, és az erősítőbe csak a fém által keltett jel jut.
 5. A Nano 1 kHz-en ismétel, és impulzusonként két ponton mintavételez az ADC-vel: **S1** a kikapcsolás után 60 µs-mal, **S2** (alapvonal) 600 µs-mal.
 6. Jel = S1 − S2, 100 impulzusra átlagolva (kb. 7 Hz kijelzőfrissítés). Ez kiejti az offsetet és a lassú driftet.
-7. Indításkor automatikus nullázás történik (a kereső legyen levegőben). Az alapvonal lassan követi a driftet.
+7. Indításkor automatikus nullázás történik (a kereső legyen levegőben). Az alapvonal lassan követi a driftet. Egy találat előjelét a firmware megtartja; az ellenkező előjelű kilengést csak 1 másodpercnyi küszöb alatti jel után kezdi új találatként kezelni. Ha a jel kb. 3 másodpercnél tovább állandó marad (pl. nullpont-eltolódás), a firmware lassan újranulláz; egy mozdulatlanul tartott fém így néhány másodperc után elhalkul.
 8. A kijelző oszlopot, számértéket és (kalibrálás után) becsült mélységet mutat. A hangjelzés magassága a jellel nő.
 
 

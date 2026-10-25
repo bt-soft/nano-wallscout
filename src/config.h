@@ -51,6 +51,14 @@ static const uint32_t LONG_PRESS_MS = 1000;
  */
 static const float DRIFT_FOLLOW = 0.04f;
 
+/** @brief Ennyi egymás utáni állandó mérés (≈3 s) után indul az automatikus újranullázás. */
+static const uint16_t STEADY_CYCLES = 20;
+/** @brief Az automatikus újranullázás súlya mérésenként. */
+static const float REZERO_FOLLOW = 0.05f;
+
+/** @brief Küszöb alatti idő az előjelzár feloldásához milliszekundumban. */
+static const uint16_t POLARITY_RELEASE_MS = 1000;
+
 /** @brief Az exponenciális simítás súlya normál üzemmódban. */
 static const float SMOOTH_RUN = 0.3f;
 /** @brief Az exponenciális simítás súlya DD-beállító módban. */
