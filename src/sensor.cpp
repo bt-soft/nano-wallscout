@@ -6,7 +6,10 @@
 
 bool g_zeroSeen = false, g_calSeen = false;
 
-// ---- ADC ----
+/**
+ * @brief Elindít egy ADC-konverziót, majd megvárja az eredményt.
+ * @return A konverzió eredménye ADC-egységben.
+ */
 static inline uint16_t adcRead() {
   ADCSRA |= _BV(ADSC);
   while (ADCSRA & _BV(ADSC)) {
@@ -14,9 +17,22 @@ static inline uint16_t adcRead() {
   return ADC;
 }
 
-static void adcFast() { ADCSRA = _BV(ADEN) | _BV(ADPS2); }  // /16 = 1 MHz
-static void adcSlow() { ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0); }  // /128
+/**
+ * @brief Gyors, 1 MHz-es ADC-órajelet állít be az előosztó 16-ra állításával.
+ * @return Nincs visszatérési érték.
+ */
+static void adcFast() { ADCSRA = _BV(ADEN) | _BV(ADPS2); }
 
+/**
+ * @brief Lassú ADC-órajelet állít be az előosztó 128-ra állításával.
+ * @return Nincs visszatérési érték.
+ */
+static void adcSlow() { ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0); }
+
+/**
+ * @brief Beállítja a gombokat, a kapukimenetet, a Timer1-et és az ADC-t.
+ * @return Nincs visszatérési érték.
+ */
 void sensorInit() {
   pinMode(PIN_BTN_ZERO, INPUT_PULLUP);
   pinMode(PIN_BTN_CAL, INPUT_PULLUP);
@@ -24,15 +40,21 @@ void sensorInit() {
   PORTD &= ~_BV(GATE_BIT);
 
   TCCR1A = 0;
-  TCCR1B = _BV(CS11);  // normal mod, /8
+  TCCR1B = _BV(CS11);
   ADMUX = _BV(REFS0);
   DIDR0 |= _BV(ADC0D) | _BV(ADC1D) | _BV(ADC2D) | _BV(ADC3D);
   adcFast();
 }
 
-// ---- Egy impulzus (megszakitas-tiltott, idokritikus) ----
-
-// A mintavetel a konverzio indulasa utan ~1,5 ADC orajelnel tortenik.
+/**
+ * @brief Végrehajt egy mérőimpulzust, és a kikapcsolás után két mintát vesz.
+ * @param s1 Az első minta kimeneti hivatkozása.
+ * @param s2 A referencia-minta kimeneti hivatkozása.
+ * @return Nincs visszatérési érték.
+ *
+ * A mintavétel az ADC-konverzió indulása után körülbelül másfél ADC-órajelre
+ * történik; a kritikus időzítés alatt a megszakítások le vannak tiltva.
+ */
 static void pulse(uint16_t& s1, uint16_t& s2) {
   const uint8_t sreg = SREG;
   cli();
@@ -51,8 +73,15 @@ static void pulse(uint16_t& s1, uint16_t& s2) {
   SREG = sreg;
 }
 
-// DD beallitas: az Rx nyers feszultsege a Tx bekapcsolt allapotaban (M * dI/dt,
-// elojeles), es nyugalmi alapvonal. Az atfedes nullpontjan a kulonbseg elojelet valt.
+/**
+ * @brief Megméri a tekercsek közötti áthallást a Tx bekapcsolt állapotában.
+ * @param s1 A bekapcsolás alatti minta kimeneti hivatkozása.
+ * @param s2 A nyugalmi referencia-minta kimeneti hivatkozása.
+ * @return Nincs visszatérési érték.
+ *
+ * A mért feszültség előjeles, és arányos a kölcsönös induktivitással, valamint
+ * az áramváltozás sebességével. Az átfedés nullpontján az előjel vált.
+ */
 static void pulseCoupling(uint16_t& s1, uint16_t& s2) {
   const uint8_t sreg = SREG;
   cli();
@@ -71,11 +100,22 @@ static void pulseCoupling(uint16_t& s1, uint16_t& s2) {
   SREG = sreg;
 }
 
+/**
+ * @brief Rögzíti, ha valamelyik gombot a mérési ciklus alatt megnyomták.
+ * @return Nincs visszatérési érték.
+ */
 static inline void pollButtons() {
   if (!(PIND & _BV(PIN_BTN_ZERO))) g_zeroSeen = true;
   if (!(PIND & _BV(PIN_BTN_CAL))) g_calSeen = true;
 }
 
+/**
+ * @brief Összegyűjti a megadott csatorna impulzusonkénti S1 és S2 mintáit.
+ * @param sum1 Az S1-minták összegének kimeneti hivatkozása.
+ * @param sum2 Az S2-minták összegének kimeneti hivatkozása.
+ * @param ch A mintavételezendő ADC-csatorna.
+ * @return Nincs visszatérési érték.
+ */
 void measure(uint32_t& sum1, uint32_t& sum2, uint8_t ch) {
   sum1 = 0;
   sum2 = 0;
@@ -99,13 +139,20 @@ void measure(uint32_t& sum1, uint32_t& sum2, uint8_t ch) {
   }
 }
 
-// ---- Ellenorzesek ----
+/**
+ * @brief Nyolc ADC-mintából kiszámítja az A0 nyugalmi szintjét.
+ * @return Az átlagos A0-érték ADC-egységben.
+ */
 uint16_t readIdleLevel() {
   uint32_t t = 0;
   for (uint8_t i = 0; i < 8; i++) t += adcRead();
   return t / 8;
 }
 
+/**
+ * @brief Megméri az akkumulátor feszültségét a belső referencia használatával.
+ * @return A mért akkufeszültség voltban.
+ */
 float readBattery() {
   adcSlow();
   ADMUX = _BV(REFS0) | 0x0E;

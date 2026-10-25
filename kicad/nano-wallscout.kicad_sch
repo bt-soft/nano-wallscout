@@ -5,7 +5,10 @@
 	(uuid "0d35483a-0b12-46cc-b9f2-896fd6831779")
 	(paper "A4")
 	(title_block
-		(date "sam. 04 avril 2015")
+		(title "Arduino Nano betonvas kereső")
+		(date "2026-10-25")
+		(rev "V1.0")
+		(company "BT-Soft")
 	)
 	(lib_symbols
 		(symbol "Amplifier_Operational:MCP6004"
@@ -3443,6 +3446,66 @@
 		)
 		(uuid "0aeb7995-0f4a-4d41-97f5-d293d6c2c666")
 	)
+	(text "Az Ltx1 (Tx) és Lrx1 (RX) DD-ben átfedve: \na közvetlen áthallás ≈ 0"
+		(exclude_from_sim no)
+		(at 194.818 64.262 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "115c0c0e-adfe-464e-bfff-58d1c50ea5ea")
+	)
+	(text "Soros védelem"
+		(exclude_from_sim no)
+		(at 185.42 76.962 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "451bc63f-c779-48a2-9e00-e3f0b3223de7")
+	)
+	(text "Lecsengés\ncsillapítás"
+		(exclude_from_sim no)
+		(at 228.346 102.616 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "76c12950-2e48-469c-8ec4-2e460f0d131b")
+	)
+	(text "OLED"
+		(exclude_from_sim no)
+		(at 47.752 139.954 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "910a4202-bc8d-4bea-b277-1d9e2721f414")
+	)
+	(text "Vbatt mérés"
+		(exclude_from_sim no)
+		(at 85.09 67.564 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "af8f63cc-b5f6-4610-96e9-1ae1e26de0f8")
+	)
+	(text "Rx csillapítás"
+		(exclude_from_sim no)
+		(at 186.944 108.966 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c8a53835-70e2-4172-b29c-777df2fef7ca")
+	)
 	(junction
 		(at 93.98 81.28)
 		(diameter 0)
@@ -6734,87 +6797,6 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 190.5 109.22 180)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "7049d7ed-fc36-4795-9b14-7fac6d5c7a79")
-		(property "Reference" "R12"
-			(at 193.294 107.696 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "2k2"
-			(at 193.548 110.998 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-			(at 192.278 109.22 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 190.5 109.22 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 190.5 109.22 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c0644940-d346-4134-ab75-efd5e609216c")
-		)
-		(pin "2"
-			(uuid "ea543aad-fc87-41c5-ad8b-78bc24b5d863")
-		)
-		(instances
-			(project "nano-wallscout"
-				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
 		(at 238.76 124.46 180)
 		(unit 1)
 		(body_style 1)
@@ -7252,6 +7234,89 @@
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
 					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Trim")
+		(at 190.5 109.22 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8e09daab-0a3e-4127-9fb1-5b6002578f59")
+		(property "Reference" "R12"
+			(at 193.04 107.9499 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "2k2 heli"
+			(at 193.04 110.4899 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 192.278 109.22 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Trimmable resistor (preset resistor)"
+			(at 190.5 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "48d29786-8102-409c-a7fe-6fdb0425d87b")
+		)
+		(pin "2"
+			(uuid "9d7d344f-6ca5-42e4-acbd-ee28394582bf")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "R12")
 					(unit 1)
 				)
 			)

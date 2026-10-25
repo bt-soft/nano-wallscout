@@ -1,4 +1,6 @@
-﻿import math, os
+"""A kapcsolási rajzok régebbi SVG-ábráinak előállítására szolgáló modul."""
+
+import math, os
 
 WIRE = '#0b4fa8'
 PART = '#222'
@@ -6,51 +8,151 @@ TXT = '#111'
 
 
 class Sheet:
+    """Egyszerű SVG-munkalap és a rajzelemeket tároló objektum."""
+
     def __init__(s, w, h, title):
+        """Létrehozza a megadott méretű és című rajzlapot.
+
+        @param s A munkalap példánya.
+        @param w A lap szélessége képpontban.
+        @param h A lap magassága képpontban.
+        @param title A lap címe.
+        @return Nincs visszatérési érték.
+        """
         s.w, s.h, s.title, s.o = w, h, title, []
 
     def wire(s, *p):
+        """Vezeték alakú vonalláncot fűz a rajzlaphoz.
+
+        @param s A munkalap példánya.
+        @param p A vonallánc pontjai.
+        @return Nincs visszatérési érték.
+        """
         s.o.append('<polyline points="%s" fill="none" stroke="%s" stroke-width="2" stroke-linejoin="round"/>' %
                    (' '.join('%g,%g' % q for q in p), WIRE))
 
     def line(s, *p, color=PART, w=2):
+        """Tetszőleges színű és vastagságú vonalláncot fűz a rajzlaphoz.
+
+        @param s A munkalap példánya.
+        @param p A vonallánc pontjai.
+        @param color A vonal színe.
+        @param w A vonal vastagsága.
+        @return Nincs visszatérési érték.
+        """
         s.o.append('<polyline points="%s" fill="none" stroke="%s" stroke-width="%g" stroke-linejoin="round"/>' %
                    (' '.join('%g,%g' % q for q in p), color, w))
 
     def dot(s, x, y):
+        """Csatlakozási pontot rajzol a megadott koordinátára.
+
+        @param s A munkalap példánya.
+        @param x A pont vízszintes koordinátája.
+        @param y A pont függőleges koordinátája.
+        @return Nincs visszatérési érték.
+        """
         s.o.append('<circle cx="%g" cy="%g" r="4" fill="%s"/>' % (x, y, WIRE))
 
     def text(s, x, y, t, size=13, anchor='start', bold=False, color=TXT):
+        """Szövegelemet fűz a rajzlaphoz.
+
+        @param s A munkalap példánya.
+        @param x A szöveg vízszintes koordinátája.
+        @param y A szöveg függőleges koordinátája.
+        @param t A megjelenítendő szöveg.
+        @param size A betűméret képpontban.
+        @param anchor A szöveg vízszintes igazítása.
+        @param bold Igaz értéknél félkövér a szöveg.
+        @param color A szöveg színe.
+        @return Nincs visszatérési érték.
+        """
         s.o.append('<text x="%g" y="%g" font-size="%g" text-anchor="%s" fill="%s"%s>%s</text>' %
                    (x, y, size, anchor, color, ' font-weight="bold"' if bold else '', t))
 
     def lines(s, x, y, ts, size=13, anchor='start', color=TXT, dy=16):
+        """Egymás alá rendezi és kirajzolja a szövegsorokat.
+
+        @param s A munkalap példánya.
+        @param x A szövegek vízszintes koordinátája.
+        @param y Az első sor függőleges koordinátája.
+        @param ts A megjelenítendő sorok.
+        @param size A betűméret képpontban.
+        @param anchor A szövegek vízszintes igazítása.
+        @param color A szövegek színe.
+        @param dy A sorok közötti függőleges távolság.
+        @return Nincs visszatérési érték.
+        """
         for i, t in enumerate(ts):
             s.text(x, y + i * dy, t, size, anchor, color=color, bold=(i == 0 and False))
 
     def gnd(s, x, y):
+        """Földelésjelet rajzol a megadott koordinátára.
+
+        @param s A munkalap példánya.
+        @param x A földelésjel vízszintes koordinátája.
+        @param y A földelésjel függőleges koordinátája.
+        @return Nincs visszatérési érték.
+        """
         s.line((x, y), (x, y + 8), color=WIRE)
         for i, hw in enumerate((12, 8, 4)):
             s.line((x - hw, y + 8 + i * 5), (x + hw, y + 8 + i * 5))
 
     def pwr(s, x, y, t):
+        """Tápjelet és a hozzá tartozó feliratot rajzolja meg.
+
+        @param s A munkalap példánya.
+        @param x A tápjel vízszintes koordinátája.
+        @param y A tápjel függőleges koordinátája.
+        @param t A tápjel felirata.
+        @return Nincs visszatérési érték.
+        """
         s.line((x - 10, y), (x + 10, y))
         s.text(x, y - 6, t, 13, 'middle', color='#b71c1c')
 
     def port(s, x, y, t, side='right'):
-        # sheet connector label; text sits next to the wire end
+        """Lapaljzat-feliratot helyez el a vezeték végénél.
+
+        @param s A munkalap példánya.
+        @param x A vezeték végének vízszintes koordinátája.
+        @param y A vezeték végének függőleges koordinátája.
+        @param t A megjelenítendő felirat.
+        @param side A felirat oldala: „right” vagy „left”.
+        @return Nincs visszatérési érték.
+        """
         if side == 'right':
             s.text(x + 8, y + 4, t, 13, 'start', True, '#6a1b9a')
         else:
             s.text(x - 8, y + 4, t, 13, 'end', True, '#6a1b9a')
 
     def arrow(s, tx, ty, dx, dy, size=8):
+        """Nyílhegyet illeszt a megadott irányhoz.
+
+        @param s A munkalap példánya.
+        @param tx A nyílhegy vízszintes koordinátája.
+        @param ty A nyílhegy függőleges koordinátája.
+        @param dx A nyíl irányának vízszintes összetevője.
+        @param dy A nyíl irányának függőleges összetevője.
+        @param size A nyílhegy mérete.
+        @return Nincs visszatérési érték.
+        """
         n = math.hypot(dx, dy); dx /= n; dy /= n
         bx, by = tx - dx * size, ty - dy * size
         px, py = -dy * size * 0.4, dx * size * 0.4
         s.o.append('<polygon points="%g,%g %g,%g %g,%g" fill="%s"/>' % (tx, ty, bx + px, by + py, bx - px, by - py, PART))
 
     def part(s, kind, p1, p2, label=(), side='auto', val_dx=0, below=False):
+        """Alkatrészjelképet és a hozzá tartozó feliratokat rajzolja meg.
+
+        @param s A munkalap példánya.
+        @param kind Az alkatrész típusa.
+        @param p1 Az alkatrész első csatlakozási pontja.
+        @param p2 Az alkatrész második csatlakozási pontja.
+        @param label Az alkatrészhez tartozó feliratsorok.
+        @param side A függőleges alkatrész feliratának oldala.
+        @param val_dx A vízszintes felirat vízszintes eltolása.
+        @param below Igaz értéknél a felirat az alkatrész alá kerül.
+        @return Nincs visszatérési érték.
+        """
         (x1, y1), (x2, y2) = p1, p2
         L = math.hypot(x2 - x1, y2 - y1)
         mx, my = (x1 + x2) / 2, (y1 + y2) / 2
@@ -94,6 +196,17 @@ class Sheet:
                         s.text(mx + 18, my - 4 + i * 15, t, 12, 'start', bold=(i == 0))
 
     def opamp(s, x, cy, name, pp, pm, po):
+        """Műveleti erősítő jelképet rajzol a megadott lábszámokkal.
+
+        @param s A munkalap példánya.
+        @param x A jelképet körülhatároló háromszög bal oldala.
+        @param cy A jel középvonalának függőleges koordinátája.
+        @param name A fokozat neve.
+        @param pp A neminvertáló bemenet lábszáma.
+        @param pm Az invertáló bemenet lábszáma.
+        @param po A kimenet lábszáma.
+        @return Nincs visszatérési érték.
+        """
         s.o.append('<polygon points="%g,%g %g,%g %g,%g" fill="#fff" stroke="%s" stroke-width="2"/>' %
                    (x, cy - 38, x, cy + 38, x + 72, cy, PART))
         s.text(x + 6, cy - 11, '+', 16, 'start', True)
@@ -106,6 +219,12 @@ class Sheet:
         s.wire((x - 20, cy + 15), (x, cy + 15))
 
     def save(s, path):
+        """SVG-fájlként elmenti a lapot.
+
+        @param s A munkalap példánya.
+        @param path A célfájl elérési útja.
+        @return Nincs visszatérési érték.
+        """
         head = ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" '
                 'font-family="Segoe UI, Arial, sans-serif">' % (s.w, s.h, s.w, s.h))
         body = '<rect width="100%" height="100%" fill="#fff"/>'
@@ -116,6 +235,13 @@ class Sheet:
 
 
 def mosfet(S, gx, cy):
+    """MOSFET-kapcsoló jelképet rajzol.
+
+    @param S A munkalap példánya.
+    @param gx A kapu vízszintes koordinátája.
+    @param cy A tranzisztor középvonalának függőleges koordinátája.
+    @return A drain- és source-csatlakozási pont koordinátapárja.
+    """
     S.wire((gx, cy), (gx + 14, cy))
     S.line((gx + 14, cy - 18), (gx + 14, cy + 18))
     for a, b in ((-18, -10), (-4, 4), (10, 18)):
@@ -131,6 +257,13 @@ def mosfet(S, gx, cy):
 
 
 def npn(S, bx, cy):
+    """NPN-tranzisztor jelképet rajzol.
+
+    @param S A munkalap példánya.
+    @param bx A kollektor vízszintes koordinátája.
+    @param cy A tranzisztor középvonalának függőleges koordinátája.
+    @return A kollektor- és emittercsatlakozás koordinátapárja.
+    """
     S.wire((bx, cy), (bx - 14, cy))
     S.line((bx - 14, cy - 16), (bx - 14, cy + 16))
     S.line((bx - 14, cy - 8), (bx - 34, cy - 20), (bx - 34, cy - 34), color=WIRE)
@@ -139,13 +272,15 @@ def npn(S, bx, cy):
     return (bx - 34, cy - 34), (bx - 34, cy + 34)
 
 
-# ---------------------------------------------------------------- 1. lap
 def sheet1():
+    """Elkészíti és elmenti a táp- és tekercsmeghajtó-ábrát.
+
+    @return Nincs visszatérési érték.
+    """
     S = Sheet(1400, 700, '1/3 – Táp és tekercs-meghajtó')
-    S.pwr(0, -100, '')  # no-op placeholder removed below
+    S.pwr(0, -100, '')
     S.o.pop()
     R = 110
-    # akku + kapcsolo
     S.wire((70, R), (110, R)); S.wire((70, R), (70, 230))
     for i in range(3):
         y = 230 + i * 16
@@ -156,11 +291,9 @@ def sheet1():
     S.part('SW', (110, R), (170, R), ['S1', 'főkapcsoló'])
     S.wire((170, R), (1250, R))
     S.text(180, R - 30, 'VBAT', 14, bold=True, color='#b71c1c')
-    # bulk kondik
     for x, lab in ((260, ['C1', '1000 µF / 25 V', 'low-ESR elko']), (420, ['C2', '10 µF', 'kerámia'])):
         S.part('C', (x, R), (x, 300), lab); S.dot(x, R); S.wire((x, 300), (x, 305)); S.gnd(x, 300)
     S.text(240, 360, 'C1, C2: közvetlenül a MOSFET / tekercs közelében', 12, color='#555')
-    # 7805 ag
     Y = 560
     S.wire((600, R), (600, Y)); S.dot(600, R)
     S.wire((600, Y), (640, Y))
@@ -177,7 +310,6 @@ def sheet1():
     S.text(1016, Y + 5, '5V  (Nano 5V láb)', 13, bold=True, color='#6a1b9a')
     S.text(830, Y + 44, '+5 V → kb. 4,7 V a diódán át', 12, color='#555')
     S.text(600, Y - 44, 'VBAT → 7805', 12, 'middle', color='#555')
-    # tekercs + Rd
     xl, xr, xd = 1040, 1140, 1260
     D = 330
     S.part('L', (xl, R), (xl, D), ['L1 (Tx D-tekercs)', '1 mH, 6 × 5 cm'], side='left')
@@ -189,13 +321,11 @@ def sheet1():
         S.part('TVS', (xd, 470 + 60 * i), (xd, 410 + 60 * i), [name, '12–13 V', '≥ 1 W'])
     S.gnd(xd, 590)
     S.dot(xd, D)
-    # mosfet
     gx, cy = 1000, 440
     dpin, spin = mosfet(S, gx, cy)
     S.wire((xl, D), (dpin[0], dpin[1]))
     S.wire(spin, (spin[0], spin[1] + 14)); S.gnd(spin[0], spin[1] + 14)
     S.text(gx + 56, cy + 4, 'Q1 IRLZ44N', 13, bold=True)
-    # gate halozat
     S.text(860, cy + 5, 'D2 ►', 13, 'end', True, '#6a1b9a')
     S.wire((866, cy), (880, cy)); S.part('R', (866, cy), (950, cy), ['R1 47 Ω'])
     S.wire((950, cy), (gx, cy)); S.dot(960, cy)
@@ -209,10 +339,12 @@ def sheet1():
     S.save(OUT + '1_tap_es_meghajto.svg')
 
 
-# ---------------------------------------------------------------- 2. lap
 def sheet2():
+    """Elkészíti és elmenti az analóg jelút ábráját.
+
+    @return Nincs visszatérési érték.
+    """
     S = Sheet(1400, 860, '2/3 – Analóg jelút (MCP6004)')
-    # 5VA
     S.text(24, 84, '+5 V (Nano 5V láb) ►', 13, bold=True, color='#6a1b9a')
     S.part('R', (230, 100), (310, 100), ['R6 10 Ω'])
     S.wire((24 + 190, 100), (230, 100)); S.wire((310, 100), (900, 100))
@@ -225,7 +357,6 @@ def sheet2():
     S.dot(500, 100)
 
     BUS = 600
-    # bemeneti halozat: Rx tekercs a Vmid-re kotve, csillapitas, soros vedoellenallas
     sy = 400
     xL, xX = 200, 330
     S.text(24, 250, 'Rx D-tekercs (L2): egyik vége a Vmid-re kötve, a másik a bemenet.', 12, color='#555')
@@ -241,7 +372,6 @@ def sheet2():
     S.dot(xX, sy)
     S.wire((xX, sy), (xX, 330))
     S.part('R', (xX, 330), (xX + 90, 330), ['R15 10 kΩ'])
-    # U1A
     x1, cy = 560, 415
     S.wire((xX + 110, sy), (x1 - 20, sy))
     S.opamp(x1, cy, 'U1A', 3, 2, 1)
@@ -255,7 +385,6 @@ def sheet2():
     S.part('R', (x1 - 30, cy + 55), (x1 - 30, BUS), ['Rg1 10 kΩ'], side='left'); S.dot(x1 - 30, BUS)
     S.text(x1 + 25, cy + 110, '×10,1', 13, 'middle', True)
 
-    # U1B
     x2 = 810
     S.wire((xo + 20, cy), (xo + 50, cy), (xo + 50, sy))
     S.part('R', (xo + 50, sy), (x2 - 20, sy), ['R7 1 kΩ'], val_dx=10)
@@ -269,7 +398,6 @@ def sheet2():
     S.part('R', (x2 - 30, cy + 55), (x2 - 30, BUS), ['Rg2 10 kΩ'], side='left'); S.dot(x2 - 30, BUS)
     S.text(x2 + 25, cy + 110, '×10,1', 13, 'middle', True)
 
-    # U1D
     x3 = 1060
     S.wire((xo2 + 20, cy), (xo2 + 50, cy), (xo2 + 50, sy), (x3 - 20, sy))
     S.opamp(x3, cy, 'U1D', 12, 13, 14)
@@ -283,11 +411,9 @@ def sheet2():
     S.text(xo3 + 156, cy + 5, '► A0 (ADC0)', 13, bold=True, color='#6a1b9a')
     S.text(xo3 + 156, cy - 10, 'Nano A0 láb', 11, color='#555')
 
-    # Vmid sin
     S.wire((xX, BUS), (1240, BUS))
     S.text(1245, BUS + 4, 'Vmid', 14, bold=True, color='#b71c1c')
 
-    # Vmid generator
     gx = 170
     S.pwr(gx, 640, '5VA')
     S.part('R', (gx, 640), (gx, 730), ['R9 10 kΩ'], side='left')
@@ -312,8 +438,11 @@ def sheet2():
     S.save(OUT + '2_analog_jelut.svg')
 
 
-# ---------------------------------------------------------------- 3. lap
 def sheet3():
+    """Elkészíti és elmenti az Arduino Nano bekötési ábráját.
+
+    @return Nincs visszatérési érték.
+    """
     S = Sheet(1300, 760, '3/3 – Arduino Nano bekötése')
     bx0, bx1, by0, by1 = 500, 780, 70, 650
     S.o.append('<rect x="%d" y="%d" width="%d" height="%d" fill="#e8f5e9" stroke="%s" stroke-width="2"/>' %
@@ -323,12 +452,23 @@ def sheet3():
     S.text((bx0 + bx1) / 2, 400, '(ATmega328P)', 12, 'middle')
 
     def lp(y, t):
+        """Feliratot helyez el a Nano bal oldali lábánál.
+
+        @param y A láb függőleges koordinátája.
+        @param t A láb felirata.
+        @return Nincs visszatérési érték.
+        """
         S.text(bx0 + 6, y + 4, t, 12, 'start', True)
 
     def rp(y, t):
+        """Feliratot helyez el a Nano jobb oldali lábánál.
+
+        @param y A láb függőleges koordinátája.
+        @param t A láb felirata.
+        @return Nincs visszatérési érték.
+        """
         S.text(bx1 - 6, y + 4, t, 12, 'end', True)
 
-    # bal
     lp(130, 'D2'); S.wire((bx0, 130), (430, 130))
     S.text(424, 135, 'GATE ► 1. lap (R1)', 13, 'end', True, '#6a1b9a')
     lp(190, 'A4 / SDA'); S.wire((bx0, 190), (360, 190))
@@ -354,7 +494,6 @@ def sheet3():
     S.wire((440, 580), (qb, qc))
     S.text(qb - 80, qc + 64, 'Q2 BC547', 12, bold=True)
     S.gnd(e[0], e[1])
-    # csipogo
     top = 480
     S.pwr(c[0] + 25, top - 10, '5V')
     S.wire((c[0] + 25, top - 10), (c[0] + 25, top))
@@ -364,7 +503,6 @@ def sheet3():
     S.wire((c[0] - 25, top), (c[0] + 25, top)); S.dot(c[0] + 25, top); S.dot(c[0] + 25, c[1]); S.dot(c[0] - 25, c[1])
     S.wire((c[0] - 25, c[1]), (c[0], c[1]))
 
-    # jobb
     rp(110, 'A0 / ADC0'); S.wire((bx1, 110), (840, 110))
     S.text(846, 115, '◄ U1D kimenet, R8 (2. lap)', 13, bold=True, color='#6a1b9a')
     rp(190, 'A1 / ADC1'); S.wire((bx1, 190), (840, 190)); S.dot(840, 190)
@@ -384,18 +522,41 @@ def sheet3():
     S.save(OUT + '3_nano_bekotes.svg')
 
 
-# ---------------------------------------------------------------- 4. lap: a lecsipes magyarazata
 T_MIN, T_MAX, V_MAX = -20, 120, 80
 
 
 def clamp_panel(S, ox, oy, title, verdict, good, vwave, iwave, notes, v_label_clip=False):
+    """Megrajzolja a lecsípési példákat és a hozzájuk tartozó hullámformákat.
+
+    @param S A munkalap példánya.
+    @param ox A panel bal felső sarkának vízszintes koordinátája.
+    @param oy A panel bal felső sarkának függőleges koordinátája.
+    @param title A panel címe.
+    @param verdict A panel rövid minősítése.
+    @param good Igaz értéknél a panel zöld jelölést kap.
+    @param vwave A drainfeszültség idő-feszültség pontjai.
+    @param iwave A tekercsáram idő-áram pontjai.
+    @param notes A panel alján megjelenő magyarázatok.
+    @param v_label_clip A feszültségfelirat megjelenítési beállítása.
+    @return Nincs visszatérési érték.
+    """
     pw, ph = 560, 190
     px0, py0 = ox + 60, oy + 70
 
     def X(t):
+        """Időértéket alakít a diagram vízszintes koordinátájává.
+
+        @param t Az idő mikroszekundumban.
+        @return A diagramon elfoglalt vízszintes koordináta.
+        """
         return px0 + (t - T_MIN) / (T_MAX - T_MIN) * pw
 
     def Y(v):
+        """Feszültségértéket alakít a diagram függőleges koordinátájává.
+
+        @param v A feszültség voltban.
+        @return A diagramon elfoglalt függőleges koordináta.
+        """
         return py0 + ph - min(v, V_MAX) / V_MAX * ph
 
     col = '#2e7d32' if good else '#c62828'
@@ -403,13 +564,11 @@ def clamp_panel(S, ox, oy, title, verdict, good, vwave, iwave, notes, v_label_cl
     S.o.append('<rect x="%g" y="%g" width="640" height="32" fill="%s" rx="6"/>' % (ox, oy, col))
     S.text(ox + 14, oy + 22, title, 15, bold=True, color='#fff')
     S.text(ox + 626, oy + 22, verdict, 15, 'end', True, '#fff')
-    # jo tartomany (30..50 V) es hatarok
     S.o.append('<rect x="%g" y="%g" width="%g" height="%g" fill="#c8e6c9" opacity="0.6"/>' % (px0, Y(50), pw, Y(30) - Y(50)))
     S.text(px0 + pw - 4, Y(50) + 13, 'jó tartomány 30–50 V', 11, 'end', color='#2e7d32')
     for v, c, lab in ((55, '#c62828', 'Q1 határa: 55 V'), (12, '#1565c0', 'akku: 12 V')):
         S.o.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-dasharray="6,4" stroke-width="1.5"/>' % (px0, Y(v), px0 + pw, Y(v), c))
         S.text(px0 + 4, Y(v) - 4, lab, 11, color=c)
-    # tengelyek
     S.line((px0, py0), (px0, py0 + ph), (px0 + pw, py0 + ph), color='#333', w=1.5)
     for v in (0, 20, 40, 60, 80):
         S.text(px0 - 6, Y(v) + 4, str(v), 11, 'end', color='#555')
@@ -418,21 +577,21 @@ def clamp_panel(S, ox, oy, title, verdict, good, vwave, iwave, notes, v_label_cl
         S.text(X(t), py0 + ph + 17, str(t), 11, 'middle', color='#555')
     S.text(px0 + pw, py0 + ph + 32, 'idő a Q1 kikapcsolásához képest (µs)', 11, 'end', color='#555')
     S.text(px0 - 44, py0 - 8, 'drain feszültség (V)', 11, color='#555')
-    # fuggoleges jelolok
     for t, lab, anc, dx in ((0, 'Q1 kikapcsol', 'end', -4), (60, 'S1 mintavétel (60 µs)', 'start', 4)):
         S.o.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="#777" stroke-dasharray="3,3"/>' % (X(t), py0, X(t), py0 + ph))
         S.text(X(t) + dx, py0 + 12, lab, 11, anc, color='#555')
-    # hullamformak
     S.line(*[(X(t), Y(v)) for t, v in iwave], color='#ef6c00', w=2)
     S.line(*[(X(t), Y(v)) for t, v in vwave], color='#1a237e', w=3)
-    # megjegyzesek
     for i, t in enumerate(notes):
         S.text(ox + 14, oy + 322 + i * 17, t, 12, color='#222')
 
 
 def sheet4():
+    """Elkészíti és elmenti a flyback-lecsípés magyarázó ábráját.
+
+    @return Nincs visszatérési érték.
+    """
     S = Sheet(1400, 1330, '4/4 – A flyback lecsípése: mi a jó és mi a rossz (magyarázó ábra)')
-    # --- mini kapcsolas
     S.text(24, 70, 'Mi az a flyback, és miért kell lecsípni?', 16, bold=True)
     S.wire((60, 110), (340, 110))
     S.text(60, 100, '+12 V (akku)', 12, bold=True, color='#b71c1c')
@@ -492,7 +651,6 @@ def sheet4():
         ['A tüske ártalmatlan, de a tekercs árama túl lassan fogy el (≈ 100 µs).',
          'Az S1 mintavételkor (60 µs) még a tekercs árama zavar, az örvényáram "farkát" nem látni.'])
 
-    # --- osszefoglalas
     y = 1140
     S.o.append('<rect x="30" y="%d" width="1340" height="160" fill="#f5f5f5" stroke="#999" rx="6"/>' % y)
     S.text(46, y + 26, 'Rövid szabályok', 15, bold=True)
@@ -509,5 +667,4 @@ def sheet4():
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
 if __name__ == '__main__':
     sheet1(); sheet2(); sheet3(); sheet4()
-
 

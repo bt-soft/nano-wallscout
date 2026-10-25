@@ -4,10 +4,10 @@ Célmélység: 5–6 cm biztosan, 8 cm határeset (Ø8–12 mm betonvas, a teker
 
 ## Működés
 
-1. Az IRLZ44N 60 µs-ra bekapcsol, a **Tx tekercs** (L1) árama ≈ 0,6 A-re nő (1 mH, 12 V mellett kb. 11 A/ms).
-2. Kikapcsolásnál a flyback-feszültséget a zener-sor ~36–39 V-ra lecsípi, a tekercsáram kb. 30 µs alatt nullára esik.
-3. A tranziens az `Rd` csillapítóval gyorsan lecseng. A fémben indukált örvényáram lassabban cseng le, ez a mérendő "farok".
-4. A **külön Rx tekercs** (L2) az L1-gyel DD-ben (részben egymásra csúsztatva) van elhelyezve, így a közvetlen áthallás ≈ 0, és csak a fém által visszavert jel jut az erősítőbe.
+1. Az IRLZ44N (Q1) 60 µs-ra bekapcsol, a **Tx tekercs** (Ltx1) árama nő.
+2. Kikapcsoláskor a flyback-tüskét a D1 (UF4007) és a D2 (ZPY36, 1 W) fogja meg; a névleges lecsípési szint nagyjából 37 V.
+3. A tranziens lecsengését az Ltx1-gyel párhuzamos R13 + R14 ág (1 kΩ fix ellenállás + 4,7 kΩ-os trimmer) csillapítja. A fémben indukált örvényáram lassabban cseng le, ez a mérendő "farok".
+4. A **külön Rx tekercs** (Lrx1) az Ltx1-gyel DD-ben (részben egymásra csúsztatva) van elhelyezve, így a közvetlen áthallás ≈ 0, és csak a fém által visszavert jel jut az erősítőbe.
 5. A Nano 1 kHz-en ismétel, és impulzusonként két ponton mintavételez az ADC-vel: **S1** a kikapcsolás után 60 µs-mal, **S2** (alapvonal) 600 µs-mal.
 6. Jel = S1 − S2, 100 impulzusra átlagolva (kb. 7 Hz kijelzőfrissítés). Ez kiejti az offsetet és a lassú driftet.
 7. Indításkor automatikus nullázás (a kereső legyen levegőben). Az alapvonal lassan követi a driftet.
@@ -17,7 +17,7 @@ Célmélység: 5–6 cm biztosan, 8 cm határeset (Ø8–12 mm betonvas, a teker
 
 Mindkét gomb a D-lábat földre húzza (belső felhúzással). A gombokat a mérés közben is figyeli a firmware, de a művelet a következő kijelzőfrissítéskor (kb. 0,1–0,2 s) hajtódik végre.
 
-**D4 – NULLÁZÁS / beállító mód**
+**Arduino D5 – NULLÁZÁS / beállító mód**
 
 | Művelet | Normál (kereső) módban | DD beállító módban |
 |---|---|---|
@@ -26,9 +26,9 @@ Mindkét gomb a D-lábat földre húzza (belső felhúzással). A gombokat a mé
 
 A mód váltását rövid (150 ms-os), 3 kHz-es csipogás jelzi. A hosszú nyomás után a gomb felengedése már nem indít újabb műveletet.
 
-**D5 – KALIBRÁLÁS / `min` törlése**
+**Arduino D4 – KALIBRÁLÁS / `min` törlése**
 
-DD beállító módban a D5 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul. Kalibrálás beállító módban nem történik.
+DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul. Kalibrálás beállító módban nem történik.
 
 Normál módban:
 
@@ -57,14 +57,14 @@ Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s
 
 ### Miért elég a Nano?
 
-A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A ×100 erősítés miatt ez az Rx-nél ≈ 49 µV/LSB. A 100 impulzus átlagolása az ADC saját zajával együtt 0,1 LSB alá viszi a felbontást, ami a Pico valós (kb. 9 bites, 3,3 V-os) felbontásával egyenértékű. A mintavételi időzítést a Timer1 (0,5 µs) adja, az impulzus közben a megszakítások tiltva vannak.
+A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A KiCad-rajz szerinti két erősítőfokozat névleges, összesített erősítése kb. ×121, így ez az Rx-nél ≈ 40 µV/LSB. A 100 impulzus átlagolása az ADC saját zajával együtt 0,1 LSB alá viszi a felbontást, ami a Pico valós (kb. 9 bites, 3,3 V-os) felbontásával egyenértékű. A mintavételi időzítést a Timer1 (0,5 µs) adja, az impulzus közben a megszakítások tiltva vannak.
 
 ## DD tekercsek
 
 | Paraméter | Érték |
 |---|---|
 | Tekercsek | 2 db D-tekercs, egyenként 1 mH, 6 cm egyenes oldal, 5 cm D-magasság |
-| Szerep | L1 = Tx (adó), L2 = Rx (vevő) |
+| Szerep | Ltx1 = Tx (adó), Lrx1 = Rx (vevő) |
 | Elrendezés | az egyenes oldalaikkal részben egymásra csúsztatva (DD) |
 | Csúcsáram (12 V / 60 µs) | ≈ 0,6 A (9 V-nál ≈ 0,45 A), a tekercs R-jétől függően |
 
@@ -73,8 +73,8 @@ A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A ×100 erősítés miatt ez az Rx-n
 ### DD átfedés beállítása (firmware-es segítség)
 
 1. Tartsd a keresőt levegőben, fémtől legalább fél méterre.
-2. Tartsd lenyomva a **NULLÁZÁS** gombot 1 másodpercig: a kijelzőn `DD beallitas` jelenik meg.
-3. A kereső és a DD beállító mód is az **A0** bemenetet használja, az U1D ×100 erősítésű kimenetéről. A kijelzőn a közvetlen áthallás látszik **előjelesen** (S1 − S2), alatta külön sorban a `min` (az eddigi legkisebb abszolút érték) és a nyers `S1` (nyugalmi értéke ≈ 512), legalul középre nullázott logaritmikus oszlop. A csipogó annál magasabb, minél nagyobb az áthallás, és elhallgat, ha az érték 1,5 alá esik (`NULL OK`).
+2. Tartsd lenyomva az **Arduino D5-re kötött NULLÁZÁS** gombot 1 másodpercig: a kijelzőn `DD beallitas` jelenik meg.
+3. A kereső és a DD beállító mód is az **A0** bemenetet használja, az U2D bufferelt kimenetéről. A jelút két, a KiCad-rajzon 100 kΩ / 10 kΩ ellenállásokkal beállított neminvertáló fokozata névlegesen kb. 11 × 11 = 121-szeres erősítést ad; U2D követőként puffereli a jelet, az R3 (390 Ω) pedig soros ellenállás az A0 felé. A kijelzőn a közvetlen áthallás látszik **előjelesen** (S1 − S2), alatta külön sorban a `min` (az eddigi legkisebb abszolút érték) és a nyers `S1` (nyugalmi értéke ≈ 512), legalul középre nullázott logaritmikus oszlop. A csipogó annál magasabb, minél nagyobb az áthallás, és elhallgat, ha az érték 1,5 alá esik (`NULL OK`).
 4. Csúsztasd az egyik tekercset a másikhoz képest. Az érték **előjelet vált**, ezen a ponton kell a minimumot keresni. A kezdeti átfedés a D egyenes oldalának néhány mm–1,5 cm-e.
 5. Ha megvan, rögzítsd a tekercseket, és nyomd meg röviden a gombot: a kereső kilép a módból, és újranulláz.
 
@@ -82,87 +82,62 @@ Ha az erősítő telítésbe megy (az S1 a 0 vagy 1023 közelében), a fejléc `
 
 ## Kapcsolási rajz
 
-Három lapon (SVG, böngészőben vagy VS Code-ban megnyitható), plusz egy magyarázó ábra a lecsípésről ([4. lap](rajz/4_lecsipes_magyarazat.svg), lásd a Védelem szakaszt):
-
-1. [Táp és tekercs-meghajtó](rajz/1_tap_es_meghajto.svg) – akku, 7805, Q1, Tx tekercs, Rd, zener-sor lecsípés
-2. [Analóg jelút](rajz/2_analog_jelut.svg) – MCP6004: Rx tekercs bemenet és védelem, 2 × ×10 erősítő, Vmid, ADC-puffer
-3. [Nano bekötése](rajz/3_nano_bekotes.svg) – OLED, gombok, csipogó, akkumérés, ADC
-
-![1. lap](rajz/1_tap_es_meghajto.svg)
-![2. lap](rajz/2_analog_jelut.svg)
-![3. lap](rajz/3_nano_bekotes.svg)
-
-Az SVG-k a `rajz/gen.py` szkripttel generálódnak (`python rajz/gen.py`).
+![KiCad-séma](kicad/nano-wallscout.svg) 
 
 ### Védelem
 
-#### A lecsípés képekben: mi a jó és mi a rossz
+#### Flyback-védelem
 
-![A flyback lecsípése](rajz/4_lecsipes_magyarazat.svg)
+Q1 kikapcsolásakor a tekercs árama nem tud azonnal megszűnni, ezért flyback-feszültség keletkezik. A KiCad-rajzon a lecsípő ág D1 (UF4007) és D2 (ZPY36, 1 W) soros kapcsolata; a lecsípés névleges szintje a zenerfeszültség és a D1 nyitófeszültségének összege. A Q1 IRLZ44N adatlap szerinti VDS-határa 55 V, ezért a `T_ON` növelése előtt szkóppal ellenőrizd, hogy a drain csúcsa **50 V alatt** marad.
 
-Röviden: a Q1 kikapcsolásakor a tekercs árama nem tud azonnal megszűnni, ezért a tekercs nagy feszültségtüskét (flyback) ad. A D2 + zener-sor ezt a drain és a föld között ≈ 38 V-on "elvágja". A jó lecsípés elég magas ahhoz, hogy az áram ≈ 25 µs alatt lecsengjen, de a Q1 határa (55 V) alatt marad. Az ábra az A–D esetekkel megmutatja, mi történik lecsípés nélkül, túl magas és túl alacsony lecsípésnél.
-
-- **Drain-oldal:** a flyback-et UF4007 (D2) + 3 db sorosan kötött zener (DZ1–DZ3, együtt 36–39 V) csípi le. Kisebb impulzusenergiánál (≈ 0,2 mJ) ez elég, de a zenerek feszültsége nagy áramnál megnő. Ezért a `T_ON` növelése előtt mindig ellenőrizd szkóppal, hogy a drain csúcsa **50 V alatt** marad (Q1 Vds,max = 55 V).
-- **Rx-oldal:** külön védődióda nincs. A 10 kΩ soros ellenállás (R5) az MCP6004 belső ESD-diódáival együtt a megmaradó tüskét ≤ 2 mA-re korlátozza. A DD elrendezésnél az Rx jele eleve kicsi.
+Az Rx bemeneténél a KiCad-rajz R11 = 10 kΩ soros ellenállást mutat az U2A bemenete előtt. A rajz nem mutat külön védődiódát; az R5 nem soros védőellenállás, hanem a Vmid osztó alsó 100 kΩ-os ellenállása.
 
 ## Alkatrészlista
 
 | Db | Alkatrész |
 |---|---|
-| 1 | Arduino Nano (ATmega328P) |
-| 1 | MCP6004 (DIP14 vagy SOIC14) |
-| 1 | IRLZ44N |
-| 1 | SSD1306 128×64 I2C OLED |
-| 1 | L7805 (TO-220) |
-| 2 | D-tekercs, 1 mH (Tx és Rx) |
-| 3 | zener 12–13 V, ≥ 1 W (DZ1–DZ3, sorosan) |
-| 1 | UF4007 (D2), 1 db 1N5819 (D1), 1 db 1N4148 (D5) |
-| 1 | 1000 µF/25 V low-ESR, 10 µF kerámia |
-| 1 | BC547 (csipogóhoz), passzív csipogó |
-| – | Ellenállások: 10 Ω, 47 Ω, 330 Ω ×2 (R8, R14), 1 kΩ ×2 (R7, R11) + Rd 1 kΩ, 10 kΩ ×7 (R2, R5, R9, R10, R15, Rg1, Rg2), 33 kΩ, 91 kΩ ×2, 100 kΩ |
-| 2 | trimmer: 1 kΩ (Rd), 2,2 kΩ (R3, Rx csillapítás) |
-| – | Kondenzátorok: 330 nF, 100 nF ×4 (C4, C7, C10 + MCP6004 lábnál), 1 nF, 1 µF, 10 µF ×2 |
-| 2 | nyomógomb, főkapcsoló |
+| 1 | Arduino Nano (A1, ATmega328P) |
+| 1 | MCP6004 (U2) |
+| 1 | IRLZ44N (Q1) |
+| 1 | SSD1306 I²C OLED (U1) |
+| 2 | 1 mH-es D-tekercs: Ltx1 (Tx) és Lrx1 (Rx) |
+| 1 | UF4007 (D1), 1 db ZPY36 / 1 W zener (D2) |
+| 1 | Buzzer (BZ1) |
+| 2 | nyomógomb: SW1 (kalibrálás), SW2 (nullázás) |
+| – | Ellenállások: R1 = 100 kΩ, R2 = 33 kΩ, R3 = 390 Ω, R4–R6 = 100 kΩ, R7 = 10 kΩ, R8 = 1 kΩ, R9 = 100 kΩ, R10–R11 = 10 kΩ, R12 = 2,2 kΩ, R13 = 1 kΩ, R14 = 4,7 kΩ-os trimmer, R15 = 100 Ω, R16 = 10 kΩ |
+| – | Kondenzátorok: C1 = 100 µF / 25 V, C2–C3 = 100 nF, C4 = 10 µF |
 
 ## Beüzemelés (ebben a sorrendben)
 
-1. Első bekapcsolás a **tekercsek és az Rx jelút nélkül**: ellenőrizd a táp- és meghajtó-oldalt.
-   - **Előkészítés:** a Tx tekercset és az Rx jelutat még ne kösd be. Az `Rd`-t és a zener-sort szereld be, a Nano programozva legyen (a gate-et ő vezérli). Az első próbákhoz használj kis `T_ON`-t (pl. 10–20 µs).
-   - **Táp:** állítsd az akku/laborasztal feszültségét 9–12 V-ra, lehetőleg áramkorlátos tápról (pl. 100–200 mA). Mérd meg a 7805 kimenetét: **5,0 V ± 0,1 V**, és hogy az áramfelvétel nyugalomban kicsi (a Nano és a kijelző kb. 30–50 mA).
-   - **Drain-mérés:** szkóppal (10×-es szonda, rövid földelés) nézd a Q1 drainjét. Flyback csak induktív terheléssel van, ezért erre a méréshez ideiglenesen kösd be a Tx tekercset (a jelút továbbra is maradjon üresen). Az impulzus alatt a drain kb. 0 V, kikapcsoláskor feszültségtüske jön.
-   - **Elvárás:** a tüske csúcsa a zener-sor miatt **≈ 36–39 V**, és **50 V alatt** marad (Q1 Vds,max = 55 V). Ha ennél magasabb, ne növeld a `T_ON`-t, és ellenőrizd a zenereket, az UF4007-et és a bekötést.
-   - **Hiba esetén:** ha a gate nem billen, ellenőrizd a 47 Ω soros ellenállást, a 10 kΩ lehúzót és a D2 jelet. Ha a Q1 vagy a zener melegszik, azonnal kapcsold le.
-2. Kösd be a Tx tekercset (az Rx és a jelút még maradjon üresen), és állítsd be az `Rd` csillapítást:
-   - **Mi ez:** az `Rd` (1 kΩ fix + 1 kΩ trimmer sorosan, tehát 1–2 kΩ) a Tx tekerccsel párhuzamosan van kötve. Kikapcsoláskor a tekercs és a parazita kapacitások (tekercs, Q1, szerelés) rezgőkört alkotnak. Az `Rd` ezt csillapítja.
+1. Első bekapcsoláskor áramkorlátos tápról ellenőrizd a tápot. A külső táp a KiCad-rajz szerinti `+BATT` bemenetre kerül, a Nano saját VIN bemenetén keresztül; külön L7805 nincs a kapcsolásban. Ellenőrizd, hogy a Nano 5 V-os sínjén a modulnak megfelelő tápfeszültség van.
+2. A firmware-ben kezdetben `T_ON = 60 µs`; első próbánál csökkentsd ezt `config.h`-ban, és csak kis áramkorlát mellett tesztelj.
+   - **Drain-mérés:** szkóppal (10×-es szonda, rövid földelés) nézd a Q1 drainjét. Flyback csak induktív terheléssel van, ezért ehhez a méréshez kösd be az Ltx1-et, az Rx jelút maradhat üresen. Arduino D2 hajtja Q1 kapuját az R15 (100 Ω) soros ellenálláson át; R16 (10 kΩ) tartja alacsonyan a kaput.
+   - **Elvárás:** D1 és D2 névleges értéke alapján a lecsípés nagyjából 37 V körül várható, de az impulzusáram és a parazita induktivitás módosíthatja a csúcsot. A Q1 drainjén mért csúcs maradjon **50 V alatt** (Q1 VDS,max = 55 V). Ha magasabb, ne növeld a `T_ON`-t; ellenőrizd D1, D2 és a bekötést.
+   - **Hiba esetén:** ha a gate nem billen, ellenőrizd az Arduino D2 jelet, az R15/R16 ellenállásokat és a bekötést. Ha Q1 vagy D2 melegszik, azonnal kapcsold le.
+3. Kösd be az Ltx1-et, és állítsd be a csillapítást:
+   - **Mi ez:** az R13 (1 kΩ) és az R14 (4,7 kΩ-os trimmer) soros ága az Ltx1-gyel párhuzamos. Kikapcsoláskor a tekercs és a parazita kapacitások rezgőkört alkotnak; az R14 beállításával hangolható a csillapítás.
    - **Mérés:** szkóppal a Q1 **drainjén** nézd a kikapcsolás utáni lecsengést (10×-es szonda, a földcsipesz a lehető legrövidebben a Q1 source-ához). Triggerelj a gate lefutó élére, az időalap 5–10 µs/osztás legyen. Közben a csúcs maradjon **50 V alatt**.
-   - **Beállítás:** a trimmert a maximumról (2 kΩ) indulva csökkentsd, amíg a jel a leggyorsabban, **túllövés és visszarezgés nélkül** éri el az alapszintet (kritikus csillapítás).
+   - **Beállítás:** az R14 trimmert a legnagyobb ellenállás felől indulva állítsd, amíg a jel a lehető leggyorsabban, **túllövés és visszarezgés nélkül** éri el az alapszintet.
      - Túl nagy `Rd`: alulcsillapított, a jel az alapvonal körül **rezeg**, a lecsengés elhúzódik.
      - Túl kis `Rd`: túlcsillapított, a jel nem rezeg, de **lassan közelít** az alapszinthez, és a tekercs árama is jobban terheli az `Rd`-t.
-   - **Elvárás:** 1 mH-nál ez általában 1–2 kΩ körül van. A tekercs kapacitása és a szerelés miatt a pontos érték eltérhet, ezért mérd meg. Ha a lecsengés még így sem fejeződik be 60 µs-ig, a `T_SAMPLE1` növelése is szükséges (lásd az 5. pontot).
-   - Ezután a trimmer álljon úgy, ahogy van: az `Rd` módosítása után az Rx csillapítását (3. pont) újra kell ellenőrizni.
-3. Kösd be a jelutat az Rx tekerccsel, és állítsd be az Rx csillapítást (`R3`).
-   - **Bekötés:** az Rx tekercs (L2) egyik vége a **Vmid**-re (≈ 2,5 V), a másik a bemeneti hálózatra kerül: `R3` (2,2 kΩ trimmer) a Vmid felé csillapít, `R5` (10 kΩ) soros védelem az MCP6004 bemenete előtt. Az Rx a Tx-től független, a DD átfedés most még durván legyen beállítva.
-   - **Nyugalmi szint:** a tekercsek levegőben, fémtől távol az A0 nyugalmi értéke kb. **2,5 V** legyen. A soros monitoron `s1` ≈ 512 és `s2` ≈ 512 (kb. ±30; lásd a Soros monitor szakaszt). Ha ez jelentősen eltér, ellenőrizd a Vmid-et (R9/R10, U1C), a tápot és az MCP6004 bekötését.
-   - **Mérés:** szkóppal az **U1A kimenetén (1. láb)** nézd, hogyan cseng le a jel a Tx kikapcsolása után. Triggerelj a gate lefutó élére (kb. 5–10 µs/osztás, majd 50–100 µs/osztás), és tarts egy vasat a tekercshez, hogy a lecsengés jól látszódjon.
-   - **Beállítás:** az `R3` trimmert állítsd úgy, hogy az Rx tekercs rezgése a leggyorsabban, **túllövés nélkül** csengjen le (kritikus csillapítás).
-     - Túl nagy érték: az Rx rezeg, a jel elhúzódik.
-     - Túl kis érték: a jel gyorsan lecseng, de **csökken az érzékenység** (kisebb a farok).
-     - Elvárás: a jel a kikapcsolás után **60 µs-mal** (`T_SAMPLE1`) már közel az alapszinten legyen. Ha nem, az 5. pontnál a `T_SAMPLE1`-et kell növelni.
-   - **Ellenőrzés:** az `Rd` vagy `R3` módosítása után a 2. és 3. pontot is ellenőrizd újra, mert a két csillapítás hat egymásra.
-4. A DD beállító móddal állítsd az átfedést minimális áthallásra (lásd fent), és rögzítsd.
-5. Nézd meg az U1A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](src/config.h)).
-6. Tarts egy vasat a tekercshez: a jel nőjön. Az `abs()` miatt a polaritás nem számít, de a soros monitoron (`sig`) látod.
-7. Ha telít (`TULVEZERLES`), javítsd az átfedést, vagy a második fok Rf-jét cseréld 47 kΩ-ra.
-8. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
+   - **Elvárás:** a tekercs és a szerelés miatt a pontos beállítást szkóppal kell ellenőrizni. Ha a jel lecsengése nem fejeződik be a mintavételig, a `T_SAMPLE1` növelése szükséges (lásd az 5. pontot).
+4. Kösd be az Lrx1-et, és ellenőrizd az analóg jelutat. Az R11 (10 kΩ) az U2A bemenete elé kerül; R3 (390 Ω) az U2D kimenete és az Arduino A0 között van, nem trimmer. A Vmid-et az R4/R5 (egyenként 100 kΩ) osztó és az U2C puffer állítja elő; a rajz nem tartalmaz külön Rx-védődiódát vagy Rx-csillapító trimmert.
+   - **Nyugalmi szint:** a tekercsek levegőben, fémtől távol az A0 nyugalmi értéke kb. **2,5 V** legyen. A soros monitoron `s1` ≈ 512 és `s2` ≈ 512. Ha ez jelentősen eltér, ellenőrizd a Vmid-et, a tápot és az MCP6004 bekötését.
+   - **Mérés:** szkóppal az **U2A kimenetén (1. láb)**, az U2B kimenetén (7. láb) és az U2D kimenetén (14. láb) ellenőrizd a lecsengést a Tx kikapcsolása után. Triggerelj a gate lefutó élére, és tarts egy vasat a tekercshez, hogy a lecsengés látszódjon. Az U2A/U2B fokozatokat, valamint az U2D puffert lásd a KiCad-rajzon.
+5. A DD beállító móddal állítsd az átfedést minimális áthallásra (lásd fent), és rögzítsd.
+6. Nézd meg az U2A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](src/config.h)).
+7. Tarts egy vasat a tekercshez: a jel nőjön. Az `abs()` miatt a polaritás nem számít, de a soros monitoron (`sig`) látod.
+8. Ha telít (`TULVEZERLES`), javítsd az átfedést. Az erősítő ellenállásait ne módosítsd találomra; az értékeket a KiCad-rajz rögzíti.
+9. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
 
-## Ismert kockázatok
+## Ismert korlátok/kockázatok
 
-- Az MCP6004 (1 MHz GBW) túlvezérlésből felépülése lassú lehet. A DD elrendezés és az R5 soros ellenállás ezt enyhíti, de a mintavételi késleltetést a mérésed alapján kell beállítani.
+- Az MCP6004 (1 MHz GBW) túlvezérlésből felépülése lassú lehet. Az R11 bemeneti soros ellenállás nem helyettesíti a külön védődiódát; a mintavételi késleltetést mérés alapján állítsd be.
 - A kis tekercsek (≈ 6 × 10 cm) miatt a 8 cm határeset, főleg vékonyabb vasnál és betonban.
 - A szám-értékek (`DETECT_TH`, `FULL_SCALE`, `T_SAMPLE1`) számolt/javasolt értékek, a prototípuson hangolni kell.
 - Az akku/tekercsáram tápingadozása az alapvonalba megy, akkucsere után nullázz újra.
-- A 7805 mellett a 3S akku legalább ~7,5 V-ig működik; 9 V alatt az akkut töltsd.
-- A watchdog (1 s) lefagyás esetén újraindítja a Nanót, a 10 kΩ lehúzó (R2) a gate-et addig is alacsonyan tartja. A régi (57600 baudos) bootloaderes Nanók watchdog-reset után megállhatnak, ilyenkor elég kikapcsolni és újra bekapcsolni, vagy a `USE_WATCHDOG`-ot 0-ra kell állítani.
+- A 3S akku feszültségét a Nano VIN bemenetére kapcsolt táp és a modul saját feszültségszabályozója határozza meg; a melegedést és a megengedett bemeneti feszültséget az alkalmazott Nano-modul adatlapja szerint ellenőrizd.
+- A watchdog (1 s) lefagyás esetén újraindítja a Nanót, a 10 kΩ lehúzó (R16) a gate-et addig is alacsonyan tartja. A régi (57600 baudos) bootloaderes Nanók watchdog-reset után megállhatnak, ilyenkor elég kikapcsolni és újra bekapcsolni, vagy a `USE_WATCHDOG`-ot 0-ra kell állítani.
 
 ## Fordítás
 
@@ -171,4 +146,4 @@ pio run                      # régi bootloaderes Nano (nano környezet)
 pio run -e nano_newboot      # új (115200 baudos) bootloader
 pio run -t upload            # feltöltés
 ```
-Az USB-t csak programozáskor dugd be, a D1 dióda megakadályozza, hogy az USB-ről a 7805 áramot kapjon vissza.
+Az USB-t programozáshoz használd. A KiCad-rajzon nincs külön USB-visszatáplálást gátló dióda; a külső táp és az USB egyidejű használatánál vedd figyelembe a használt Nano-modul tápáramkörét.

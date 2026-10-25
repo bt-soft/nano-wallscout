@@ -9,6 +9,10 @@
 
 static U8G2_SSD1306_128X64_NONAME_1_HW_I2C oled(U8G2_R0);
 
+/**
+ * @brief Elindítja az I²C-buszt, és inicializálja az OLED-kijelzőt.
+ * @return Nincs visszatérési érték.
+ */
 void displayInit() {
   Wire.begin();
   Wire.setWireTimeout(3000, true);
@@ -16,6 +20,12 @@ void displayInit() {
   oled.setBusClock(400000);
 }
 
+/**
+ * @brief Kirajzolja a fejléc címét és az akkumulátor feszültségét.
+ * @param title A fejlécben megjelenő cím.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @return Nincs visszatérési érték.
+ */
 static void drawHeader(const char* title, float vbat) {
   char b[8];
   dtostrf(vbat, 3, 1, b);
@@ -25,6 +35,15 @@ static void drawHeader(const char* title, float vbat) {
   oled.drawStr(98, 9, b);
 }
 
+/**
+ * @brief Kirajzolja a normál keresési képernyőt.
+ * @param msg Opcionális állapotüzenet; null értéknél a mérési adat jelenik meg.
+ * @param mag A jel abszolút értéke.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ * @param det Igaz, ha a jel találatot jelez.
+ * @return Nincs visszatérési érték.
+ */
 void drawNormal(const char* msg, float mag, float vbat, bool overload, bool det) {
   char num[10], dep[12] = "";
   dtostrf(mag, 1, 0, num);
@@ -57,6 +76,16 @@ void drawNormal(const char* msg, float mag, float vbat, bool overload, bool det)
   } while (oled.nextPage());
 }
 
+/**
+ * @brief Kirajzolja a DD-beállító képernyőt és az előjeles áthallásmérőt.
+ * @param diff Az S1 és S2 minták előjeles különbsége.
+ * @param best Az eddig mért legkisebb abszolút áthallás.
+ * @param s1 Az S1-minta átlagos nyers ADC-értéke.
+ * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ * @param dcFault Igaz, ha a bemenet nyugalmi DC-szintje hibás.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @return Nincs visszatérési érték.
+ */
 void drawSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat) {
   char num[10], bst[10], s1s[8], line[24] = "min ";
   const float v = overload ? s1 - 512.0f : diff;
