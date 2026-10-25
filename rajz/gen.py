@@ -241,8 +241,6 @@ def sheet2():
     S.dot(xX, sy)
     S.wire((xX, sy), (xX, 330))
     S.part('R', (xX, 330), (xX + 90, 330), ['R15 10 kΩ'])
-    S.text(xX + 96, 335, '► A3 (nyers Rx, DD durva beállítás)', 12, bold=True, color='#6a1b9a')
-
     # U1A
     x1, cy = 560, 415
     S.wire((xX + 110, sy), (x1 - 20, sy))
@@ -250,7 +248,6 @@ def sheet2():
     xo = x1 + 72
     S.wire((xo, cy), (xo + 30, cy)); S.dot(xo + 20, cy)
     S.part('R', (xo + 20, cy), (xo + 20, 300), ['R14 330 Ω'], side='right')
-    S.text(xo + 28, 285, '► A2 (U1A ×10, DD beállító mód)', 12, bold=True, color='#6a1b9a')
     S.wire((xo + 20, cy), (xo + 20, cy + 55))
     S.part('R', (xo + 20, cy + 55), (x1 - 30, cy + 55), ['Rf1 91 kΩ'], below=True)
     S.wire((x1 - 30, cy + 55), (x1 - 30, cy + 15)); S.wire((x1 - 30, cy + 15), (x1 - 20, cy + 15))
@@ -370,10 +367,6 @@ def sheet3():
     # jobb
     rp(110, 'A0 / ADC0'); S.wire((bx1, 110), (840, 110))
     S.text(846, 115, '◄ U1D kimenet, R8 (2. lap)', 13, bold=True, color='#6a1b9a')
-    rp(130, 'A3 / ADC3'); S.wire((bx1, 130), (840, 130))
-    S.text(846, 135, '◄ nyers Rx, R15 (2. lap), DD durva', 13, bold=True, color='#6a1b9a')
-    rp(150, 'A2 / ADC2'); S.wire((bx1, 150), (840, 150))
-    S.text(846, 155, '◄ U1A kimenet, R14 (2. lap), DD beállítás', 13, bold=True, color='#6a1b9a')
     rp(190, 'A1 / ADC1'); S.wire((bx1, 190), (840, 190)); S.dot(840, 190)
     S.part('R', (840, 190), (980, 190), ['R12 100 kΩ'])
     S.text(986, 195, 'VBAT (1. lap)', 13, bold=True, color='#6a1b9a')
@@ -391,9 +384,130 @@ def sheet3():
     S.save(OUT + '3_nano_bekotes.svg')
 
 
+# ---------------------------------------------------------------- 4. lap: a lecsipes magyarazata
+T_MIN, T_MAX, V_MAX = -20, 120, 80
+
+
+def clamp_panel(S, ox, oy, title, verdict, good, vwave, iwave, notes, v_label_clip=False):
+    pw, ph = 560, 190
+    px0, py0 = ox + 60, oy + 70
+
+    def X(t):
+        return px0 + (t - T_MIN) / (T_MAX - T_MIN) * pw
+
+    def Y(v):
+        return py0 + ph - min(v, V_MAX) / V_MAX * ph
+
+    col = '#2e7d32' if good else '#c62828'
+    S.o.append('<rect x="%g" y="%g" width="640" height="360" fill="#fff" stroke="%s" stroke-width="2.5" rx="6"/>' % (ox, oy, col))
+    S.o.append('<rect x="%g" y="%g" width="640" height="32" fill="%s" rx="6"/>' % (ox, oy, col))
+    S.text(ox + 14, oy + 22, title, 15, bold=True, color='#fff')
+    S.text(ox + 626, oy + 22, verdict, 15, 'end', True, '#fff')
+    # jo tartomany (30..50 V) es hatarok
+    S.o.append('<rect x="%g" y="%g" width="%g" height="%g" fill="#c8e6c9" opacity="0.6"/>' % (px0, Y(50), pw, Y(30) - Y(50)))
+    S.text(px0 + pw - 4, Y(50) + 13, 'jó tartomány 30–50 V', 11, 'end', color='#2e7d32')
+    for v, c, lab in ((55, '#c62828', 'Q1 határa: 55 V'), (12, '#1565c0', 'akku: 12 V')):
+        S.o.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="%s" stroke-dasharray="6,4" stroke-width="1.5"/>' % (px0, Y(v), px0 + pw, Y(v), c))
+        S.text(px0 + 4, Y(v) - 4, lab, 11, color=c)
+    # tengelyek
+    S.line((px0, py0), (px0, py0 + ph), (px0 + pw, py0 + ph), color='#333', w=1.5)
+    for v in (0, 20, 40, 60, 80):
+        S.text(px0 - 6, Y(v) + 4, str(v), 11, 'end', color='#555')
+    for t in range(-20, 121, 20):
+        S.line((X(t), py0 + ph), (X(t), py0 + ph + 4), color='#333', w=1)
+        S.text(X(t), py0 + ph + 17, str(t), 11, 'middle', color='#555')
+    S.text(px0 + pw, py0 + ph + 32, 'idő a Q1 kikapcsolásához képest (µs)', 11, 'end', color='#555')
+    S.text(px0 - 44, py0 - 8, 'drain feszültség (V)', 11, color='#555')
+    # fuggoleges jelolok
+    for t, lab, anc, dx in ((0, 'Q1 kikapcsol', 'end', -4), (60, 'S1 mintavétel (60 µs)', 'start', 4)):
+        S.o.append('<line x1="%g" y1="%g" x2="%g" y2="%g" stroke="#777" stroke-dasharray="3,3"/>' % (X(t), py0, X(t), py0 + ph))
+        S.text(X(t) + dx, py0 + 12, lab, 11, anc, color='#555')
+    # hullamformak
+    S.line(*[(X(t), Y(v)) for t, v in iwave], color='#ef6c00', w=2)
+    S.line(*[(X(t), Y(v)) for t, v in vwave], color='#1a237e', w=3)
+    # megjegyzesek
+    for i, t in enumerate(notes):
+        S.text(ox + 14, oy + 322 + i * 17, t, 12, color='#222')
+
+
+def sheet4():
+    S = Sheet(1400, 1330, '4/4 – A flyback lecsípése: mi a jó és mi a rossz (magyarázó ábra)')
+    # --- mini kapcsolas
+    S.text(24, 70, 'Mi az a flyback, és miért kell lecsípni?', 16, bold=True)
+    S.wire((60, 110), (340, 110))
+    S.text(60, 100, '+12 V (akku)', 12, bold=True, color='#b71c1c')
+    S.part('L', (150, 110), (150, 200), ['L1', 'Tx tekercs'], side='left')
+    S.dot(150, 110); S.dot(150, 200)
+    S.wire((150, 200), (150, 235))
+    S.line((150, 235), (172, 258), color=PART, w=2)
+    S.wire((150, 272), (150, 300)); S.gnd(150, 300)
+    S.text(180, 250, 'Q1 (kapcsoló)', 12, bold=True)
+    S.text(180, 266, 'kikapcsolt állapot', 11, color='#555')
+    S.wire((150, 200), (290, 200)); S.dot(290, 200)
+    S.part('D', (290, 200), (290, 250), ['D2'], side='right')
+    S.part('TVS', (290, 310), (290, 250), ['DZ1–3'], side='right')
+    S.gnd(290, 310)
+    S.text(166, 160, '↓ áram', 12, bold=True, color='#ef6c00')
+    S.text(200, 222, 'lecsípő ág', 11, color='#555')
+    S.text(60, 330, 'A drain a tekercs alsó vége (a Q1-nél).', 11, color='#555')
+    steps = [
+        ('1. Bekapcsolt Q1:', 'a tekercsen ≈ 0,6 A áram folyik, a tekercs mágneses energiát tárol (mint egy mozgó nehéz kerék).'),
+        ('2. Q1 kikapcsol:', 'az áram nem tud azonnal megszűnni, ezért a tekercs "visszaüt": akkora feszültséget hoz létre, amennyi kell az áram'),
+        ('', 'fenntartásához. Ez a flyback-tüske: U = L · ΔI / Δt. Gyors kikapcsolásnál több száz voltig is eljuthat.'),
+        ('3. Lecsípés nélkül', 'a drain tüskéje meghaladja a Q1 határát (55 V), a MOSFET elromlik.'),
+        ('4. Lecsípéssel:', 'a D2 + 3 zener (összesen ≈ 38 V) a drain és a föld között addig nem vezet, amíg a feszültség el nem éri a határt.'),
+        ('', 'Ott "kinyit", mint egy túlfolyó: a feszültség nem nő tovább, és az áram biztonságosan a földbe folyik le.'),
+        ('A cél:', 'a lecsípés elég magas legyen, hogy az áram gyorsan (≈ 25 µs) lecsengjen, de a Q1 határa (55 V) alatt maradjon.'),
+    ]
+    y = 105
+    for a, b in steps:
+        S.o.append('<text x="430" y="%g" font-size="14" fill="%s"><tspan font-weight="bold">%s</tspan> %s</text>' % (y, TXT, a, b))
+        y += 26
+    S.text(430, y + 10, 'Hogyan olvasd az ábrákat: a kék vonal a Q1 drain feszültsége, a narancs a tekercs árama (csak az alakja számít).', 13, color='#555')
+    S.text(430, y + 30, 'Az ábrák szemléltetők (számolt, idealizált alakok), nem mért adatok.', 13, color='#555')
+
+    ox1, ox2, oy1, oy2 = 30, 710, 370, 750
+    clamp_panel(
+        S, ox1, oy1, 'A) Nincs lecsípés', 'ROSSZ', False,
+        [(-20, .3), (0, .3), (.4, 80), (1.8, 80), (2.6, 4), (4.5, 42), (6.5, 3), (9, 26), (13, 7), (19, 17), (26, 10.5), (35, 12.5), (60, 12), (120, 12)],
+        [(-20, 30), (0, 30), (1, 0), (120, 0)],
+        ['A tüske sok száz volt is lehet (az ábrán a skála fölé lóg), a Q1 lavinába megy és megsérül.',
+         'A tüske után hosszan, csillapítatlanul rezeg: ez a mérést is zavarja.'])
+    clamp_panel(
+        S, ox2, oy1, 'B) Túl magas lecsípés (pl. 4 zener, ≈ 62 V)', 'ROSSZ', False,
+        [(-20, .3), (0, .3), (.4, 62), (14, 62), (15, 12), (17, 17), (20, 10.5), (24, 12.4), (32, 12), (120, 12)],
+        [(-20, 30), (0, 30), (14, 0), (120, 0)],
+        ['A tető 55 V fölött van: a Q1 Vds,max határát túllépi, rövid idő alatt is károsodhat.',
+         'Az áram gyorsan lecseng, de ezt a nyereséget nem éri meg a MOSFET kockázata.'])
+    clamp_panel(
+        S, ox1, oy2, 'C) Jó lecsípés (≈ 36–39 V)', 'JÓ', True,
+        [(-20, .3), (0, .3), (.4, 38), (23, 38), (25, 20), (27, 14), (29.5, 11), (33, 12.3), (40, 12), (120, 12)],
+        [(-20, 30), (0, 30), (23, 0), (120, 0)],
+        ['Lapos tető 36–39 V-on, a Q1 határa (55 V) alatt, ≈ 25 µs alatt lecseng az áram.',
+         'Utána sima visszaesés a 12 V-ra (jól beállított Rd), az S1 mintavételkor (60 µs) már nyugalom van.'])
+    clamp_panel(
+        S, ox2, oy2, 'D) Túl alacsony lecsípés (pl. 1 zener, ≈ 18 V)', 'ROSSZ', False,
+        [(-20, .3), (0, .3), (.4, 18), (100, 18), (104, 12), (120, 12)],
+        [(-20, 30), (0, 30), (100, 0), (120, 0)],
+        ['A tüske ártalmatlan, de a tekercs árama túl lassan fogy el (≈ 100 µs).',
+         'Az S1 mintavételkor (60 µs) még a tekercs árama zavar, az örvényáram "farkát" nem látni.'])
+
+    # --- osszefoglalas
+    y = 1140
+    S.o.append('<rect x="30" y="%d" width="1340" height="160" fill="#f5f5f5" stroke="#999" rx="6"/>' % y)
+    S.text(46, y + 26, 'Rövid szabályok', 15, bold=True)
+    S.lines(46, y + 50, [
+        '• A lecsípés feszültsége ≈ a zener-sor összege + a D2 nyitófeszültsége (≈ 0,7 V). Három 12–13 V-os zener + D2 ≈ 37–40 V.',
+        '• A tekercs árama kb. ennyi idő alatt cseng le: t ≈ L · I / (U_lecsípés − U_akku) = 1 mH · 0,6 A / (38 V − 12 V) ≈ 23 µs.',
+        '• Magasabb lecsípés → gyorsabb lecsengés, de a Q1 határa (55 V) fölé nem mehetsz. Alacsonyabb lecsípés → lassabb, és az S1 mintavétel (60 µs) is zavart lehet.',
+        '• Szkóppal (10×-es szonda, rövid földelés) a drain csúcsa legyen 50 V alatt; a tető lapos, 36–39 V körül, majd sima visszaesés a 12 V-ra.',
+        '• Ha a T_ON-t növeled, nő a csúcsáram és a tüske energiája: a lecsípést mindig újra ellenőrizd.',
+    ], 13)
+    S.save(OUT + '4_lecsipes_magyarazat.svg')
+
+
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '')
 if __name__ == '__main__':
-    sheet1(); sheet2(); sheet3()
-
+    sheet1(); sheet2(); sheet3(); sheet4()
 
 
