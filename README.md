@@ -24,6 +24,8 @@ A Q2 lezárásakor a mágneses tér gyorsan összeomlik. Ez a tekercsben nagy fe
 ### 3. A DD elrendezés és a közvetlen áthallás kioltása
 Az adó mágneses terének közvetlenül az RX-be jutó része sokszorosan nagyobb lenne a fém jelénél. A két D alakú tekercs átfedésénél azonban a vevőtekercs két felét az adótér ellentétes irányban metszi, ezért a **kölcsönös induktivitás (M) a megfelelő átfedésnél nullára csökken**. A pontos átfedés a beállítási eljárás (DD beállító mód) feladata. A nullpont két oldalán M előjele ellentétes, ezért a beállításkor az előjelváltást kell keresni.
 
+![DD-tekercs](doc/DD-coil.svg)
+
 Ennek következtében fém nélkül az RX csak a maradék áthallást és a zajt kapja, fém jelenlétekor viszont az örvényáram terének nem kioltott része indukál feszültséget. A jel tehát a nulláról indul, ezért nagy az érzékenység, és a mélység a tekercs méretével nő. A projektben használt kis D tekercsekkel (6 cm × 5 cm) a mélység kb. 8 cm.
 
 ### 4. Jelfeldolgozás
