@@ -45,9 +45,6 @@ A fázis (azaz az S1 és S2 időbeli viszonya) elvileg megkülönbözteti a vasa
 
 1. Az IRLZ44N (Q2) 60 µs-ra bekapcsol, a **Tx tekercs** (Ltx1) árama nő.
 2. Kikapcsoláskor a flyback-tüskét a D2 (UF4007) és a D3 (ZPY36, 1 W) korlátozza; a névleges **lecsípési szint** nagyjából 37 V.
-
-![lecsípés magyarázata](doc/lecsipes_magyarazat.svg)
-
 3. A tranziens lecsengését az Ltx1-gyel párhuzamos R15 + R16 ág (1 kΩ fix ellenállás + 4,7 kΩ-os trimmer) csillapítja. A fémben indukált örvényáram lassabban cseng le; ez a mérendő „farok”.
 4. A **külön Rx tekercs** (Lrx1) az Ltx1-gyel DD elrendezésben (részben egymásra csúsztatva) helyezkedik el, így a közvetlen áthallás közel nulla, és az erősítőbe csak a fém által keltett jel jut.
 5. A Nano 1 kHz-en ismétel, és impulzusonként két ponton mintavételez az ADC-vel: **S1** a kikapcsolás után 60 µs-mal, **S2** (alapvonal) 600 µs-mal.
@@ -102,7 +99,7 @@ Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s
 
 ### Miért elég a Nano?
 
-A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A KiCad-rajz szerinti két erősítőfokozat névleges, összesített erősítése kb. ×121, így ez az Rx-nél ≈ 40 µV/LSB. A 100 impulzus átlagolása az ADC saját zajával együtt 0,1 LSB alá viszi a felbontást, ami a Pico valós (kb. 9 bites, 3,3 V-os) felbontásával egyenértékű. A mintavételi időzítést a Timer1 (0,5 µs) adja, az impulzus közben a megszakítások tiltva vannak.
+A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A két erősítőfokozat névleges, összesített erősítése kb. ×121, így ez az Rx-nél ≈ 40 µV/LSB. A 100 impulzus átlagolása az ADC saját zajával együtt 0,1 LSB alá viszi a felbontást, ami a Pico valós (kb. 9 bites, 3,3 V-os) felbontásával egyenértékű. A mintavételi időzítést a Timer1 (0,5 µs) adja, az impulzus közben a megszakítások tiltva vannak.
 
 ## DD tekercsek
 
@@ -155,9 +152,11 @@ Ha az erősítő telítésbe megy (az S1 a 0 vagy 1023 közelében), a fejléc `
 
 #### Flyback-védelem
 
-Q2 kikapcsolásakor a tekercs árama nem tud azonnal megszűnni, ezért flyback-feszültség keletkezik. A KiCad-rajzon a lecsípő ág D2 (UF4007) és D3 (ZPY36, 1 W) soros kapcsolata; a lecsípés névleges szintje a zenerfeszültség és a D2 nyitófeszültségének összege. A Q2 IRLZ44N adatlap szerinti VDS-határa 55 V, ezért a `T_ON` növelése előtt szkóppal ellenőrizd, hogy a drain csúcsa **50 V alatt** marad.
+Q2 kikapcsolásakor a tekercs árama nem tud azonnal megszűnni, ezért flyback-feszültség keletkezik. A lecsípő ág D2 (UF4007) és D3 (ZPY36, 1 W) soros kapcsolata; a lecsípés névleges szintje a zenerfeszültség és a D2 nyitófeszültségének összege. A Q2 IRLZ44N adatlap szerinti VDS-határa 55 V, ezért a `T_ON` növelése előtt szkóppal ellenőrizd, hogy a drain csúcsa **50 V alatt** marad.
 
-Az Rx bemeneténél a KiCad-rajz R13 = 10 kΩ soros ellenállást mutat az U2A bemenete előtt; az Lrx1-gyel párhuzamosan (a Vmid felé) az R14 (2,2 kΩ-os trimmer) csillapít. A rajz nem mutat külön védődiódát. A Vmid osztót R6 (felső) és R7 (alsó) alkotja, egyenként 100 kΩ.
+![lecsípés magyarázata](doc/lecsipes_magyarazat.svg)
+
+Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete előtt; az Lrx1-gyel párhuzamosan (a Vmid felé) az R14 (2,2 kΩ-os trimmer) csillapít. A Vmid osztót R6 (felső) és R7 (alsó) alkotja, egyenként 100 kΩ.
 
 ## Alkatrészlista
 
@@ -177,7 +176,7 @@ Az Rx bemeneténél a KiCad-rajz R13 = 10 kΩ soros ellenállást mutat az U2A b
 
 ## Beüzemelés (ebben a sorrendben)
 
-1. Első bekapcsoláskor áramkorlátos tápról ellenőrizd a tápot. A külső táp a KiCad-rajz szerinti `+BATT` bemenetre kerül, a Nano saját VIN bemenetén keresztül; külön L7805 nincs a kapcsolásban. Ellenőrizd, hogy a Nano 5 V-os sínjén a modulnak megfelelő tápfeszültség van.
+1. Első bekapcsoláskor áramkorlátos tápról ellenőrizd a tápot. A külső táp a `+BATT` bemenetre kerül, a Nano saját VIN bemenetén keresztül; külön L7805 nincs a kapcsolásban. Ellenőrizd, hogy a Nano 5 V-os sínjén a modulnak megfelelő tápfeszültség van.
 2. A firmware-ben kezdetben `T_ON = 60 µs`; első próbánál csökkentsd ezt `config.h`-ban, és csak kis áramkorlát mellett tesztelj.
    - **Drain-mérés:** szkóppal (10×-es szonda, rövid földelés) nézd a Q2 drainjét. Flyback csak induktív terheléssel van, ezért ehhez a méréshez kösd be az Ltx1-et, az Rx jelút maradhat üresen. Arduino D2 hajtja Q2 kapuját az R17 (100 Ω) soros ellenálláson át; R18 (10 kΩ) tartja alacsonyan a kaput.
    - **Elvárás:** D2 és D3 névleges értéke alapján a lecsípés nagyjából 37 V körül várható, de az impulzusáram és a parazita induktivitás módosíthatja a csúcsot. A Q2 drainjén mért csúcs maradjon **50 V alatt** (Q2 VDS,max = 55 V). Ha magasabb, ne növeld a `T_ON`-t; ellenőrizd D2, D3 és a bekötést.
@@ -192,11 +191,11 @@ Az Rx bemeneténél a KiCad-rajz R13 = 10 kΩ soros ellenállást mutat az U2A b
    - **Elvárás:** a tekercs és a szerelés miatt a pontos beállítást szkóppal kell ellenőrizni. Ha a jel lecsengése nem fejeződik be a mintavételig, a `T_SAMPLE1` növelése szükséges (lásd az 5. pontot).
 4. Kösd be az Lrx1-et, és ellenőrizd az analóg jelutat. Az R13 (10 kΩ) az U2A bemenete elé kerül, az Lrx1-gyel párhuzamosan az R14 (2,2 kΩ-os trimmer) csillapít; R5 (390 Ω) az U2D kimenete és az Arduino A0 között van, nem trimmer. A Vmid-et az R6/R7 (egyenként 100 kΩ) osztó, a C4 és az U2C puffer állítja elő; a rajz nem tartalmaz külön Rx-védődiódát.
    - **Nyugalmi szint:** a tekercsek levegőben, fémtől távol az A0 nyugalmi értéke kb. **2,5 V** legyen. A soros monitoron `s1` ≈ 512 és `s2` ≈ 512. Ha ez jelentősen eltér, ellenőrizd a Vmid-et, a tápot és az MCP6004 bekötését.
-   - **Mérés:** szkóppal az **U2A kimenetén (1. láb)**, az U2B kimenetén (7. láb) és az U2D kimenetén (14. láb) ellenőrizd a lecsengést a Tx kikapcsolása után. Triggerelj a gate lefutó élére, és tarts egy vasat a tekercshez, hogy a lecsengés látszódjon. Az U2A/U2B fokozatokat, valamint az U2D puffert lásd a KiCad-rajzon.
+   - **Mérés:** szkóppal az **U2A kimenetén (1. láb)**, az U2B kimenetén (7. láb) és az U2D kimenetén (14. láb) ellenőrizd a lecsengést a Tx kikapcsolása után. Triggerelj a gate lefutó élére, és tarts egy vasat a tekercshez, hogy a lecsengés látszódjon. Az U2A/U2B fokozatokat, valamint az U2D puffert lásd a kapcsolási rajzon.
 5. A DD beállító móddal állítsd az átfedést minimális áthallásra (lásd fent), és rögzítsd.
 6. Nézd meg az U2A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](src/config.h)).
 7. Tarts egy vasat a tekercshez: a jel nőjön. Az `abs()` miatt a polaritás nem számít, de a soros monitoron (`sig`) látod.
-8. Ha telít (`TULVEZERLES`), javítsd az átfedést. Az erősítő ellenállásait ne módosítsd találomra; az értékeket a KiCad-rajz rögzíti.
+8. Ha telít (`TULVEZERLES`), javítsd az átfedést. Az erősítő ellenállásait ne módosítsd találomra; az értékeket a kapcsolási rajz rögzíti.
 9. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
 
 ## Ismert korlátok/kockázatok
@@ -216,4 +215,4 @@ pio run                      # régi bootloaderes Nano (nano környezet)
 pio run -e nano_newboot      # új (115200 baudos) bootloader
 pio run -t upload            # feltöltés
 ```
-Az USB-t programozáshoz használd. A KiCad-rajzon nincs külön USB-visszatáplálást gátló dióda; a külső táp és az USB egyidejű használatánál vedd figyelembe a használt Nano-modul tápáramkörét.
+Az USB-t programozáshoz használd. A kapcsolás nem tartalmaz külön USB-visszatáplálást gátló diódát; a külső táp és az USB egyidejű használatánál vedd figyelembe a használt Nano-modul tápáramkörét.
