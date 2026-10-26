@@ -9,7 +9,7 @@
 
 // A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
 // https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
-#define __DEBUG__
+// #define __DEBUG__
 // #define __DEBUG_SERIAL_LOGGING__
 
 #include <Arduino.h>
