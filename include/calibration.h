@@ -1,13 +1,14 @@
+#pragma once
+
 /**
  * @brief Mélységkalibráció az S ≈ K / d³ modell és az EEPROM alapján.
  */
-#pragma once
 
 #include <Arduino.h>
 
 /**
  * @brief Betölti és ellenőrzi az EEPROM-ban tárolt kalibrációs értéket.
- * @return Nincs visszatérési érték.
+ *
  */
 void calLoad();
 
@@ -20,7 +21,7 @@ bool calIsSet();
 /**
  * @brief Beállítja és az EEPROM-ba menti a kalibrációs állandót.
  * @param k A mentendő kalibrációs állandó.
- * @return Nincs visszatérési érték.
+ *
  */
 void calSet(float k);
 

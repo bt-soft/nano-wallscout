@@ -1,21 +1,25 @@
-#include "calibration.h"
-
 #include <EEPROM.h>
 #include <math.h>
 
+#include "calibration.h"
 #include "config.h"
 
-static float g_calK = 0;
+static float g_calK = 0; // A kalibrációs állandó tárolása.
 
+// A kalibrációs mélység köbének előre kiszámított értéke.
 static const float CAL_DEPTH_CUBED = CAL_DEPTH_CM * CAL_DEPTH_CM * CAL_DEPTH_CM;
 
 /**
  * @brief Betölti az EEPROM-ból és tartomány szerint ellenőrzi a kalibrációt.
- * @return Nincs visszatérési érték.
+ *
  */
 void calLoad() {
-  EEPROM.get(0, g_calK);
-  if (!(g_calK > 0 && g_calK < 1e9f)) g_calK = 0;
+    EEPROM.get(0, g_calK); // Betölti a kalibrációs állandót az EEPROM-ból.
+
+    // Ellenőrzi, hogy a kalibrációs állandó érvényes tartományban van-e.
+    if (!(g_calK > 0 && g_calK < 1e9f)) {
+        g_calK = 0; // Érvénytelen érték esetén alaphelyzetbe állítja a kalibrációt.
+    }
 }
 
 /**
@@ -27,11 +31,11 @@ bool calIsSet() { return g_calK > 0; }
 /**
  * @brief Eltárolja a kalibrációs állandót a memóriában és az EEPROM-ban.
  * @param k A tárolandó kalibrációs állandó.
- * @return Nincs visszatérési érték.
+ *
  */
 void calSet(float k) {
-  g_calK = k;
-  EEPROM.put(0, g_calK);
+    g_calK = k;            // Beállítja a kalibrációs állandót.
+    EEPROM.put(0, g_calK); // Elmenti az EEPROM-ba.
 }
 
 /**

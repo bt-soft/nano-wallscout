@@ -7,7 +7,7 @@
 
 /**
  * @brief Inicializálja az I²C-kapcsolatot és az OLED-kijelzőt.
- * @return Nincs visszatérési érték.
+ *
  */
 void displayInit();
 
@@ -18,9 +18,9 @@ void displayInit();
  * @param vbat Az akkumulátor feszültsége voltban.
  * @param overload Igaz, ha az erősítő túlvezérlésben van.
  * @param det Igaz, ha a jel alapján találat történt.
- * @return Nincs visszatérési érték.
+ *
  */
-void drawNormal(const char* msg, float mag, float vbat, bool overload, bool det);
+void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det);
 
 /**
  * @brief Megjeleníti az áthallást és a telítési adatokat DD-beállító módban.
@@ -30,6 +30,6 @@ void drawNormal(const char* msg, float mag, float vbat, bool overload, bool det)
  * @param overload Igaz, ha az erősítő túlvezérlésben van.
  * @param dcFault Igaz, ha az A0 nyugalmi DC-szintje hibás.
  * @param vbat Az akkumulátor feszültsége voltban.
- * @return Nincs visszatérési érték.
+ *
  */
 void drawSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat);

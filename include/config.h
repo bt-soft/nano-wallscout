@@ -51,7 +51,7 @@ static const float SETUP_FULL = 500.0f;
 /** @brief A kalibráláshoz használt ismert mélység centiméterben. */
 static const float CAL_DEPTH_CM = 5.0f;
 
-/** @brief Az akkumulátor feszültségosztójának aránya. */
+/** @brief Az akkumulátor feszültségosztójának aránya. (100k + 33k) / 33k */
 static const float BATT_DIV = (100.0f + 33.0f) / 33.0f;
 
 /** @brief Az indulási nullázáshoz szükséges mérési ciklusok száma. */

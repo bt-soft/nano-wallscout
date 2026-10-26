@@ -14,7 +14,7 @@ extern bool g_zeroSeen, g_calSeen;
 
 /**
  * @brief Inicializálja az érzékelőt, az ADC-t, az időzítőt és a bemeneteket.
- * @return Nincs visszatérési érték.
+ *
  */
 void sensorInit();
 
@@ -23,9 +23,9 @@ void sensorInit();
  * @param sum1 Az S1-minták összegének kimeneti hivatkozása.
  * @param sum2 Az S2-minták összegének kimeneti hivatkozása.
  * @param ch Az ADC-csatorna; a 2-es csatorna a DD-csatolás mérésére szolgál.
- * @return Nincs visszatérési érték.
+ *
  */
-void measure(uint32_t& sum1, uint32_t& sum2, uint8_t ch);
+void measure(uint32_t &sum1, uint32_t &sum2, uint8_t ch);
 
 /**
  * @brief Megméri az A0 nyugalmi szintjét nyolc minta átlagából.
