@@ -16,17 +16,17 @@
 ## Az induction balance működési elve
 A kereső két tekercset használ: egy **adó (TX)** és egy **vevő (RX)** tekercset. A tekercsek D alakúak, és az egyenes oldalaikkal részben egymásra vannak csúsztatva (DD elrendezés). Az alábbiak a működés fizikai alapjait foglalják össze.
 
-### 1. Az adóimpulzus és a mágneses tér
+### Az adóimpulzus és a mágneses tér
 A Q2 kapcsolótranzisztor bekapcsolásakor az Ltx1 adótekercsre a tápfeszültség kerül, és az árama az induktivitás miatt lineárisan nő: `I ≈ U · t / L`. 12 V-nál, 60 µs-os impulzusnál és 1 mH-s tekercsnél ez elméletileg kb. 0,7 A; a tekercs ellenállása miatt a valós csúcsáram kb. 0,6 A. Az áram körül mágneses tér épül fel, amelynek energiája `E = ½ · L · I²`.
 
-### 2. Kikapcsolás és örvényáramok
+### Kikapcsolás és örvényáramok
 A Q2 lezárásakor a mágneses tér gyorsan összeomlik. Ez a tekercsben nagy feszültségtüskét (flyback) okoz, amelyet a D2 és D3 diódák korlátoznak. A gyorsan változó tér a közelében lévő fémtárgyban **örvényáramot** indukál. Az örvényáram saját mágneses teret hoz létre, amely lecsengés közben visszahat a tekercsekre.
 
 - Az örvényáram lecsengésének időállandója függ a tárgy méretétől, vezetőképességétől és mágneses permeabilitásától. A nagyobb, jobban vezető tárgynál a lecsengés hosszabb.
 - A tárgy nélküli (levegős) esetben a tekercs saját tranziense gyorsan lecseng, ezért a rövid idő múlva mért jel gyakorlatilag nulla.
 - A tárgy jelenléte így a lecsengés „farkában” mérhető többletjelként jelenik meg.
 
-### 3. A DD elrendezés és a közvetlen áthallás kioltása
+### A DD elrendezés és a közvetlen áthallás kioltása
 Az adó mágneses terének közvetlenül az RX-be jutó része sokszorosan nagyobb lenne a fém jelénél. A két D alakú tekercs átfedésénél azonban a vevőtekercs két felét az adótér ellentétes irányban metszi, ezért a **kölcsönös induktivitás (M) a megfelelő átfedésnél nullára csökken**. A pontos átfedés a beállítási eljárás (DD beállító mód) feladata. A nullpont két oldalán M előjele ellentétes, ezért a beállításkor az előjelváltást kell keresni.
 
 ![DD-tekercs](doc/DD-coil.svg)
@@ -37,7 +37,7 @@ A nagyobb tekercs megfelelő kialakítás esetén növelheti az érzékelési m�
 
 A projektben alkalmazott, a kisebb 6 × 5 cm-es D alakú tekercspárral az érzékelési mélység körülbelül 5-6 cm. Ez az érték kísérletileg meghatározott (fémcsipeszt közelítve a tekercsek felé), illetve a mérési körülményektől és a céltárgy jellemzőitől függ.
 
-### 4. Jelfeldolgozás
+### Jelfeldolgozás
 Az Rx jele a mérendő tárgy hatására csak kis amplitúdójú, ezért az MCP6004 két, nem invertáló fokozata (kb. 11 × 11 = 121-szeres erősítés) erősíti, majd az U2D puffer az A0 bemenetre vezeti. A jelszint a Vmid (≈ 2,5 V) körül van, így a jel pozitív és negatív irányban is mérhető.
 
 A mérés **mintavételes**, impulzusonként két ponton:
@@ -46,10 +46,10 @@ A mérés **mintavételes**, impulzusonként két ponton:
 
 A **jel = S1 − S2**. A különbségképzés kiejti az egyenfeszültségű eltérést és a lassú driftet. 100 impulzus átlagolása a véletlenszerű zajt csökkenti (a zaj nagyjából az átlagolt minták számának négyzetgyökével csökken). A nullázáskor mért, fém nélküli értéket a firmware kivonja, így a megjelenített érték a tárgy hatását mutatja.
 
-### 5. Mélységbecslés
+### Mélységbecslés
 Kis, a tekercstől távoli tárgy esetén az örvényáram jele nagyjából a távolság harmadik hatványával csökken (dipól közelítés): `S ≈ K / d³`. A `K` értéket a kalibrálás határozza meg egy ismert (5 cm) távolságban, innen `d = ∛(K / S)`. Ez a modell a tárgy méretétől és anyagától függ, ezért a kapott érték becslés, nem pontos mérés.
 
-### 6. A fém típusa
+### A fém típusa
 Az impulzus utáni jel lecsengésének időbeli jellemzői elvileg információt hordozhatnak a céltárgy anyagáról. A jelenlegi, két időpontban történő mintavételezés és a hozzá tartozó jelfeldolgozás azonban nem biztosít megbízható anyagazonosítást, ezért ezt a funkciót eltávolítottam a firmware-ből.
 
 ## Működési ciklus
