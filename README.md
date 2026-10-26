@@ -1,6 +1,8 @@
 # Pulzusindukciós (PI) betonvas-kereső – Arduino Nano + DD tekercs + MCP6004 + IRLZ44N + SSD1306
 
-Kézi betonvas-kereső, amely impulzusindukciós (PI) elven, két D alakú tekerccsel (DD elrendezés) működik. Platform: **Arduino Nano (ATmega328P)**.
+> [!INFO]
+> Kézi betonvas-kereső, amely impulzusindukciós (PI) elven, két D alakú tekerccsel (DD elrendezés) működik. 
+> Platform: **Arduino Nano (ATmega328P)**.
 
 | Jellemző | Érték |
 |---|---|
@@ -97,7 +99,8 @@ Mélység: d = ∛(K/S). Ez a mélység becslése, nem pontos mérés.
 > [!WARNING]
 > Ha a fordítás során a [__DEBUG__](https://github.com/bt-soft/nano-wallscout/blob/main/src/main.cpp#L12) makró definiálva van, az AVR debugger 
 > aktiválódik. Ha emellett a [__DEBUG_SERIAL_LOGGING__](https://github.com/bt-soft/nano-wallscout/blob/main/src/main.cpp#L13) makró is definiálva 
-> van, az Arduino soros portján keresztüli naplózás aktiválódik, az AVR debugger viszont nem. **A két funkció egyidejűleg nem használható.**
+> van, az Arduino soros portján keresztüli naplózás aktiválódik, az AVR debugger viszont nem. 
+> **A két funkció egyidejűleg nem használható.**
 
 Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s1=512 s2=510 idle=511 zero=0.40 sig=2.80 vbat=11.8`. Az elején `run` (kereső) vagy `setup ch=A0` (DD beállító mód) áll. Az értékek ADC-egységben (0–1023) vannak, 100 impulzusra átlagolva.
 
