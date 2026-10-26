@@ -7,7 +7,17 @@
  *
  */
 
+// A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
+// https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
+#define __DEBUG__
+// #define __DEBUG_SERIAL_LOGGING__
+
 #include <Arduino.h>
+#if defined(__DEBUG__) && !defined(__DEBUG_SERIAL_LOGGING__)
+#include <app_api.h>
+#include <avr8-stub.h>
+#endif
+
 #include <avr/wdt.h>
 #include <math.h>
 
@@ -419,14 +429,13 @@ static void updateBeeper(uint16_t freq, uint32_t now) {
     }
 }
 
-#ifdef __DEBUG__
-
 /**
  * @brief Kiírja a mérési eredményeket a soros portra.
  * @param m Az aktuális mérési eredmény.
  * @param out Az üzemmód kimeneti adatai.
  *
  */
+#if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
 static void logSerial(const Measurement &m, const Outcome &out) {
 
     Serial.print(st.setupMode ? F("setup") : F("run"));
@@ -465,7 +474,11 @@ static void logSerial(const Measurement &m, const Outcome &out) {
 void setup() {
 
 #ifdef __DEBUG__
+#ifdef __DEBUG_SERIAL_LOGGING__
     Serial.begin(115200);
+#else
+    debug_init();
+#endif
 #endif
 
     sensorInit();  // érzékelő inicializálása
@@ -509,7 +522,8 @@ void loop() {
     } else {
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);
     }
-#ifdef __DEBUG__
+
+#if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
     logSerial(m, out);
 #endif
 }
