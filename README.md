@@ -227,8 +227,8 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 
 
 ## A prototípus próbája
-A prototípus jól viszonylag jól teljesített, bár vannak falak, ahol mindenhol (a teljes felületen) jelez, aminek az okát még nem értem (belső, nem teherhordó válaszfal...).
-Az viszont jól látszik, hogy a stabilitás és  ahsználhatóság miatt kell neki egy NYÁK. Az érzékenységen a kb 1m-es árnyékolt vezetékek ugyan nem rontanak, de nem a földben szeretnék kincseket keresni, hanem a betonfúró száraimat megóvni, így egy kompakt kiépítés szükséges.
+A prototípus jól viszonylag jól teljesített, bár vannak falak, ahol mindenhol (a teljes felületen) jelez, aminek az okát még nem egészen értem (belső, nem teherhordó válaszfal...).
+Az viszont jól látszik, hogy a stabilitás és a kényelmesebb használhatóság miatt kell neki egy NYÁK. Az érzékenységen a kb 1m-es árnyékolt vezetékek ugyan észrevehetően nem rontanak, de nem a földben szeretnék kincseket keresni, hanem a betonfúró száraimat megóvni, így egy kompakt egy kézben használható kiépítés szükséges.
 ![prototípus](doc/prototípus.jpg)
 
 A D-D tekercsek beállítása bár pontosan megoldható, de a rögzítésük azért hagy némi kívánnivalót...
