@@ -226,7 +226,7 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 9. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
 
 
-## A prototípis próbája
+## A prototípus próbája
 A prototípus jól viszonylag jól teljesített, bár vannak falak, ahol mindenhol (a teljes felületen) jelez, aminek az okát még nem értem (belső, nem teherhordó válaszfal...).
 Az viszont jól látszik, hogy a stabilitás és  ahsználhatóság miatt kell neki egy NYÁK. Az érzékenységen a kb 1m-es árnyékolt vezetékek ugyan nem rontanak, de nem a földben szeretnék kincseket keresni, hanem a betonfúró száraimat megóvni, így egy kompakt kiépítés szükséges.
 ![prototípus](doc/prototípus.jpg)
