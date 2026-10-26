@@ -43,9 +43,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="1.4224138"
-     inkscape:cx="388.42424"
-     inkscape:cy="344.83636"
+     inkscape:zoom="2.0115969"
+     inkscape:cx="388.49732"
+     inkscape:cy="400.92526"
      inkscape:window-width="1920"
      inkscape:window-height="1027"
      inkscape:window-x="-8"
@@ -61,7 +61,7 @@
      x="20"
      y="28"
      class="h"
-     id="text1">TX / RX D-tekercspar (felülnézet)</text>
+     id="text1">TX / RX D-tekercspár (felülnézet)</text>
   <!-- Meretarany: 2 px = 1 mm. A D kozepvonala: 150 mm egyenes oldal + felellipszis (125 x 75 mm) -->
   <g
      fill="none"
@@ -252,7 +252,7 @@
        sodipodi:role="line"
        id="tspan46"
        x="103.34545"
-       y="421.41818">Az átfedésdés helyét, a nullpontot meg kell keresni,</tspan><tspan
+       y="421.41818">Az átfedésdés helyét - a nullpontot - meg kell keresni,</tspan><tspan
        sodipodi:role="line"
        id="tspan47"
        x="103.34545"

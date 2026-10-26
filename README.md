@@ -105,6 +105,15 @@ A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A két erősítőfokozat névleges, 
 
 ## DD tekercsek
 
+A projektet kifejezetten betonvasak felderítésére terveztem, ezért kezdetben a kisebb tekercsekkel kísérleteztem. Ezek elméleti érzékelési mélysége körülbelül 8 cm, ez azonban erősen becsült, idealizált érték, amely a tényleges mérési körülményektől is jelentősen függ.
+
+A kisebb tekercsméret korlátozhatja az érzékelési mélységet, ezért egy [nagyobb tekercspártól](doc/tekercs-sablon-nagy.svg) potenciálisan nagyobb hatótávolság várható. Ezt elsősorban a tekercsek geometriája, a meghajtóáram, a működési frekvencia és a vevő érzékenysége határozza meg. Fontos azonban, hogy a tekercs lineáris méretének 2,5-szeres növelése nem eredményez automatikusan ugyanilyen arányú növekedést az érzékelési mélységben.
+
+A projektet nagyobb tekercsekkel egyelőre nem teszteltem, így az ezekkel elérhető hatótávolság kísérleti úton igazolandó. A kipróbáláshoz kiindulási pontként a nagy sablonhoz egy 60 menetes, 0,3 mm átmérőjű CuZ huzalból készült tekercspárt javaslok.
+
+
+Az alábbi adatok a [kisebb sablonra](doc/tekercs-sablon-kicsi.svg) vonatkoznak.
+
 | Paraméter | Érték |
 |---|---|
 | Tekercsek | 2 db D-tekercs, egyenként 1 mH, 6 cm egyenes oldal, 5 cm D-mélység, 80 menet, Ø0,3 mm CuZ |
@@ -118,15 +127,16 @@ A 10 bites, 5 V-os ADC lépése ≈ 4,9 mV. A két erősítőfokozat névleges, 
 Két azonos tekercs szükséges: **80 menet, 0,3 mm-es zománcozott rézhuzal (CuZ)**, D alakú, **60 mm egyenes oldallal és 50 mm mélységgel** (a huzal középvonalán mérve). Az 1:1 méretarányú, nyomtatható sablon: [kis tekercssablon](doc/tekercs-sablon-kicsi.svg) (100%-os méretben nyomtasd). A vevőtekercset alufóliával és földvezetékkel árnyékold a kapacitív csatolás ellen.
 
 #### Lépések
-1. Tekerj **80 menetet** szorosan, egymás mellé a sablon hornyaiba illesztett csapok (pl. [fogpiszkálók](doc/tekercs-1-Sablonra.jpg)) köré. Mindkét végén hagyj kb. 30 cm-es kivezetést.
-2. [Kösd át a tekercset ideiglenesen](doc/tekercs-2-Átmeneti_bandázs.jpg) szalaggal (pl. vékony maszkolószalag-csíkkal) **több helyen**, hogy a köteg együtt maradjon.
+0. Készítsd el a tekercs vázát a sablon alapján! Az 1:1 méretarányban kinyomtatott sablont rögzítsd egy rétegelt lemezre. A sablonon jelölt furatok helyét Ø1,5 mm-es fúrószárral [fúrd át a lemezbe](doc/Tekercs-váz-1.jpg). Ezután vágj félbe néhány fogpiszkálót, majd a hegyes végüket ragasztóba mártva illeszd őket a furatokba. Ügyelj arra, hogy a [fogpiszkálók](doc/Tekercs-váz-2.jpg) stabilan álljanak, mert ezek fogják vezetni és megtartani a tekercs huzalát.
+1. Tekerj **80 menetet** szorosan, szabálytalanul (nem kell egyvonalban) egymás mellé a sablon hornyaiba illesztett [csapok](doc/tekercs-1-Sablonra.jpg) köré. Mindkét végén hagyj kb. 30 cm-es kivezetést.
+2. [Kösd át a tekercset ideiglenesen](doc/tekercs-2-Átmeneti_bandázs.jpg) pl. vékony maszkolószalag-csíkkal **több helyen**, hogy a köteg együtt maradjon.
 3. A csapokról [emeld le a köteget](doc/tekercs-3-Sablonról_leszedve.jpg). Az alak már D, külön hajlítani nem kell.
 4. Az ideiglenes kötéseket fokozatosan eltávolítva [tekerd körbe a tekercset pl. teflonszalaggal](doc/tekercs-4-TeflonSzalag.jpg).
 5. Mérd meg az induktivitást. A várt érték kb. **1 mH**. (A méréshez saját [induktivitásmérőt](https://github.com/bt-soft/nano-inductance-meter) készítettem.)
 
 <img src="https://raw.githubusercontent.com/bt-soft/nano-wallscout/refs/heads/main/doc/tekercs-6-L_m%C3%A9r%C3%A9s.jpg" width="60%">
 
-6. A vevőtekercset árnyékold. Szigetelésmentes, vékony rézdróttal tekerd körbe a köteget úgy, hogy **ne alkosson záródó vezetőhurkot**, azaz a vége ne érjen az elejéhez. Erre vékony csíkokra vágott [alufóliát tekerj](doc/tekercs-5-1-Árnyékolás.jpg); az alufólia a szigeteletlen rézdróttal érintkezve leföldelhető. Az alufólia **szintén ne alkosson zárt hurkot**: hagyj [rést az árnyékoláson](doc/tekercs-5-2-Árnyékolás_hézag.jpg).
+6. A vevőtekercset mindenképpen árnyékold (az adót, ha nem vagy rest). Szigetelésmentes, vékony rézdróttal tekerd körbe a köteget úgy, hogy **ne alkosson záródó vezetőhurkot**, azaz a vége ne érjen az elejéhez. Erre vékony csíkokra vágott [alufóliát tekerj](doc/tekercs-5-1-Árnyékolás.jpg); az alufólia a szigeteletlen rézdróttal érintkezve **leföldelhető**. Az alufólia **szintén ne alkosson zárt hurkot**: hagyj [rést az árnyékoláson](doc/tekercs-5-2-Árnyékolás_hézag.jpg).
 7. A DD átfedés behangolása után a tekercseket **merev, fém- és ferritmentes vázra** (fa, műanyag, textolit) rögzítsd. A behangolás igen érzékeny, ezért a tekercsek helyzete rögzítés után nem változhat.
 
 
@@ -176,7 +186,7 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 | – | Ellenállások: R1 = 150 Ω (buzzer soros), R2 = 1 kΩ (Q1 bázis), R3 = 100 kΩ és R4 = 33 kΩ (akkuosztó), R5 = 390 Ω (U2D kimenet → A0), R6 = R7 = 100 kΩ (Vmid osztó), R8 = 100 kΩ és R9 = 10 kΩ (U2B), R10 = 1 kΩ (U2A → U2B), R11 = 100 kΩ és R12 = 10 kΩ (U2A), R13 = 10 kΩ (Rx soros bemenet), R14 = 2,2 kΩ-os trimmer (Rx csillapítás), R15 = 1 kΩ és R16 = 4,7 kΩ-os trimmer (Tx csillapítás), R17 = 100 Ω (Q2 kapu soros), R18 = 10 kΩ (Q2 kapu lehúzó) |
 | – | Kondenzátorok: C1 = 100 µF / 25 V és C2 = 100 nF (+BATT), C3 = 100 nF (A1 akkuosztó), C4 = 10 µF (Vmid), C5 = 100 nF és C6 = 1000 µF / 16 V (+5 V) |
 
-## Beüzemelés (ebben a sorrendben)
+## Beüzemelés
 
 1. Első bekapcsoláskor áramkorlátos tápról ellenőrizd a tápot. A külső táp a `+BATT` bemenetre kerül, a Nano saját VIN bemenetén keresztül; külön L7805 nincs a kapcsolásban. Ellenőrizd, hogy a Nano 5 V-os sínjén a modulnak megfelelő tápfeszültség van.
 2. A firmware-ben kezdetben `T_ON = 60 µs`; első próbánál csökkentsd ezt `config.h`-ban, és csak kis áramkorlát mellett tesztelj.
