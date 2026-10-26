@@ -225,6 +225,13 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 8. Ha telít (`TULVEZERLES`), javítsd az átfedést. Az erősítő ellenállásait ne módosítsd találomra; az értékeket a kapcsolási rajz rögzíti.
 9. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
 
+
+## Próba 
+
+Működni látszik a dolog ...
+![próba scanning](doc\fal-scanning.jpg)
+
+
 ## Ismert korlátok/kockázatok
 
 - Az MCP6004 (1 MHz GBW) túlvezérlés utáni felépülése lassú lehet. Az R13 bemeneti soros ellenállás nem helyettesíti a külön védődiódát; a mintavételi késleltetést mérés alapján állítsd be.
