@@ -227,8 +227,15 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 
 
 ## Próba 
+A rpototípus jól viszonylag jól teljesített, bár vannak falak, ahol mindenhol (a teljes felületen) jelez, aminek az okát még nem értem.
+Az viszont jól látszik, hogy kell neki egy NYÁK, az érzékenységen a kb 1m-es árnyékolt vezetékek ugyan nem rontanak, de nem a földben szeretnék kincseket keresni, hanem a betonfúró száraimat megóvni, így egy kompakt kiépítés szükséges.
+![prototípus](doc/prototípus.jpg)
 
-Működni látszik a dolog ...
+A D-D tekercsek beállítása bár pontosan megoldható, de a rögzítésük azért hagy némi kívánnivalót...
+![prototípus](doc/DD-beállítás.jpg)
+
+Mindenesetre működni látszik a kütyü: a falon való tesztkeresés némi rendszerességet mutat, egyelőre csak a függőleges vasakat deritettem fel, kb 53cm-enként van egy erősebb jelzés... Bár sosem láttam egy teherhordó betonfal vasalását, de elhiszem, hogy ilyen lehet.
+
 ![próba scanning](doc/fal-scanning.jpg)
 
 
