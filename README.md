@@ -229,7 +229,7 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 ## Próba 
 
 Működni látszik a dolog ...
-![próba scanning](doc\fal-scanning.jpg)
+![próba scanning](doc/fal-scanning.jpg)
 
 
 ## Ismert korlátok/kockázatok
