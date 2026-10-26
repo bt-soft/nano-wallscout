@@ -9,7 +9,7 @@
 
 // A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
 // https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
-// #define __DEBUG__
+#define __DEBUG__
 // #define __DEBUG_SERIAL_LOGGING__
 
 #include <Arduino.h>
@@ -26,6 +26,7 @@
 #include "config.h"
 #include "display.h"
 #include "sensor.h"
+#include "utils.h"
 
 /**
  * @brief A mérőjel ADC-csatornája; a beállító mód is ezt a jelutat használja.
@@ -447,19 +448,19 @@ static void logSerial(const Measurement &m, const Outcome &out) {
     Serial.print(F(" diff=")); // Különbség a mérés és a nulla között
     Serial.print(m.diff, 2);
 
-    Serial.print(F(" s1=")); // S1 érzékelő átlagértéke
+    Serial.print(F(" s1=")); // S1 mérés átlagértéke, a kikapcsolás után 60 µs-mal. Ekkor a tárgy örvényárama még jelen van.
     Serial.print(m.s1Mean, 0);
 
-    Serial.print(F(" s2=")); // S2 érzékelő átlagértéke
+    Serial.print(F(" s2=")); // S2 mérés átlagértéke, a kikapcsolás után 600 µs-mal. Ekkor az örvényáram lecsengett, így ez az alapvonal (offset, drift).
     Serial.print(m.s2Mean, 0);
 
-    Serial.print(F(" idle=")); // Inaktív állapot mérése
+    Serial.print(F(" idle=")); // Inaktív állapot mérése (DC-hiba)
     Serial.print(m.idle);
 
-    Serial.print(F(" zero=")); // Nulla érték
+    Serial.print(F(" zero=")); // Nulla (referencia) érték.
     Serial.print(st.zero, 2);
 
-    Serial.print(F(" sig=")); // Jelszint
+    Serial.print(F(" sig=")); // Jelszint (a detektor bemenete)
     Serial.print(out.sig, 2);
 
     Serial.print(F(" vbat=")); // Akkumulátor feszültség
@@ -524,6 +525,11 @@ void loop() {
     }
 
 #if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
-    logSerial(m, out);
+    // 500 milliszekundumonként naplózzuk a soros porton.
+    static long lastLog = 0;
+    if (timeHasPassed(lastLog, 500)) {
+        logSerial(m, out);
+        lastLog = millis();
+    }
 #endif
 }

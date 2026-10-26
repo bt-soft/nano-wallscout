@@ -6,15 +6,19 @@
 #include <Arduino.h>
 
 /**
- * @brief Az Arduino Nano lábkiosztása a KiCad-kapcsolási rajz szerint.
+ * @brief Az Arduino Nano lábkiosztása a kapcsolási rajz szerint.
  *
- * D4: kalibrálógomb; D5: nullázó- és DD-beállítógomb; D2: Q1 kapuja.
- * D11: hangjelző; A0: mérőjel; A1: akkumulátorfeszültség-osztó.
+ * D4: kalibrálógomb;
+ * D5: nullázó- és DD-beállítógomb;
+ * D2: Q1 kapuja.
+ * D11: hangjelző;
+ * A0: mérőjel;
+ * A1: akkumulátorfeszültség-osztó.
  * A4 és A5: OLED I²C-kapcsolat.
  */
 static const uint8_t PIN_BTN_ZERO = 5;
 static const uint8_t PIN_BTN_CAL = 4;
-#define GATE_BIT PD2
+#define GATE_BIT PD2 // Q1 kapu lábának bitje a PORTD regiszterben
 
 /** @brief A Q1 bekapcsolási ideje mikroszekundumban. */
 static const uint16_t T_ON = 60;
@@ -29,10 +33,9 @@ static const uint16_t T_SAMPLE1 = 60;
  * mikroszekundumban. */
 static const uint16_t T_SAMPLE2 = 600;
 
-/** @brief A DD-csatolás mintavételi időpontja a Q1 bekapcsolása után,
- * mikroszekundumban. */
-
+/** @brief A DD-csatolás mintavételi időpontja a Q1 bekapcsolása után,  mikroszekundumban. */
 static const uint16_t T_COUPLE = 40;
+
 /** @brief Az egy méréshez átlagolt impulzusok száma. */
 static const uint16_t N_PULSES = 100;
 
@@ -60,25 +63,22 @@ static const uint16_t ZERO_UPDATES = 15;
 /** @brief A hosszú gombnyomás küszöbideje milliszekundumban. */
 static const uint32_t LONG_PRESS_MS = 1000;
 
-/**
- * @brief A nullpont lassú követésének súlya küszöb alatti jelnél.
- */
+/** @brief A nullpont lassú követésének súlya küszöb alatti jelnél. */
 static const float DRIFT_FOLLOW = 0.04f;
 
-/** @brief Ennyi egymás utáni állandó mérés (≈3 s) után indul az automatikus
- * újranullázás. */
+/** @brief Ennyi egymás utáni állandó mérés (≈3 s) után indul az automatikus újranullázás. */
 static const uint16_t STEADY_CYCLES = 20;
+
 /** @brief Az automatikus újranullázás súlya mérésenként. */
 static const float REZERO_FOLLOW = 0.05f;
 
 /** @brief Küszöb alatti idő az előjelzár feloldásához milliszekundumban. */
 static const uint16_t POLARITY_RELEASE_MS = 1000;
 
-/** @brief Az exponenciális simítás (jelzés utáni visszamenet) súlya normál
- * üzemmódban. */
+/** @brief Az exponenciális simítás (jelzés utáni visszamenet) súlya normál üzemmódban. A kisebb érték lassabban követi a jelváltozásokat.  */
 static const float SMOOTH_RUN = 0.5f;
 
-/** @brief Az exponenciális simítás súlya DD-beállító módban. */
+/** @brief Az exponenciális simítás súlya DD-beállító módban. A kisebb érték lassabban követi a jelváltozásokat. */
 static const float SMOOTH_SETUP = 0.1f;
 
 /** @brief Ennél nagyobb ugrásnál a simítás új értékről indul. */
@@ -96,5 +96,7 @@ static const uint16_t IDLE_HIGH = 900;
 /** @brief A DC-hiba alsó ADC-küszöbe. */
 static const uint16_t IDLE_LOW = 120;
 
-/** @brief Bekapcsolja vagy kikapcsolja a hardveres watchdog használatát. */
+/** @brief Bekapcsolja vagy kikapcsolja a hardveres watchdog használatát.
+ * A watchdog a rendszer lefagyása esetén újraindítja a kütyüt
+ */
 #define USE_WATCHDOG 1
