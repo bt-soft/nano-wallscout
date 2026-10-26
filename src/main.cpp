@@ -2,11 +2,9 @@
  * @file Arduino Nano-alapú, DD-tekercses betonvas-kereső vezérlőprogramja.
  *
  * Az impulzusmérés egyetlen szálon fut; a kritikus mintavételezés alatt
- * a megszakítások tiltva vannak. A Timer1 időalapja 0,5 µs, a hangjelzőt
- * a D11-es Timer2-kimenet vezérli.
+ * a megszakítások tiltva vannak.
+ * A Timer1 időalapja 0,5 µs, a hangjelzőt a D11-es Timer2-kimenet vezérli.
  *
- * A konfigurációt a config.h, a mérést a sensor, a hangjelzést a beeper,
- * a mélységkalibrálást a calibration, a kijelzést pedig a display kezeli.
  */
 
 #include <Arduino.h>
