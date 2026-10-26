@@ -4,9 +4,12 @@ Kézi betonvas-kereső, amely impulzusindukciós (PI) elven, két D alakú teker
 
 | Jellemző | Érték |
 |---|---|
-| Érzékelési mélység | 5–6 cm megbízhatóan, 8 cm határeset (Ø8–12 mm betonvas, a tekercsek méretétől függően) |
+| Érzékelési mélység* | ≈5–6 cm, 8 cm becsült határeset (Ø8–12 mm betonvas, a tekercsek méretétől függően) |
 | Kijelzés | SSD1306 OLED (oszlop, számérték, becsült mélység), hangjelzés |
-| Tápellátás | 3S akkumulátor a Nano VIN bemenetén (lásd: Beüzemelés) |
+| Tápellátás | 2S vagy 3S 18650 akkumulátor a Nano VIN bemenetén (lásd: Beüzemelés) |
+
+ *Az értékek a tesztelési körülményektől, a tekercs geometriájától és a beállításoktól függnek.
+
 
 ## Az induction balance működési elve
 A kereső két tekercset használ: egy **adó (TX)** és egy **vevő (RX)** tekercset. A tekercsek D alakúak, és az egyenes oldalaikkal részben egymásra vannak csúsztatva (DD elrendezés). Az alábbiak a működés fizikai alapjait foglalják össze.
@@ -26,7 +29,11 @@ Az adó mágneses terének közvetlenül az RX-be jutó része sokszorosan nagyo
 
 ![DD-tekercs](doc/DD-coil.svg)
 
-Ennek következtében fém nélkül az RX csak a maradék áthallást és a zajt kapja, fém jelenlétekor viszont az örvényáram terének nem kioltott része indukál feszültséget. A jel tehát a nulláról indul, ezért nagy az érzékenység, és a mélység a tekercs méretével nő. A projektben használt kis D tekercsekkel (6 cm × 5 cm) a mélység kb. 8 cm.
+Ennek eredményeként fém jelenléte nélkül az RX tekercsre elsősorban a maradék mágneses áthallás és a zaj jut. Fém jelenlétében a benne indukálódó örvényáramok mágneses tere megváltoztatja a vevőtekercsben mérhető jelet. A megfelelően beállított DD-tekercspár esetén a fém nélküli alapjel alacsony, így a céltárgy által okozott jelváltozás jól érzékelhető.
+
+A nagyobb tekercs megfelelő kialakítás esetén növelheti az érzékelési mélységet, de az elérhető eredmény a tekercsek geometriájától, induktivitásától, ellenállásától, a meghajtóáramtól és a vevő érzékenységétől is függ. A nagyobb tekercs térben kiterjedtebb érzékelési mezőt hozhat létre, ami ugyan növelheti a hatótávolságot, ugyanakkor ronthatja a céltárgy pontos helyének behatárolását.
+
+A projektben alkalmazott, a kisebb 6 × 5 cm-es D alakú tekercspárral az érzékelési mélység körülbelül 5-6 cm. Ez az érték kísérletileg meghatározott (fémcsipeszt közelítve a tekercsek felé), illetve a mérési körülményektől és a céltárgy jellemzőitől függ.
 
 ### 4. Jelfeldolgozás
 Az Rx jele a mérendő tárgy hatására csak kis amplitúdójú, ezért az MCP6004 két, nem invertáló fokozata (kb. 11 × 11 = 121-szeres erősítés) erősíti, majd az U2D puffer az A0 bemenetre vezeti. A jelszint a Vmid (≈ 2,5 V) körül van, így a jel pozitív és negatív irányban is mérhető.
@@ -41,7 +48,7 @@ A **jel = S1 − S2**. A különbségképzés kiejti az egyenfeszültségű elt�
 Kis, a tekercstől távoli tárgy esetén az örvényáram jele nagyjából a távolság harmadik hatványával csökken (dipól közelítés): `S ≈ K / d³`. A `K` értéket a kalibrálás határozza meg egy ismert (5 cm) távolságban, innen `d = ∛(K / S)`. Ez a modell a tárgy méretétől és anyagától függ, ezért a kapott érték becslés, nem pontos mérés.
 
 ### 6. A fém típusa
-A fázis (azaz az S1 és S2 időbeli viszonya) elvileg megkülönbözteti a vasat (ferromágneses) a nem vas fémektől (réz, alumínium). Ezt a funkciót a firmware-ből eltávolítottam, mert a gyakorlatban nem hozott érdemi előnyt.
+Az impulzus utáni jel lecsengésének időbeli jellemzői elvileg információt hordozhatnak a céltárgy anyagáról. A jelenlegi, két időpontban történő mintavételezés és a hozzá tartozó jelfeldolgozás azonban nem biztosít megbízható anyagazonosítást, ezért ezt a funkciót eltávolítottam a firmware-ből.
 
 ## Működési ciklus
 
