@@ -94,6 +94,8 @@ Mélység: d = ∛(K/S). Ez a mélység becslése, nem pontos mérés.
 
 ### Soros monitor (115200 baud)
 
+Ha a fordítás során a [__DEBUG__](https://github.com/bt-soft/nano-wallscout/blob/main/src/main.cpp#L12) makró definiálva van, az AVR debugger aktiválódik. Ha emellett a [__DEBUG_SERIAL_LOGGING__](https://github.com/bt-soft/nano-wallscout/blob/main/src/main.cpp#L13) makró is definiálva van, az Arduino soros portján keresztüli naplózás aktiválódik, az AVR debugger viszont nem. **A két funkció egyidejűleg nem használható.**
+
 Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s1=512 s2=510 idle=511 zero=0.40 sig=2.80 vbat=11.8`. Az elején `run` (kereső) vagy `setup ch=A0` (DD beállító mód) áll. Az értékek ADC-egységben (0–1023) vannak, 100 impulzusra átlagolva.
 
 | Mező | Jelentés |
@@ -196,7 +198,7 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 ## Beüzemelés
 
 1. Első bekapcsoláskor áramkorlátos tápról ellenőrizd a tápot. A külső táp a `+BATT` bemenetre kerül, a Nano saját VIN bemenetén keresztül; külön L7805 nincs a kapcsolásban. Ellenőrizd, hogy a Nano 5 V-os sínjén a modulnak megfelelő tápfeszültség van.
-2. A firmware-ben kezdetben `T_ON = 60 µs`; első próbánál csökkentsd ezt `config.h`-ban, és csak kis áramkorlát mellett tesztelj.
+2. A firmware-ben kezdetben `T_ON = 60 µs`; első próbánál csökkentsd ezt az `config.h`-ban, és csak kis áramkorlát mellett tesztelj.
    - **Drain-mérés:** szkóppal (10×-es szonda, rövid földelés) nézd a Q2 drainjét. Flyback csak induktív terheléssel van, ezért ehhez a méréshez kösd be az Ltx1-et, az Rx jelút maradhat üresen. Arduino D2 hajtja Q2 kapuját az R17 (100 Ω) soros ellenálláson át; R18 (10 kΩ) tartja alacsonyan a kaput.
    - **Elvárás:** D2 és D3 névleges értéke alapján a lecsípés nagyjából 37 V körül várható, de az impulzusáram és a parazita induktivitás módosíthatja a csúcsot. A Q2 drainjén mért csúcs maradjon **50 V alatt** (Q2 VDS,max = 55 V). Ha magasabb, ne növeld a `T_ON`-t; ellenőrizd D2, D3 és a bekötést.
    - **Hiba esetén:** ha a gate nem billen, ellenőrizd az Arduino D2 jelet, az R17/R18 ellenállásokat és a bekötést. Ha Q2 vagy D2 melegszik, azonnal kapcsold le.
@@ -212,7 +214,7 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
    - **Nyugalmi szint:** a tekercsek levegőben, fémtől távol az A0 nyugalmi értéke kb. **2,5 V** legyen. A soros monitoron `s1` ≈ 512 és `s2` ≈ 512. Ha ez jelentősen eltér, ellenőrizd a Vmid-et, a tápot és az MCP6004 bekötését.
    - **Mérés:** szkóppal az **U2A kimenetén (1. láb)**, az U2B kimenetén (7. láb) és az U2D kimenetén (14. láb) ellenőrizd a lecsengést a Tx kikapcsolása után. Triggerelj a gate lefutó élére, és tarts egy vasat a tekercshez, hogy a lecsengés látszódjon. Az U2A/U2B fokozatokat, valamint az U2D puffert lásd a kapcsolási rajzon.
 5. A DD beállító móddal állítsd az átfedést minimális áthallásra (lásd fent), és rögzítsd.
-6. Nézd meg az U2A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](src/config.h)).
+6. Nézd meg az U2A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](include/config.h)).
 7. Tarts egy vasat a tekercshez: a jel nőjön. Az `abs()` miatt a polaritás nem számít, de a soros monitoron (`sig`) látod.
 8. Ha telít (`TULVEZERLES`), javítsd az átfedést. Az erősítő ellenállásait ne módosítsd találomra; az értékeket a kapcsolási rajz rögzíti.
 9. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
