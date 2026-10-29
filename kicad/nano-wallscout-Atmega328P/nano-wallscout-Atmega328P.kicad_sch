@@ -696,6 +696,130 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint_Alt"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint_Alt"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "test point (alternative shape)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TestPoint_Alt_0_1"
+				(polyline
+					(pts
+						(xy 0 2.54) (xy -0.762 3.302) (xy 0 4.064) (xy 0.762 3.302) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_Alt_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x02"
 			(pin_names
 				(offset 1.016)
@@ -2084,184 +2208,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:L"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "L"
-				(at -1.27 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "L"
-				(at 1.905 0 90)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Inductor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "inductor choke coil reactor magnetic"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "L_0_1"
-				(arc
-					(start 0 2.54)
-					(mid 0.6323 1.905)
-					(end 0 1.27)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0 1.27)
-					(mid 0.6323 0.635)
-					(end 0 0)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0 0)
-					(mid 0.6323 -0.635)
-					(end 0 -1.27)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0 -1.27)
-					(mid 0.6323 -1.905)
-					(end 0 -2.54)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "L_1_1"
-				(pin passive line
-					(at 0 3.81 270)
-					(length 1.27)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -3.81 90)
-					(length 1.27)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:Q_NPN"
 			(pin_numbers
 				(hide yes)
@@ -3170,6 +3116,204 @@
 						)
 					)
 					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "L-Shield_1"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Ltx1"
+				(at 1.27 1.2701 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "1mH"
+				(at 1.27 -1.2699 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Inductor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "inductor choke coil reactor magnetic"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "L-Shield_1_0_1"
+				(arc
+					(start 0 2.54)
+					(mid 0.6323 1.905)
+					(end 0 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 1.27)
+					(mid 0.6323 0.635)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 0)
+					(mid 0.6323 -0.635)
+					(end 0 -1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -1.27)
+					(mid 0.6323 -1.905)
+					(end 0 -2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "L-Shield_1_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -1.27 -1.27 90)
+					(length 2)
+					(name "SHIELD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4835,6 +4979,16 @@
 		)
 		(uuid "134a0ae9-42db-4623-aa60-8baaff469cb3")
 	)
+	(text "Árnyékolt\ntekercsek\n"
+		(exclude_from_sim no)
+		(at 246.634 69.596 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "1f6992a6-22aa-4eb5-8238-46589b84cf7f")
+	)
 	(text "Rx csillapítás"
 		(exclude_from_sim no)
 		(at 222.25 88.392 90)
@@ -4885,16 +5039,6 @@
 		)
 		(uuid "7848974a-369f-4a63-942d-27a663109eaa")
 	)
-	(text "Reset"
-		(exclude_from_sim no)
-		(at 102.616 114.046 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "8566f01b-a5d8-432e-96c2-fbe431aad608")
-	)
 	(junction
 		(at 36.83 160.02)
 		(diameter 0)
@@ -4936,6 +5080,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "292d4c14-fb8f-41be-b2e1-c64460a50c02")
+	)
+	(junction
+		(at 130.81 77.47)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "29950d23-e1e6-4481-a4ff-c1fa3c22ae83")
 	)
 	(junction
 		(at 143.51 77.47)
@@ -4980,16 +5130,16 @@
 		(uuid "7ae00912-2ee0-42ff-a882-cc27ffaaa4c2")
 	)
 	(junction
-		(at 107.95 115.57)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "89c7905b-1da5-401f-a3f2-32f86ef0482e")
-	)
-	(junction
 		(at 212.09 86.36)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8a5fab73-a9aa-415d-bc8a-57f9faa30464")
+	)
+	(junction
+		(at 107.95 114.3)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a44d3713-6a5f-4867-ab31-4ff86b31ea8e")
 	)
 	(junction
 		(at 212.09 105.41)
@@ -5151,7 +5301,7 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 78.74) (xy 252.73 83.82)
+			(xy 252.73 80.01) (xy 252.73 83.82)
 		)
 		(stroke
 			(width 0)
@@ -5161,7 +5311,7 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 69.85) (xy 237.49 71.12)
+			(xy 240.03 69.85) (xy 240.03 72.39)
 		)
 		(stroke
 			(width 0)
@@ -5211,7 +5361,7 @@
 	)
 	(wire
 		(pts
-			(xy 252.73 58.42) (xy 252.73 71.12)
+			(xy 252.73 58.42) (xy 252.73 72.39)
 		)
 		(stroke
 			(width 0)
@@ -5241,6 +5391,16 @@
 	)
 	(wire
 		(pts
+			(xy 236.22 77.47) (xy 238.76 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1b212528-60c2-468a-88cf-65204f66588f")
+	)
+	(wire
+		(pts
 			(xy 101.6 186.69) (xy 101.6 190.5)
 		)
 		(stroke
@@ -5248,6 +5408,16 @@
 			(type default)
 		)
 		(uuid "1c417a02-7ca3-49eb-87ba-dcaf14bbd48d")
+	)
+	(wire
+		(pts
+			(xy 130.81 77.47) (xy 133.35 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1d7a7f63-46a7-4222-9d2f-bcb586db2267")
 	)
 	(wire
 		(pts
@@ -5391,16 +5561,6 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 113.03) (xy 107.95 115.57)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "37e0aee2-e9cf-4251-a558-4fc412f6af85")
-	)
-	(wire
-		(pts
 			(xy 257.81 17.78) (xy 257.81 22.86)
 		)
 		(stroke
@@ -5411,7 +5571,7 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 115.57) (xy 107.95 116.84)
+			(xy 107.95 113.03) (xy 107.95 114.3)
 		)
 		(stroke
 			(width 0)
@@ -5488,16 +5648,6 @@
 			(type default)
 		)
 		(uuid "3df46fe4-1944-457b-9982-cb5e80c019d3")
-	)
-	(wire
-		(pts
-			(xy 96.52 105.41) (xy 96.52 115.57)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3df78c2e-c9b4-467d-ab69-9113b1214c76")
 	)
 	(wire
 		(pts
@@ -5611,16 +5761,6 @@
 	)
 	(wire
 		(pts
-			(xy 78.74 105.41) (xy 96.52 105.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4845576d-0c3c-4bc1-9cb9-46ee423557e0")
-	)
-	(wire
-		(pts
 			(xy 34.29 118.11) (xy 34.29 113.03)
 		)
 		(stroke
@@ -5731,7 +5871,17 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 69.85) (xy 237.49 69.85)
+			(xy 107.95 114.3) (xy 107.95 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5df7413c-b81a-434a-8840-126c23573595")
+	)
+	(wire
+		(pts
+			(xy 226.06 69.85) (xy 240.03 69.85)
 		)
 		(stroke
 			(width 0)
@@ -5871,7 +6021,7 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 105.41) (xy 237.49 105.41)
+			(xy 226.06 105.41) (xy 240.03 105.41)
 		)
 		(stroke
 			(width 0)
@@ -6018,6 +6168,16 @@
 			(type default)
 		)
 		(uuid "85476d30-3293-44bd-ba0c-1ff7bde295f9")
+	)
+	(wire
+		(pts
+			(xy 248.92 77.47) (xy 248.92 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8c0248ba-af49-410c-8b68-efa33bdbe647")
 	)
 	(wire
 		(pts
@@ -6188,6 +6348,16 @@
 			(type default)
 		)
 		(uuid "a29f5bb1-e192-409d-8e34-3a0d9384d542")
+	)
+	(wire
+		(pts
+			(xy 130.81 77.47) (xy 130.81 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a33aa68c-72e1-4aa5-9a5a-84e50b805182")
 	)
 	(wire
 		(pts
@@ -6371,6 +6541,16 @@
 	)
 	(wire
 		(pts
+			(xy 236.22 77.47) (xy 236.22 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b54768df-e03c-42de-9514-9c6514863726")
+	)
+	(wire
+		(pts
 			(xy 64.77 54.61) (xy 64.77 57.15)
 		)
 		(stroke
@@ -6441,16 +6621,6 @@
 	)
 	(wire
 		(pts
-			(xy 96.52 115.57) (xy 107.95 115.57)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c42fd397-94bd-41b7-85d1-974a7b658e3b")
-	)
-	(wire
-		(pts
 			(xy 163.83 33.02) (xy 160.02 33.02)
 		)
 		(stroke
@@ -6501,7 +6671,7 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 78.74) (xy 237.49 105.41)
+			(xy 240.03 80.01) (xy 240.03 105.41)
 		)
 		(stroke
 			(width 0)
@@ -6721,6 +6891,16 @@
 	)
 	(wire
 		(pts
+			(xy 251.46 77.47) (xy 248.92 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e233b8d8-f96c-4b62-aa80-4e8641b47c5a")
+	)
+	(wire
+		(pts
 			(xy 36.83 142.24) (xy 36.83 144.78)
 		)
 		(stroke
@@ -6761,13 +6941,23 @@
 	)
 	(wire
 		(pts
-			(xy 130.81 77.47) (xy 133.35 77.47)
+			(xy 128.27 77.47) (xy 130.81 77.47)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "e6009c1f-f19a-45e8-9416-e25f8e0339d1")
+	)
+	(wire
+		(pts
+			(xy 105.41 114.3) (xy 107.95 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e8357d4c-823f-47a1-8ceb-1a428bb50582")
 	)
 	(wire
 		(pts
@@ -6798,6 +6988,16 @@
 			(type default)
 		)
 		(uuid "ee804657-cb3a-4907-a1ea-b59b343ca892")
+	)
+	(wire
+		(pts
+			(xy 78.74 105.41) (xy 81.28 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef6e077b-8753-4e1c-9c84-eefb43acceb5")
 	)
 	(wire
 		(pts
@@ -6946,6 +7146,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+	)
+	(global_label "{slash}RESET"
+		(shape input)
+		(at 81.28 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3a485af4-1629-4e6e-9aa0-9813d27de34b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 81.28 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 	)
@@ -7159,6 +7381,28 @@
 			)
 		)
 	)
+	(global_label "{slash}RESET"
+		(shape output)
+		(at 105.41 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a07b03c3-69fa-4d8c-99da-2af154acf23e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 105.41 114.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
 	(global_label "D2{slash}Tx"
 		(shape input)
 		(at 215.9 135.89 180)
@@ -7253,7 +7497,7 @@
 	)
 	(global_label "A0{slash}Rx"
 		(shape output)
-		(at 130.81 77.47 180)
+		(at 128.27 77.47 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -7263,7 +7507,7 @@
 		)
 		(uuid "cddc3d1c-3e28-4e07-b6b6-cbf9abd9f23f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 121.8981 77.47 0)
+			(at 119.3581 77.47 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7910,6 +8154,92 @@
 		)
 	)
 	(symbol
+		(lib_name "L-Shield_1")
+		(lib_id "WallScout-Kicad-library:L-Shield")
+		(at 240.03 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1657d739-9914-472c-9c15-34f98a496ac6")
+		(property "Reference" "Lrx1"
+			(at 241.3 74.9299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1mH"
+			(at 241.3 77.4699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal"
+			(at 240.03 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 240.03 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Inductor"
+			(at 240.03 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "678b227d-9eb9-490c-9e0b-7c4587219ae9")
+		)
+		(pin "1"
+			(uuid "143d579b-fced-43e3-823d-2d5d35cdcc5f")
+		)
+		(pin "3"
+			(uuid "81a8c673-523a-4689-b521-103e8f34620d")
+		)
+		(instances
+			(project "nano-wallscout-Atmega328P"
+				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
+					(reference "Lrx1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Polarized_Small")
 		(at 269.24 38.1 0)
 		(mirror y)
@@ -7943,7 +8273,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:C_Radial_D6.3mm_H11.0mm_P2.50mm"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
 			(at 269.24 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -8264,88 +8594,6 @@
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
 					(reference "RV1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:L")
-		(at 252.73 74.93 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "26cb5449-6c7b-4d6d-b071-96979e3a2d23")
-		(property "Reference" "Ltx1"
-			(at 251.46 73.6599 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1mH"
-			(at 251.46 76.1999 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal"
-			(at 252.73 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 252.73 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Inductor"
-			(at 252.73 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "4b0e7e8f-cef2-470e-907d-069850d5559c")
-		)
-		(pin "1"
-			(uuid "d4d35854-fe7b-41b3-a143-d543ffdc24e3")
-		)
-		(instances
-			(project "nano-wallscout-Atmega328P"
-				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "Ltx1")
 					(unit 1)
 				)
 			)
@@ -8910,88 +9158,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:L")
-		(at 237.49 74.93 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3a41d08d-7342-4cc5-a2db-c9670f59a5d4")
-		(property "Reference" "Lrx1"
-			(at 238.76 73.6599 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "1mH"
-			(at 238.76 76.1999 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal"
-			(at 237.49 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 237.49 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Inductor"
-			(at 237.49 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "5a78d4f3-d145-4995-b94f-14ba67599553")
-		)
-		(pin "1"
-			(uuid "40b2a08b-895e-4540-ba65-18f95cf25782")
-		)
-		(instances
-			(project "nano-wallscout-Atmega328P"
-				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "Lrx1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 140.97 185.42 0)
 		(mirror y)
@@ -9104,7 +9270,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:C_Radial_D6.3mm_H11.0mm_P2.50mm"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
 			(at 48.26 36.83 0)
 			(hide yes)
 			(show_name no)
@@ -9343,7 +9509,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:C_Radial_D6.3mm_H11.0mm_P2.50mm"
+		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
 			(at 144.78 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -10257,6 +10423,85 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 236.22 78.74 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "5e7d6a52-d225-4c7f-ad52-fe8c7a5275d1")
+		(property "Reference" "#PWR040"
+			(at 236.22 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 234.442 83.058 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 236.22 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 236.22 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 236.22 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "76ee66a7-5815-414f-b084-0f406a7424d5")
+		)
+		(instances
+			(project "nano-wallscout-Atmega328P"
+				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
+					(reference "#PWR040")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 205.74 86.36 90)
 		(unit 1)
@@ -10923,6 +11168,92 @@
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
 					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "L-Shield_1")
+		(lib_id "WallScout-Kicad-library:L-Shield")
+		(at 252.73 76.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "72596cd9-8d82-4966-919f-44ec54ee07da")
+		(property "Reference" "Ltx1"
+			(at 254 74.9299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1mH"
+			(at 254 77.4699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-3-3.5-H_1x03_P3.50mm_Horizontal"
+			(at 252.73 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 252.73 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Inductor"
+			(at 252.73 76.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "748b0ebb-b84b-4389-a35e-d058b965090f")
+		)
+		(pin "1"
+			(uuid "496431b2-7ccd-4a33-88e0-34b8d8b91b83")
+		)
+		(pin "3"
+			(uuid "a34dfc9b-a683-47b3-b071-ac226c7a3757")
+		)
+		(instances
+			(project "nano-wallscout-Atmega328P"
+				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
+					(reference "Ltx1")
 					(unit 1)
 				)
 			)
@@ -12387,7 +12718,7 @@
 				)
 			)
 		)
-		(property "Value" "LM7805_TO220"
+		(property "Value" "LM7805"
 			(at 72.39 26.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12797,7 +13128,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Display:128x64OLED"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
 			(at 119.634 189.23 0)
 			(hide yes)
 			(show_name no)
@@ -13359,6 +13690,84 @@
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
 					(reference "#PWR030")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 248.92 78.74 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c19a8dc6-37d3-473a-b7aa-5f11b7e0435e")
+		(property "Reference" "#PWR039"
+			(at 248.92 85.09 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 248.92 82.804 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 248.92 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 248.92 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 248.92 78.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "321260cd-edf2-4520-a248-f10b56b0bc19")
+		)
+		(instances
+			(project "nano-wallscout-Atmega328P"
+				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
+					(reference "#PWR039")
 					(unit 1)
 				)
 			)
@@ -14354,6 +14763,84 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Alt")
+		(at 130.81 82.55 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "d7d6e96b-db9e-4292-9c11-a5bb29b9fadf")
+		(property "Reference" "TP2"
+			(at 135.636 84.836 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Vétel beállítás"
+			(at 136.398 88.138 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Loop_D2.50mm_Drill1.0mm"
+			(at 125.73 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 125.73 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point (alternative shape)"
+			(at 130.81 82.55 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "151caaad-4a23-4098-82fd-e43e88250477")
+		)
+		(instances
+			(project "nano-wallscout-Atmega328P"
+				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
+					(reference "TP2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Amplifier_Operational:MCP6004")
 		(at 204.47 72.39 0)
 		(mirror y)
@@ -14957,7 +15444,7 @@
 		(dnp no)
 		(uuid "f3dbc81b-5535-4a29-af44-125a82d56c80")
 		(property "Reference" "R15"
-			(at 228.854 79.756 0)
+			(at 227.584 78.232 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -14968,7 +15455,7 @@
 			)
 		)
 		(property "Value" "1k"
-			(at 229.108 83.058 0)
+			(at 227.838 81.026 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
