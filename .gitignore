@@ -4,3 +4,6 @@
 .vscode/launch.json
 
 */**/*-backups/*
+**/*.kicad-pro.lck
+**/*.kicad-sch.lck
+**/*.kicad-pcb.lck

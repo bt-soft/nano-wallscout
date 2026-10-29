@@ -172,8 +172,12 @@ Az átfedés beállítása időigényes: a mágneses csatolás a kritikus átfed
 Ha az erősítő telítésbe megy (az S1 a 0 vagy 1023 közelében), a fejléc `TULVEZERLES`-re vált, a szám az S1 eltérése 512-től (az előjel megmutatja, merre telít), a csipogó mély, folyamatos hangot ad, és a `min` **nem frissül**. A telítés tehát nem számít jó minimumnak. Addig csúsztasd a tekercset, amíg a `TULVEZERLES` el nem tűnik, és az `S1` 512 körül van.
 
 ## Kapcsolási rajz
+A kapcsolási rajz és a NYÁK két változatban is elérhető: Arduino Nano modullal, illetve közvetlenül az ATmega328P mikrovezérlő használatával, azok számára, akik nem modult szeretnének használni.
 
 ![KiCad-séma](kicad/nano-wallscout-Nano/nano-wallscout.svg)
+
+
+![KiCad-séma](kicad/nano-wallscout-Atmega328P/nano-wallscout-Atmega328P.svg)
 
 ### Védelem
 
