@@ -174,9 +174,11 @@ Ha az erősítő telítésbe megy (az S1 a 0 vagy 1023 közelében), a fejléc `
 ## Kapcsolási rajz
 A kapcsolási rajz és a NYÁK két változatban is elérhető: Arduino Nano modullal, illetve közvetlenül az ATmega328P mikrovezérlő használatával, azok számára, akik nem modult szeretnének használni.
 
+
+### Arduino Nano
 ![KiCad-séma](kicad/nano-wallscout-Nano/nano-wallscout.svg)
 
-
+### Atmel328P 
 ![KiCad-séma](kicad/nano-wallscout-Atmega328P/nano-wallscout-Atmega328P.svg)
 
 ### Védelem
