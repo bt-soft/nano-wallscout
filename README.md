@@ -181,6 +181,10 @@ A kapcsolási rajz és a NYÁK két változatban is elérhető: Arduino Nano mod
 ### Atmel328P 
 ![KiCad-séma](kicad/nano-wallscout-Atmega328P/nano-wallscout-Atmega328P.svg)
 
+Az Atmel328P mikrovezérlós verzióhoz NYÁK terv is készült
+![KiCad-NYÁK](kicad/nano-wallscout-Atmega328P/nano-wallscout-Atmega328P-3D.png)
+
+
 ### Védelem
 
 #### Flyback-védelem
