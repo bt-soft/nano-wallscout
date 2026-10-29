@@ -34,9 +34,9 @@ static void adcSlow() { ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0
  *
  */
 void sensorInit() {
-    pinMode(PIN_BTN_ZERO, INPUT_PULLUP); // beállítja a nulla gombot bemeneti felhúzással
-    pinMode(PIN_BTN_CAL, INPUT_PULLUP);  // beállítja a kalibrációs gombot bemeneti felhúzással
-    DDRD |= _BV(GATE_BIT);               // beállítja a kapukimenetet kimeneti módba
+    pinMode(PIN_BTN_ZERO, INPUT_PULLUP); // a nulla gombot bemeneti felhúzással
+    pinMode(PIN_BTN_CAL, INPUT_PULLUP);  // a kalibrációs gombot bemeneti felhúzással
+    DDRD |= _BV(GATE_BIT);               // a kapukimenetet kimeneti módba
     PORTD &= ~_BV(GATE_BIT);             // alapértelmezés szerint kikapcsolja a kaput
 
     TCCR1A = 0;         // Timer1 normál üzemmód beállítása

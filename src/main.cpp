@@ -3,7 +3,7 @@
  *
  * Az impulzusmérés egyetlen szálon fut; a kritikus mintavételezés alatt
  * a megszakítások tiltva vannak.
- * A Timer1 időalapja 0,5 µs, a hangjelzőt a D11-es Timer2-kimenet vezérli.
+ * A Timer1 időalapja 0,5 µs, a hangjelzőt a D3-as Timer2-kimenet (OC2B) vezérli.
  *
  */
 

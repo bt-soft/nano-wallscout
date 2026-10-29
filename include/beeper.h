@@ -2,8 +2,9 @@
 /**
  * @brief A D11 kimenetre kötött, Timer2-vel vezérelt hangjelző kezelése.
  */
-
 #include <Arduino.h>
+
+#include "config.h"
 
 /**
  * @brief Inicializálja a hangjelző kimenetét.

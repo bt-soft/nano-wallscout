@@ -173,7 +173,7 @@ Ha az erősítő telítésbe megy (az S1 a 0 vagy 1023 közelében), a fejléc `
 
 ## Kapcsolási rajz
 
-![KiCad-séma](kicad/nano-wallscout.svg)
+![KiCad-séma](kicad/nano-wallscout-Nano/nano-wallscout.svg)
 
 ### Védelem
 

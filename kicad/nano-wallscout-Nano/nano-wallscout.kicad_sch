@@ -1651,8 +1651,8 @@
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "Q"
-				(at 5.08 1.27 0)
+			(property "Reference" "Q1"
+				(at 5.08 1.2701 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -1662,8 +1662,8 @@
 					(justify left)
 				)
 			)
-			(property "Value" "Q_NPN"
-				(at 5.08 -1.27 0)
+			(property "Value" "2N2222"
+				(at 5.08 -1.2699 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -1673,7 +1673,7 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline_Wide"
 				(at 5.08 2.54 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -1791,24 +1791,6 @@
 				)
 			)
 			(symbol "Q_NPN_1_1"
-				(pin input line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "B"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin passive line
 					(at 2.54 5.08 270)
 					(length 2.54)
@@ -1819,7 +1801,25 @@
 							)
 						)
 					)
-					(number "C"
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1837,7 +1837,7 @@
 							)
 						)
 					)
-					(number "E"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1988,42 +1988,38 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:R_Trim"
-			(pin_numbers
-				(hide yes)
-			)
+		(symbol "Device:R_Potentiometer_Trim"
 			(pin_names
-				(offset 0)
+				(offset 1.016)
+				(hide yes)
 			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
-				(at 2.54 -2.54 90)
+			(property "Reference" "RV"
+				(at -4.445 0 90)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Value" "R_Trim"
-				(at -2.54 -0.635 90)
+			(property "Value" "R_Potentiometer_Trim"
+				(at -2.54 0 90)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
 			(property "Footprint" ""
-				(at -1.778 0 90)
+				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(hide yes)
@@ -2044,7 +2040,7 @@
 					)
 				)
 			)
-			(property "Description" "Trimmable resistor (preset resistor)"
+			(property "Description" "Trim-potentiometer"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2055,7 +2051,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "R res resistor variable potentiometer trimmer"
+			(property "Sim.Device" "R"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2066,7 +2062,7 @@
 					)
 				)
 			)
-			(property "ki_fp_filters" "R_*"
+			(property "Sim.Type" "POT"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -2077,10 +2073,54 @@
 					)
 				)
 			)
-			(symbol "R_Trim_0_1"
+			(property "Sim.Pins" "1=r0 2=wiper 3=r1"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "resistor variable trimpot trimmer"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "Potentiometer*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_Potentiometer_Trim_0_1"
+				(rectangle
+					(start 1.016 2.54)
+					(end -1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(polyline
 					(pts
-						(xy -1.905 -1.905) (xy 1.905 1.905) (xy 2.54 1.27) (xy 1.27 2.54)
+						(xy 1.524 0.762) (xy 1.524 -0.762)
 					)
 					(stroke
 						(width 0)
@@ -2090,11 +2130,12 @@
 						(type none)
 					)
 				)
-				(rectangle
-					(start -1.016 -2.54)
-					(end 1.016 2.54)
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 1.524 0)
+					)
 					(stroke
-						(width 0.254)
+						(width 0)
 						(type default)
 					)
 					(fill
@@ -2102,11 +2143,11 @@
 					)
 				)
 			)
-			(symbol "R_Trim_1_1"
+			(symbol "R_Potentiometer_Trim_1_1"
 				(pin passive line
 					(at 0 3.81 270)
 					(length 1.27)
-					(name ""
+					(name "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2122,9 +2163,9 @@
 					)
 				)
 				(pin passive line
-					(at 0 -3.81 90)
+					(at 3.81 0 180)
 					(length 1.27)
-					(name ""
+					(name "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2132,6 +2173,24 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3885,7 +3944,7 @@
 	)
 	(text "Rx csillapítás"
 		(exclude_from_sim no)
-		(at 186.944 108.966 90)
+		(at 186.69 103.632 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3894,10 +3953,10 @@
 		(uuid "c8a53835-70e2-4172-b29c-777df2fef7ca")
 	)
 	(junction
-		(at 93.98 81.28)
+		(at 224.79 99.06)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "0270a611-7ff1-499f-8291-c5b254fd7d13")
+		(uuid "03afdd36-65c6-47f4-ba72-04ca4bc5427f")
 	)
 	(junction
 		(at 93.98 69.85)
@@ -3978,10 +4037,22 @@
 		(uuid "9dbcac17-db1a-43ce-925b-4e974b40000c")
 	)
 	(junction
+		(at 190.5 114.3)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9dd391ba-93d7-42f3-8626-267b99010378")
+	)
+	(junction
 		(at 161.29 87.63)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a408b199-0184-48e6-8e07-e8619987d69a")
+	)
+	(junction
+		(at 190.5 85.09)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a7314c05-f5c5-4f9f-a062-67bf8e2941fe")
 	)
 	(junction
 		(at 219.71 123.19)
@@ -4032,6 +4103,12 @@
 		(uuid "dfb3a871-793d-451a-8092-facfb85aa298")
 	)
 	(junction
+		(at 109.22 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e0e43e3b-de0a-4d88-a263-49b5f03acce0")
+	)
+	(junction
 		(at 62.23 58.42)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4042,12 +4119,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e8e6581d-0ce1-440e-9315-7c142d5fa5a1")
-	)
-	(junction
-		(at 190.5 82.55)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "f540c1ca-80b4-42bb-87b0-2eb8829a6d5d")
 	)
 	(junction
 		(at 256.54 38.1)
@@ -4072,8 +4143,8 @@
 		(uuid "46759a0d-67bd-4d91-9a1f-a4d8ea7bea32")
 	)
 	(no_connect
-		(at 52.07 85.09)
-		(uuid "58d0bd08-b3f4-4f1c-8c0c-1d18fba869de")
+		(at 52.07 105.41)
+		(uuid "54ebe54a-f260-4333-b349-37dd4a8f34e4")
 	)
 	(no_connect
 		(at 52.07 92.71)
@@ -4129,13 +4200,13 @@
 	)
 	(wire
 		(pts
-			(xy 46.99 105.41) (xy 52.07 105.41)
+			(xy 224.79 99.06) (xy 228.6 99.06)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "020e4be9-2fc9-4b28-8824-1be62894e35b")
+		(uuid "022e6334-65bc-4165-8c4e-c2a8a6ed9cad")
 	)
 	(wire
 		(pts
@@ -4196,16 +4267,6 @@
 			(type default)
 		)
 		(uuid "0725d905-4c5e-4cb8-b2f8-902b333d4266")
-	)
-	(wire
-		(pts
-			(xy 161.29 87.63) (xy 161.29 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "07d9a7a2-16f7-49b3-9f76-053ec41af061")
 	)
 	(wire
 		(pts
@@ -4349,13 +4410,23 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 82.55) (xy 179.07 82.55)
+			(xy 176.53 85.09) (xy 179.07 85.09)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "1f91be08-e2e3-4152-a92c-e0bd1a5fd864")
+	)
+	(wire
+		(pts
+			(xy 190.5 100.33) (xy 190.5 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "22c22598-e3b7-4964-8d0f-417f3f5932b1")
 	)
 	(wire
 		(pts
@@ -4399,6 +4470,16 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 130.81) (xy 101.6 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c95749e-f7e4-44d3-9dc3-13e1e3427718")
+	)
+	(wire
+		(pts
 			(xy 31.75 139.7) (xy 35.56 139.7)
 		)
 		(stroke
@@ -4429,7 +4510,7 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 81.28) (xy 93.98 82.55)
+			(xy 93.98 80.01) (xy 93.98 82.55)
 		)
 		(stroke
 			(width 0)
@@ -4499,16 +4580,6 @@
 	)
 	(wire
 		(pts
-			(xy 93.98 80.01) (xy 93.98 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "40485433-19d7-4ea9-a02c-ad1c1af8e344")
-	)
-	(wire
-		(pts
 			(xy 147.32 113.03) (xy 147.32 139.7)
 		)
 		(stroke
@@ -4516,26 +4587,6 @@
 			(type default)
 		)
 		(uuid "40f70e21-f0de-481d-a278-371e969a82e4")
-	)
-	(wire
-		(pts
-			(xy 190.5 82.55) (xy 190.5 105.41)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "436d9de1-af30-4307-a301-af0096de7b67")
-	)
-	(wire
-		(pts
-			(xy 201.93 86.36) (xy 201.93 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4799c896-9497-46e3-a52d-c29409550605")
 	)
 	(wire
 		(pts
@@ -4559,23 +4610,23 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 132.08) (xy 109.22 127)
+			(xy 228.6 99.06) (xy 228.6 92.71)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "51b8995d-f7aa-416d-8516-34c829fe203e")
+		(uuid "4a0f05b1-0e25-45e0-bc06-e66f1cccc34e")
 	)
 	(wire
 		(pts
-			(xy 105.41 80.01) (xy 105.41 81.28)
+			(xy 101.6 127) (xy 109.22 127)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "52c5c690-9248-4b29-964c-953d0f722274")
+		(uuid "523b12d5-7cb9-4b09-8302-230b0b268641")
 	)
 	(wire
 		(pts
@@ -4586,16 +4637,6 @@
 			(type default)
 		)
 		(uuid "5396cb4a-20ca-4424-b2b9-62755be8394c")
-	)
-	(wire
-		(pts
-			(xy 105.41 81.28) (xy 93.98 81.28)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5398ecd6-185f-497b-bcd6-310e85b30078")
 	)
 	(wire
 		(pts
@@ -4629,6 +4670,16 @@
 	)
 	(wire
 		(pts
+			(xy 46.99 85.09) (xy 52.07 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "58f18881-13ca-41fe-8568-4f42135891bf")
+	)
+	(wire
+		(pts
 			(xy 67.31 118.11) (xy 67.31 123.19)
 		)
 		(stroke
@@ -4646,6 +4697,26 @@
 			(type default)
 		)
 		(uuid "5e003486-b617-422d-9024-719c288fb597")
+	)
+	(wire
+		(pts
+			(xy 201.93 85.09) (xy 201.93 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e5b7350-d73b-4292-8f2a-1b5e12ccb2ad")
+	)
+	(wire
+		(pts
+			(xy 109.22 127) (xy 109.22 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "65ce29fa-8666-4e65-bd04-9ec133081fc6")
 	)
 	(wire
 		(pts
@@ -4696,6 +4767,16 @@
 			(type default)
 		)
 		(uuid "71a314b0-5a94-466f-97e0-a545018e9239")
+	)
+	(wire
+		(pts
+			(xy 190.5 114.3) (xy 190.5 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "71dbeb3b-60ad-40c1-a8d1-cbade0739bb8")
 	)
 	(wire
 		(pts
@@ -4779,13 +4860,23 @@
 	)
 	(wire
 		(pts
-			(xy 46.99 105.41) (xy 46.99 158.75)
+			(xy 46.99 85.09) (xy 46.99 158.75)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "83d3ff97-e76c-40cc-94aa-b400307d0fc0")
+	)
+	(wire
+		(pts
+			(xy 105.41 80.01) (xy 105.41 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "85de7a58-9546-4b28-afa3-12eec15f6b97")
 	)
 	(wire
 		(pts
@@ -4816,16 +4907,6 @@
 			(type default)
 		)
 		(uuid "884ab304-ba6c-4dba-8e40-db07cb14871e")
-	)
-	(wire
-		(pts
-			(xy 190.5 82.55) (xy 201.93 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "88636751-e496-4864-b843-b7b892f81f01")
 	)
 	(wire
 		(pts
@@ -5079,6 +5160,16 @@
 	)
 	(wire
 		(pts
+			(xy 190.5 85.09) (xy 201.93 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b9d5d153-6bc3-4976-ba99-d1ba504f235d")
+	)
+	(wire
+		(pts
 			(xy 107.95 101.6) (xy 107.95 92.71)
 		)
 		(stroke
@@ -5106,6 +5197,26 @@
 			(type default)
 		)
 		(uuid "be491da5-f611-4921-a9b1-b4b34ef3bcbb")
+	)
+	(wire
+		(pts
+			(xy 190.5 85.09) (xy 190.5 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be4f44ab-2e0d-46dc-b7c1-f6fe5a8f2c16")
+	)
+	(wire
+		(pts
+			(xy 194.31 114.3) (xy 190.5 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c048a38d-1ee1-4442-8e77-4586dd3f1c73")
 	)
 	(wire
 		(pts
@@ -5259,7 +5370,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 87.63) (xy 176.53 105.41)
+			(xy 176.53 90.17) (xy 176.53 105.41)
 		)
 		(stroke
 			(width 0)
@@ -5276,6 +5387,16 @@
 			(type default)
 		)
 		(uuid "e1250210-8675-420c-9891-1f369c536671")
+	)
+	(wire
+		(pts
+			(xy 101.6 138.43) (xy 101.6 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1445fe2-dd0b-4eeb-ac24-e7cc3a36c5d5")
 	)
 	(wire
 		(pts
@@ -5399,13 +5520,23 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 113.03) (xy 190.5 120.65)
+			(xy 190.5 111.76) (xy 190.5 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "f87fbf05-1993-4037-a949-8f103848ad14")
+	)
+	(wire
+		(pts
+			(xy 194.31 107.95) (xy 194.31 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9dcf00c-e623-4690-a899-c3fd942cd907")
 	)
 	(wire
 		(pts
@@ -5429,13 +5560,91 @@
 	)
 	(wire
 		(pts
-			(xy 186.69 82.55) (xy 190.5 82.55)
+			(xy 186.69 85.09) (xy 190.5 85.09)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "fe1e5b13-b797-49d4-83a6-c4e267715f48")
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 105.41 83.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "02a18083-0f65-49b8-aa17-0cf604aa372a")
+		(property "Reference" "#PWR010"
+			(at 105.41 90.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 105.41 88.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 105.41 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 105.41 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 105.41 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "18a47d3f-bc0c-4058-b70d-d799f27af724")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR010")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -5449,7 +5658,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0478fd7f-e302-431d-bd70-361b47cae638")
-		(property "Reference" "#PWR011"
+		(property "Reference" "#PWR013"
 			(at 110.49 193.04 0)
 			(hide yes)
 			(show_name no)
@@ -5509,7 +5718,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR011")
+					(reference "#PWR013")
 					(unit 1)
 				)
 			)
@@ -5591,6 +5800,87 @@
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
 					(reference "R11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 190.5 96.52 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0635d7b8-710f-4155-8f3c-3560aec684cf")
+		(property "Reference" "R14"
+			(at 193.294 94.996 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "1k"
+			(at 193.548 98.298 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 192.278 96.52 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 190.5 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7310f3b3-488a-41a6-b69d-3f4931c24207")
+		)
+		(pin "2"
+			(uuid "f48a1f71-c629-4b5d-861f-55e3819f46f7")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -5766,7 +6056,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "0c6b5659-5602-40ab-8b5a-38f6e5c91abb")
-		(property "Reference" "C5"
+		(property "Reference" "C6"
 			(at 248.666 41.91 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5786,7 +6076,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Rect_L7.2mm_W2.5mm_P5.00mm"
 			(at 250.4948 41.91 0)
 			(hide yes)
 			(show_name no)
@@ -5828,7 +6118,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "C5")
+					(reference "C6")
 					(unit 1)
 				)
 			)
@@ -5865,7 +6155,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H8mm"
 			(at 33.02 85.09 0)
 			(hide yes)
 			(show_name no)
@@ -5996,7 +6286,7 @@
 	)
 	(symbol
 		(lib_id "Amplifier_Operational:MCP6004")
-		(at 168.91 85.09 0)
+		(at 168.91 87.63 0)
 		(mirror y)
 		(unit 1)
 		(body_style 1)
@@ -6007,7 +6297,7 @@
 		(dnp no)
 		(uuid "14de45b6-175c-47ae-aa3d-06cae9f2f98e")
 		(property "Reference" "U2"
-			(at 170.688 79.502 0)
+			(at 170.688 82.042 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6017,7 +6307,7 @@
 			)
 		)
 		(property "Value" "MCP6004"
-			(at 168.148 77.47 0)
+			(at 168.148 80.01 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -6026,8 +6316,8 @@
 				)
 			)
 		)
-		(property "Footprint" ""
-			(at 170.18 82.55 0)
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm_LongPads"
+			(at 170.18 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6038,7 +6328,7 @@
 			)
 		)
 		(property "Datasheet" "http://ww1.microchip.com/downloads/en/DeviceDoc/21733j.pdf"
-			(at 167.64 80.01 0)
+			(at 167.64 82.55 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6049,7 +6339,7 @@
 			)
 		)
 		(property "Description" "1MHz, Low-Power Op Amp, DIP-14/SOIC-14/TSSOP-14"
-			(at 168.91 85.09 0)
+			(at 168.91 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6111,6 +6401,123 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Potentiometer_Trim")
+		(at 224.79 92.71 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "188ac935-33a8-4533-933d-00d3e9545a65")
+		(property "Reference" "RV2"
+			(at 233.426 90.424 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "5k"
+			(at 233.426 92.202 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Potentiometer_THT:Potentiometer_Bourns_3266Y_Vertical"
+			(at 224.79 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 224.79 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Trim-potentiometer"
+			(at 224.79 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 224.79 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" "POT"
+			(at 224.79 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=r0 2=wiper 3=r1"
+			(at 224.79 92.71 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7f7fab50-c503-4996-b9fc-4e2fc22aac25")
+		)
+		(pin "2"
+			(uuid "b586821e-c450-4ef8-bfeb-d1a8edb0846b")
+		)
+		(pin "3"
+			(uuid "55fd6ac4-4232-4a08-93e8-4e9f7dcf4da0")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "RV2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:D")
 		(at 35.56 143.51 270)
 		(unit 1)
@@ -6144,7 +6551,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_THT:D_DO-35_SOD27_P10.16mm_Horizontal"
 			(at 35.56 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -6227,7 +6634,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "20bbf04a-51ad-415e-b603-cd35ff01b708")
-		(property "Reference" "#PWR012"
+		(property "Reference" "#PWR014"
 			(at 118.11 119.38 0)
 			(hide yes)
 			(show_name no)
@@ -6287,7 +6694,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR012")
+					(reference "#PWR014")
 					(unit 1)
 				)
 			)
@@ -6327,7 +6734,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal"
 			(at 201.93 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -6388,7 +6795,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "297abd6c-955c-4cd4-9c4f-76f5bec79e65")
-		(property "Reference" "#PWR020"
+		(property "Reference" "#PWR022"
 			(at 269.24 102.87 0)
 			(hide yes)
 			(show_name no)
@@ -6448,7 +6855,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR020")
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -6488,7 +6895,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "TerminalBlock_Phoenix:TerminalBlock_Phoenix_PT-1,5-2-5.0-H_1x02_P5.00mm_Horizontal"
 			(at 214.63 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -6547,7 +6954,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "2d38d0e3-9e69-49cf-867c-588fd45a20fd")
-		(property "Reference" "R18"
+		(property "Reference" "R19"
 			(at 241.046 143.256 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6611,7 +7018,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R18")
+					(reference "R19")
 					(unit 1)
 				)
 			)
@@ -6629,7 +7036,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3068d5f7-de55-44be-a3c3-ebaeec5c1abf")
-		(property "Reference" "C3"
+		(property "Reference" "C4"
 			(at 109.22 74.9299 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6651,7 +7058,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Rect_L7.2mm_W2.5mm_P5.00mm"
 			(at 106.3752 80.01 0)
 			(hide yes)
 			(show_name no)
@@ -6693,7 +7100,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "C3")
+					(reference "C4")
 					(unit 1)
 				)
 			)
@@ -7050,7 +7457,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm_LongPads"
 			(at 118.11 90.17 0)
 			(hide yes)
 			(show_name no)
@@ -7147,7 +7554,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5cbdde54-ac71-4a22-a94c-f2f0cc4c40cf")
-		(property "Reference" "#PWR013"
+		(property "Reference" "#PWR015"
 			(at 118.11 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -7207,7 +7614,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR013")
+					(reference "#PWR015")
 					(unit 1)
 				)
 			)
@@ -7236,7 +7643,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 179.578 109.982 0)
+			(at 179.324 110.998 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -7326,7 +7733,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm_LongPads"
 			(at 140.97 87.63 0)
 			(hide yes)
 			(show_name no)
@@ -7423,7 +7830,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6296fbd2-2336-4624-8d81-c2fbf10317a2")
-		(property "Reference" "#PWR017"
+		(property "Reference" "#PWR019"
 			(at 256.54 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -7483,7 +7890,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR017")
+					(reference "#PWR019")
 					(unit 1)
 				)
 			)
@@ -7502,7 +7909,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6316c295-f3d8-487b-bba3-2e183a6620ca")
-		(property "Reference" "#PWR019"
+		(property "Reference" "#PWR021"
 			(at 269.24 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -7562,7 +7969,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR019")
+					(reference "#PWR021")
 					(unit 1)
 				)
 			)
@@ -7663,7 +8070,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "69862f7c-fd7e-4c56-9e77-4b7a65fced96")
-		(property "Reference" "#PWR016"
+		(property "Reference" "#PWR018"
 			(at 238.76 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -7723,7 +8130,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR016")
+					(reference "#PWR018")
 					(unit 1)
 				)
 			)
@@ -7811,89 +8218,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Trim")
-		(at 224.79 92.71 0)
-		(mirror y)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6c88dddf-6436-4295-8a57-0539b1b2338c")
-		(property "Reference" "R16"
-			(at 227.33 91.4399 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "4k7 heli"
-			(at 227.33 93.9799 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 226.568 92.71 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 224.79 92.71 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Trimmable resistor (preset resistor)"
-			(at 224.79 92.71 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a3f56882-d175-49a4-9c90-77d48ddd03b9")
-		)
-		(pin "2"
-			(uuid "bbf1c61c-02aa-4ec4-bdc8-05b122de314b")
-		)
-		(instances
-			(project "nano-wallscout"
-				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R")
 		(at 238.76 124.46 180)
 		(unit 1)
@@ -7904,7 +8228,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "775f0e23-4680-41aa-91f9-1203f4f0c906")
-		(property "Reference" "R17"
+		(property "Reference" "R18"
 			(at 244.348 125.984 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7968,7 +8292,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R17")
+					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -8246,7 +8570,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm_LongPads"
 			(at 134.62 127 0)
 			(hide yes)
 			(show_name no)
@@ -8342,7 +8666,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "8b2f254f-e174-4fd7-aeb1-d7e27a8192bd")
-		(property "Reference" "Q2"
+		(property "Reference" "Q1"
 			(at 225.044 130.556 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8412,16 +8736,15 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "Q2")
+					(reference "Q1")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Trim")
-		(at 190.5 109.22 0)
-		(mirror y)
+		(lib_id "Device:R_Potentiometer_Trim")
+		(at 190.5 107.95 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8429,10 +8752,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8e09daab-0a3e-4127-9fb1-5b6002578f59")
-		(property "Reference" "R14"
-			(at 193.04 107.9499 0)
+		(uuid "917e96c1-f7ff-40fc-bbb3-461f33ce6a58")
+		(property "Reference" "RV1"
+			(at 199.136 105.664 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8442,8 +8764,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "2k2 heli"
-			(at 193.04 110.4899 0)
+		(property "Value" "2k"
+			(at 199.136 107.442 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8453,8 +8775,8 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
-			(at 192.278 109.22 90)
+		(property "Footprint" "Potentiometer_THT:Potentiometer_Bourns_3266Y_Vertical"
+			(at 190.5 107.95 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8465,7 +8787,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 190.5 109.22 0)
+			(at 190.5 107.95 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8475,8 +8797,41 @@
 				)
 			)
 		)
-		(property "Description" "Trimmable resistor (preset resistor)"
-			(at 190.5 109.22 0)
+		(property "Description" "Trim-potentiometer"
+			(at 190.5 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" "R"
+			(at 190.5 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" "POT"
+			(at 190.5 107.95 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=r0 2=wiper 3=r1"
+			(at 190.5 107.95 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -8487,15 +8842,18 @@
 			)
 		)
 		(pin "1"
-			(uuid "48d29786-8102-409c-a7fe-6fdb0425d87b")
+			(uuid "4ebf8aa1-6ac9-470a-a0ee-0da509bb5c43")
 		)
 		(pin "2"
-			(uuid "9d7d344f-6ca5-42e4-acbd-ee28394582bf")
+			(uuid "3e3d6622-6d4a-4871-8a29-2ddbf59748c2")
+		)
+		(pin "3"
+			(uuid "6b8081eb-4df9-4b7c-b4dc-137748c3f889")
 		)
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R14")
+					(reference "RV1")
 					(unit 1)
 				)
 			)
@@ -8592,7 +8950,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "97a226aa-7841-47a4-9967-aaafc19a06a5")
-		(property "Reference" "#PWR09"
+		(property "Reference" "#PWR011"
 			(at 109.22 147.32 0)
 			(hide yes)
 			(show_name no)
@@ -8652,7 +9010,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR09")
+					(reference "#PWR011")
 					(unit 1)
 				)
 			)
@@ -8692,7 +9050,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_THT:D_DO-35_SOD27_P12.70mm_Horizontal"
 			(at 200.66 142.24 0)
 			(hide yes)
 			(show_name no)
@@ -8771,7 +9129,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Rect_L7.2mm_W2.5mm_P5.00mm"
 			(at 58.42 57.4548 0)
 			(hide yes)
 			(show_name no)
@@ -8851,7 +9209,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Buzzer_Beeper:Buzzer_TDK_PS1240P02BT_D12.2mm_H6.5mm"
 			(at 29.845 140.97 90)
 			(hide yes)
 			(show_name no)
@@ -8900,6 +9258,85 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 101.6 134.62 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a2d9b358-17fc-4c3d-9655-a65706d3d1d5")
+		(property "Reference" "C3"
+			(at 98.806 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100nF"
+			(at 97.79 137.16 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Rect_L7.2mm_W2.5mm_P5.00mm"
+			(at 100.6348 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 101.6 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "379d9420-1e0a-4020-bebd-5d3a397d49d2")
+		)
+		(pin "1"
+			(uuid "6cafca3c-7ec5-49b0-ad41-d21c7f81e2e5")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "C3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Amplifier_Operational:MCP6004")
 		(at 266.7 83.82 0)
 		(mirror y)
@@ -8934,7 +9371,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_DIP:DIP-14_W7.62mm_LongPads"
 			(at 267.97 81.28 0)
 			(hide yes)
 			(show_name no)
@@ -9102,7 +9539,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 182.88 82.55 270)
+		(at 182.88 85.09 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9112,7 +9549,7 @@
 		(dnp no)
 		(uuid "b5da15d2-49fa-41cd-bcef-5f5fbf2c73a2")
 		(property "Reference" "R13"
-			(at 184.404 80.01 90)
+			(at 184.404 82.55 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9123,7 +9560,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 184.658 85.344 90)
+			(at 184.658 87.884 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9134,7 +9571,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-			(at 182.88 80.772 90)
+			(at 182.88 83.312 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9145,7 +9582,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 182.88 82.55 0)
+			(at 182.88 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9156,7 +9593,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 182.88 82.55 0)
+			(at 182.88 85.09 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9374,7 +9811,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P12.70mm_Horizontal"
 			(at 200.66 130.81 0)
 			(hide yes)
 			(show_name no)
@@ -9475,7 +9912,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_THT:SW_PUSH_6mm_H8mm"
 			(at 33.02 82.55 0)
 			(hide yes)
 			(show_name no)
@@ -9613,7 +10050,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d1d15992-9a35-4c7c-99f5-64e4365089d1")
-		(property "Reference" "Q1"
+		(property "Reference" "Q2"
 			(at 29.21 157.4799 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9635,7 +10072,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline_Wide"
 			(at 29.21 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -9668,19 +10105,19 @@
 				)
 			)
 		)
-		(pin "B"
+		(pin "2"
 			(uuid "456e4d0a-2d78-46c3-890a-69e6f9657a53")
 		)
-		(pin "C"
+		(pin "1"
 			(uuid "07302145-41e2-4ec8-a925-aef8ca0786db")
 		)
-		(pin "E"
+		(pin "3"
 			(uuid "f8aad0a1-57a9-4edc-92dc-7d2f4efaff32")
 		)
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "Q1")
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -9943,7 +10380,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d82219c3-ad16-4944-9878-eb1c63fdf6f5")
-		(property "Reference" "#PWR014"
+		(property "Reference" "#PWR016"
 			(at 200.66 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -10003,7 +10440,86 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR014")
+					(reference "#PWR016")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 101.6 140.97 0)
+		(mirror y)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d9d95c94-11dd-42b2-b848-87098766d31a")
+		(property "Reference" "#PWR09"
+			(at 101.6 147.32 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 101.6 146.05 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 101.6 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 101.6 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 101.6 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b79cf43b-43ac-4191-b3e3-9aaa5c714a2b")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR09")
 					(unit 1)
 				)
 			)
@@ -10022,7 +10538,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dd480820-24b6-4473-86f0-3e14c67b070d")
-		(property "Reference" "#PWR015"
+		(property "Reference" "#PWR017"
 			(at 219.71 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -10082,7 +10598,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR015")
+					(reference "#PWR017")
 					(unit 1)
 				)
 			)
@@ -10122,7 +10638,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Radial_D6.3mm_H11.0mm_P2.50mm"
 			(at 54.61 50.8 0)
 			(hide yes)
 			(show_name no)
@@ -10183,7 +10699,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ddb3fdff-05e7-428e-9875-b97347b34c6f")
-		(property "Reference" "#PWR018"
+		(property "Reference" "#PWR020"
 			(at 256.54 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -10243,7 +10759,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR018")
+					(reference "#PWR020")
 					(unit 1)
 				)
 			)
@@ -10260,7 +10776,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "de980abe-8b48-45ef-ab1e-0e6ab670fadf")
-		(property "Reference" "R15"
+		(property "Reference" "R16"
 			(at 227.584 78.486 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10324,7 +10840,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "R15")
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -10363,7 +10879,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Display:ER_OLEDM0.91_1x-I2C"
+		(property "Footprint" "Display:128x64OLED"
 			(at 128.524 185.42 0)
 			(hide yes)
 			(show_name no)
@@ -10429,7 +10945,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "ed11d479-1f73-4650-9f5b-b2ae30778502")
-		(property "Reference" "C4"
+		(property "Reference" "C5"
 			(at 107.95 131.318 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10451,7 +10967,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:C_Radial_D6.3mm_H11.0mm_P2.50mm"
 			(at 109.22 134.62 0)
 			(hide yes)
 			(show_name no)
@@ -10493,7 +11009,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "C4")
+					(reference "C5")
 					(unit 1)
 				)
 			)
@@ -10511,7 +11027,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f0bc08ee-78a8-4259-a4db-31e2e387b666")
-		(property "Reference" "C6"
+		(property "Reference" "C7"
 			(at 265.43 43.5609 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10533,7 +11049,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm"
 			(at 262.5852 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -10575,7 +11091,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "C6")
+					(reference "C7")
 					(unit 1)
 				)
 			)
@@ -10594,7 +11110,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fcb59036-11ed-4e23-9050-9ce882bf2188")
-		(property "Reference" "#PWR010"
+		(property "Reference" "#PWR012"
 			(at 110.49 162.56 0)
 			(hide yes)
 			(show_name no)
@@ -10654,7 +11170,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR010")
+					(reference "#PWR012")
 					(unit 1)
 				)
 			)

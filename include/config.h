@@ -10,15 +10,16 @@
  *
  * D4: kalibrálógomb;
  * D5: nullázó- és DD-beállítógomb;
- * D2: Q1 kapuja.
- * D11: hangjelző;
+ * D2: Q1 FET kapuja.
+ * D3: hangjelző;
  * A0: mérőjel;
  * A1: akkumulátorfeszültség-osztó.
  * A4 és A5: OLED I²C-kapcsolat.
  */
-static const uint8_t PIN_BTN_ZERO = 5;
-static const uint8_t PIN_BTN_CAL = 4;
-#define GATE_BIT PD2 // Q1 kapu lábának bitje a PORTD regiszterben
+#define GATE_BIT PD2     // Q1 kapu lábának bitje a PORTD regiszterben
+#define PIN_BUZZER PD3   // Hangjelző lábának bitje a PORTD regiszterben
+#define PIN_BTN_CAL PD4  // Kalibrálógomb lába
+#define PIN_BTN_ZERO PD5 // Nullázó- és DD-beállítógomb lába
 
 /** @brief A Q1 bekapcsolási ideje mikroszekundumban. */
 static const uint16_t T_ON = 60;
