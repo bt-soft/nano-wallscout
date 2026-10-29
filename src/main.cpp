@@ -23,6 +23,7 @@
 
 #include "beeper.h"
 #include "calibration.h"
+#include "center_finder.h"
 #include "config.h"
 #include "display.h"
 #include "sensor.h"
@@ -82,6 +83,15 @@ struct Outcome {
 struct State {
     /** Igaz, ha a DD-beállító mód aktív. */
     bool setupMode = false;
+
+    /** Igaz, ha a külön középkereső mód aktív. */
+    bool centerMode = false;
+    bool centerHistoryMode = false;
+
+    /** Fix méretű gördülő amplitúdógrafikon a középkereső módhoz. */
+    int8_t centerHistory[CENTER_HISTORY_SIZE] = {};
+    uint8_t centerHistoryCount = 0, centerHistoryNext = 0;
+    CenterFinder centerFinder;
 
     /** A kalibráló- és nullázógomb lenyomásának kezdőideje. */
     uint32_t calPressStart = 0, zeroPressStart = 0;
@@ -184,6 +194,10 @@ static void restartZeroing() {
     st.polarityQuietSince = 0;
     st.steadyCount = 0;
     st.detOn = false;
+    st.centerFinder.reset();
+    st.centerHistoryMode = false;
+    st.centerHistoryCount = 0;
+    st.centerHistoryNext = 0;
 }
 
 /**
@@ -203,6 +217,7 @@ static bool handleZeroButton(uint32_t now) {
     if (g_zeroSeen && !st.setupMode && !st.zeroLong && now - st.zeroPressStart > LONG_PRESS_MS) {
         st.zeroLong = true;
         st.setupMode = true;
+        st.centerMode = false;
         st.best = 1e9f;
         restartZeroing();
         st.confirmUntil = now + 150;
@@ -238,7 +253,24 @@ static void handleCalButton(uint32_t now) {
         }
     }
 
-    if (!g_calSeen) {
+    if (!g_calSeen && st.calPressStart) {
+        if (!st.calDone && !st.setupMode && st.zeroCount >= ZERO_UPDATES &&
+            now - st.calPressStart < LONG_PRESS_MS) {
+            if (!st.centerMode) {
+                st.centerMode = true;
+                st.centerHistoryMode = false;
+                st.centerFinder.reset();
+                st.centerHistoryCount = 0;
+                st.centerHistoryNext = 0;
+                st.flashUntil = 0;
+            } else if (!st.centerHistoryMode) {
+                st.centerHistoryMode = true;
+            } else {
+                st.centerMode = false;
+                st.centerHistoryMode = false;
+            }
+            st.confirmUntil = now + 150;
+        }
         st.calPressStart = 0;
     }
 }
@@ -373,7 +405,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     }
 
     // Hosszan álló jel nem mozgó fém, hanem nullpont-eltolódás: lassan újranullázunk.
-    const bool steady = fabsf(m.diff - st.prevDiff) < 0.3f * st.runTh;
+    const bool steady = !st.centerMode && fabsf(m.diff - st.prevDiff) < 0.3f * st.runTh;
     st.prevDiff = m.diff;
     if (steady) {
         if (st.steadyCount < 255)
@@ -383,7 +415,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     }
 
     // Ellenőrizzük, hogy a jel hosszú ideje áll-e, ami a nullpont-eltolódás jele lehet.
-    const bool rezero = st.steadyCount >= STEADY_CYCLES;
+    const bool rezero = !st.centerMode && st.steadyCount >= STEADY_CYCLES;
     if (rezero) {
         st.zero += REZERO_FOLLOW * rawSig;
         out.sig = m.diff - st.zero;
@@ -394,7 +426,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     // Frissítjük a jel nagyságát a kimeneti adatokban.
     out.mag = fabsf(out.sig);
     // Ha a jel nem hosszú ideje áll, és a jel nagysága a küszöb alatt van, követjük a driftet.
-    if (!rezero && out.mag < st.runTh) {
+    if (!st.centerMode && !rezero && out.mag < st.runTh) {
         st.zero += DRIFT_FOLLOW * out.sig;
     }
     // Frissítjük a detektor állapotát a jel nagysága alapján.
@@ -439,7 +471,7 @@ static void updateBeeper(uint16_t freq, uint32_t now) {
 #if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
 static void logSerial(const Measurement &m, const Outcome &out) {
 
-    Serial.print(st.setupMode ? F("setup") : F("run"));
+    Serial.print(st.setupMode ? F("setup") : (st.centerMode ? F("center") : F("run")));
     if (st.setupMode) {
         Serial.print(F(" ch=A"));
         Serial.print(CHANNEL);
@@ -464,7 +496,26 @@ static void logSerial(const Measurement &m, const Outcome &out) {
     Serial.print(out.sig, 2);
 
     Serial.print(F(" vbat=")); // Akkumulátor feszültség
-    Serial.println(m.vbat, 2);
+    Serial.print(m.vbat, 2);
+
+    if (st.centerMode) {
+        Serial.print(F(" center_sig="));
+        Serial.print(m.diff - st.zero, 2);
+        Serial.print(F(" noise_th="));
+        Serial.print(st.runTh, 2);
+        Serial.print(F(" center_state="));
+        Serial.print(centerStageLabel(st.centerFinder.stage()));
+        Serial.print(F(" peak="));
+        Serial.print(st.centerFinder.peakMagnitude(), 2);
+        Serial.print(F(" return_peak="));
+        Serial.print(st.centerFinder.returnMagnitude(), 2);
+        Serial.print(F(" peak_sample="));
+        Serial.print(st.centerFinder.peakSample());
+        Serial.print(F(" return_sample="));
+        Serial.print(st.centerFinder.returnSample());
+    }
+
+    Serial.println();
 }
 #endif
 
@@ -514,12 +565,37 @@ void loop() {
         runZeroing(m, out); // Futtatjuk a nulla beállítási üzemmódot.
     } else {
         runDetect(m, now, out); // Egyébként a detektálási üzemmódot.
+        if (st.centerMode) {
+            const float centerSig = m.diff - st.zero;
+            const bool newlyLocked =
+                st.centerFinder.update(fabsf(centerSig), st.runTh, !m.overload && !m.dcFault, now);
+            if (newlyLocked) {
+                st.confirmUntil = now + 150;
+            }
+
+            const float historyScale = st.runTh * 4.0f;
+            int16_t historyValue = historyScale > 0 ? (int16_t)(fabsf(centerSig) * 32.0f / historyScale) : 0;
+            historyValue = constrain(historyValue, 0, 32);
+            st.centerHistory[st.centerHistoryNext] = (int8_t)historyValue;
+            st.centerHistoryNext = (st.centerHistoryNext + 1) % CENTER_HISTORY_SIZE;
+            if (st.centerHistoryCount < CENTER_HISTORY_SIZE) {
+                ++st.centerHistoryCount;
+            }
+        }
+        if (st.centerMode) {
+            out.freq = 0;
+        }
     }
 
     updateBeeper(out.freq, now); // Frissítjük a hangjelző állapotát és frekvenciáját.
 
     if (st.setupMode) {
         drawSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
+    } else if (st.centerMode && st.zeroCount >= ZERO_UPDATES) {
+        drawCenter(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(),
+                   st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault,
+                   st.centerHistoryMode, st.centerFinder.stage(), st.centerHistory, st.centerHistoryCount,
+                   st.centerHistoryNext);
     } else {
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);
     }

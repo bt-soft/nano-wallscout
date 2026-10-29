@@ -76,6 +76,36 @@ static const float REZERO_FOLLOW = 0.05f;
 /** @brief Küszöb alatti idő az előjelzár feloldásához milliszekundumban. */
 static const uint16_t POLARITY_RELEASE_MS = 1000;
 
+/** @brief Ennyi egymást követő küszöb feletti mérés kell a jelölt megerősítéséhez. */
+static const uint8_t CENTER_CONFIRM_SAMPLES = 2;
+
+/** @brief Ennyi csökkenő mérés kell egy lehetséges csúcshoz. */
+static const uint8_t CENTER_FALLING_SAMPLES = 3;
+
+/** @brief Időtúllépés a csúcskövetési és a visszapásztázási szakaszra milliszekundumban. */
+static const uint32_t CENTER_STAGE_TIMEOUT_MS = 20000;
+
+/** @brief A keresési küszöb alatti visszaesés aránya a jelölt törléséhez. */
+static const float CENTER_RELEASE_FRACTION = 0.70f;
+
+/** @brief A csúcstól elvárt minimális visszaesés aránya a zajküszöbhöz képest. */
+static const float CENTER_PEAK_HYSTERESIS_FRACTION = 0.20f;
+
+/** @brief A visszapásztázás előtt szükséges minimális jelcsökkenés az első csúcshoz képest. */
+static const float CENTER_MIN_RETURN_DROP_FRACTION = 0.30f;
+
+/** @brief A két pásztázás csúcserőssége közötti megengedett relatív eltérés. */
+static const float CENTER_RETURN_TOLERANCE_FRACTION = 0.35f;
+
+/** @brief A visszatérő csúcs minimális abszolút eltéréstűrése a becsült zajküszöb többszörösében. */
+static const float CENTER_RETURN_MIN_TOLERANCE = 2.0f;
+
+/** @brief E feletti adaptív küszöbnél a középkereső zajos mérést jelez. Hangolása valós mérést igényel. */
+static const float CENTER_NOISY_THRESHOLD = 8.0f;
+
+/** @brief A középkereső gördülő előjeles jelgrafikonjának fix elemszáma. */
+static const uint8_t CENTER_HISTORY_SIZE = 32;
+
 /** @brief Az exponenciális simítás (jelzés utáni visszamenet) súlya normál üzemmódban. A kisebb érték lassabban követi a jelváltozásokat.  */
 static const float SMOOTH_RUN = 0.5f;
 

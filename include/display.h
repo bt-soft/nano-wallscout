@@ -5,6 +5,8 @@
 
 #include <Arduino.h>
 
+#include "center_finder.h"
+
 /**
  * @brief Inicializálja az I²C-kapcsolatot és az OLED-kijelzőt.
  *
@@ -21,6 +23,13 @@ void displayInit();
  *
  */
 void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det);
+
+/**
+ * @brief Megjeleníti a középkeresés állapotát és az előjeles jel rövid történetét.
+ */
+void drawCenter(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat,
+                bool overload, bool dcFault, bool historyMode, CenterStage stage,
+                const int8_t *history, uint8_t historyCount, uint8_t historyNext);
 
 /**
  * @brief Megjeleníti az áthallást és a telítési adatokat DD-beállító módban.

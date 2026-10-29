@@ -81,6 +81,70 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
     } while (oled.nextPage());
 }
 
+void drawCenter(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, bool historyMode, CenterStage stage, const int8_t *history,
+                uint8_t historyCount, uint8_t historyNext) {
+    char num[10], peakText[8], returnText[8];
+    dtostrf(fabsf(sig), 1, 1, num);
+    dtostrf(peak, 1, 1, peakText);
+    dtostrf(returnPeak, 1, 1, returnText);
+
+    const int half = (int)(constrain(sig / (threshold * 4.0f), -1.0f, 1.0f) * 58.0f);
+
+    oled.firstPage();
+
+    do {
+        drawHeader(historyMode ? "HISTORIKUS" : "CENTER SCAN", vbat);
+        oled.setFont(u8g2_font_6x10_tr);
+        const char *status = dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : (msg ? msg : centerStageLabel(stage)));
+        if (!historyMode || dcFault || overload) {
+            oled.drawStr(0, 20, status);
+        }
+
+        int graphTop, graphBottom;
+        if (historyMode) {
+            graphTop = 24;
+            graphBottom = 63;
+        } else {
+            oled.setFont(u8g2_font_logisoso24_tn);
+            oled.drawStr(0, 42, num);
+            oled.setFont(u8g2_font_6x10_tr);
+            oled.drawStr(75, 30, "P:");
+            oled.drawStr(88, 30, peakText);
+            oled.drawStr(75, 41, "R:");
+            oled.drawStr(88, 41, returnText);
+
+            oled.drawFrame(2, 45, 124, 6);
+            oled.drawVLine(63, 44, 8);
+            if (half >= 0) {
+                oled.drawBox(64, 46, half, 4);
+            } else {
+                oled.drawBox(64 + half, 46, -half, 4);
+            }
+            graphTop = 58;
+            graphBottom = 63;
+        }
+
+        oled.drawHLine(0, graphBottom, 128);
+        const int graphHeight = graphBottom - graphTop;
+        const int thresholdY = graphBottom - graphHeight / 4;
+        for (int x = 0; x < 128; x += 3) {
+            oled.drawPixel(x, thresholdY);
+        }
+        for (uint8_t i = 0; i < historyCount; ++i) {
+            const uint8_t index = historyCount < CENTER_HISTORY_SIZE ? i : (historyNext + i) % CENTER_HISTORY_SIZE;
+            const int x = 128 - historyCount * 4 + i * 4;
+            const int y = graphBottom - (int)history[index] * graphHeight / 32;
+            oled.drawPixel(x, y);
+            if (i > 0) {
+                const uint8_t previous = historyCount < CENTER_HISTORY_SIZE ? i - 1 : (historyNext + i - 1) % CENTER_HISTORY_SIZE;
+                const int previousX = x - 4;
+                const int previousY = graphBottom - (int)history[previous] * graphHeight / 32;
+                oled.drawLine(previousX, previousY, x, y);
+            }
+        }
+    } while (oled.nextPage());
+}
+
 /**
  * @brief Kirajzolja a DD-beállító képernyőt és az előjeles áthallásmérőt.
  *

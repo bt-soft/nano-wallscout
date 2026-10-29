@@ -79,9 +79,13 @@ Mindkét gomb a D-lábat földre húzza (belső felhúzással). A gombokat a mé
 
 A mód váltását rövid (150 ms-os), 3 kHz-es csipogás jelzi. A hosszú nyomás után a gomb felengedése már nem indít újabb műveletet.
 
-**Arduino D4 – KALIBRÁLÁS / `min` törlése**
+**Arduino D4 – KALIBRÁLÁS / KÖZÉPKERESŐ / `min` törlése**
 
-DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul. Kalibrálás beállító módban nem történik.
+Normál kereső módban a D4 rövid megnyomásai a következő nézetek között léptetnek: normál keresés → élő `CENTER SCAN` → élő historikus grafikon → normál keresés. A historikus nézet tovább gyűjti a méréseket: az amplitúdó jobbról érkezik, a korábbi minták balra gördülnek, így a jel időbeli alakulása követhető. A grafikon a nullázott jel abszolút értékét mutatja; a szaggatott vízszintes vonal az adaptív küszöb. A hosszú nyomás továbbra is az 5 cm-es kalibrálást végzi. DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul.
+
+Középkereső módban a kijelző az előjeles, nullázott jelet, annak rövid gördülő grafikonját, a zajküszöböt, az első és a visszapásztázás során mért csúcsot mutatja. A firmware legalább két küszöb feletti mintával jelöltet keres, több csökkenő minta alapján becsül csúcsot, majd visszapásztázás után a két csúcserősséget hasonlítja össze. A `CSUCS MEGEROSITVE` csak ezt a jelerősség-egyezést jelenti: a mintasorszám nem pozíció, így a mód nem mér és nem jelöl ki pontos fizikai középvonalat. A visszapásztázás irányát nem nevezi meg.
+
+A mód bekapcsolásakor a mérő legyen levegőben és fémtől távol. Ha a `ZAJOS MERES` felirat látszik, válassz kevésbé zajos helyet és nullázz újra a D5 rövid megnyomásával. Középkereső módban a driftkövetés és az automatikus újranullázás szünetel, így a hosszan a tekercs alatt tartott tárgyat nem nyomja el a háttérkövetés. A visszalépéshez nyomd meg röviden újra a D4-et.
 
 Normál módban:
 
@@ -94,6 +98,36 @@ Kalibrálás nélkül a kijelzőn `nincs kal.` látszik, és mélység nem jelen
 
 Mélység: d = ∛(K/S). Ez a mélység becslése, nem pontos mérés.
 
+### Középkereső paraméterei és ellenőrzése
+
+Az induló értékek a `include/config.h` fájlban vannak; prototípuson, ismert geometriájú célokkal kell őket hangolni.
+
+| Paraméter | Kezdőérték | Szerep |
+|---|---:|---|
+| `CENTER_CONFIRM_SAMPLES` | 2 | Egymást követő minták a jelölt, illetve a visszatérő emelkedés elfogadásához |
+| `CENTER_FALLING_SAMPLES` | 3 | Egymást követő csökkenő minták a lokális csúcs felismeréséhez |
+| `CENTER_STAGE_TIMEOUT_MS` | 20000 ms | Csúcskövetési vagy visszapásztázási szakasz maximális ideje; lejáratkor új keresés indul |
+| `CENTER_RELEASE_FRACTION` | 0,70 | A küszöb alá eső jel elvetési aránya (hiszterézis) |
+| `CENTER_PEAK_HYSTERESIS_FRACTION` | 0,20 | Minimális csúcstól való esés az adaptív zajküszöbhöz képest |
+| `CENTER_MIN_RETURN_DROP_FRACTION` | 0,30 | A visszapásztázás előtti völgy minimuma az első csúcshoz viszonyítva |
+| `CENTER_RETURN_TOLERANCE_FRACTION` | 0,35 | A két irányban mért csúcserősség megengedett relatív eltérése |
+| `CENTER_RETURN_MIN_TOLERANCE` | 2,0 | A csúcsegyezés minimális tűrése a zajküszöb többszörösében |
+| `CENTER_NOISY_THRESHOLD` | 8,0 | Ezen adaptív küszöb felett zajos mérés figyelmeztetés |
+| `CENTER_HISTORY_SIZE` | 32 | A gördülő grafikon rögzített mintaszáma |
+
+Kalibráláskor a kereső legyen levegőben, fémtől távol és a végleges mechanikai elrendezésben. Fém nélküli stabil, majd zajos környezetben ellenőrizd a soros `noise_th` értéket; a `CENTER_NOISY_THRESHOLD`-öt és a többi értéket csak ilyen mérések után módosítsd. Ezután tesztelj több ismert átmérőjű és mélységű betonvassal, mindkét pásztázási irányban és különböző kézi sebességgel. Jegyezd fel a megismételt csúcsok eltérését, a téves találatokat és a fel nem ismert célokat.
+
+Elfogadási próbák: fém nélküli stabil/zajos mérés; egyetlen széles csúcs oda-vissza pásztázása; egyetlen rövid küszöb feletti tüske; változó és többcsúcsú jel; két közeli fémtárgy; lassú nullpontvándorlás; gyenge vagy hatótávon túli cél; hosszan egy helyben tartott cél; nullázás vagy DD-mód váltása középkeresés közben. A visszatérő csúcs nem erősíthető meg egyetlen tüskéből: a logikának a völgy után két egymást követő emelkedő mintát, majd több csökkenő mintát és a csúcserősségek egyezését igényli. Ezek szoftveres feltételek, nem garantálják a betonvas tényleges geometriai középvonalát.
+
+### Későbbi hardveres bővítések
+
+| Bővítés | Előny | Korlát / integráció |
+|---|---|---|
+| Mérőgörgő és kvadratúrajeladó | Ismert irányú, ismételhető fal menti pozíció; valódi térbeli csúcs-összehasonlítást tenne lehetővé | Mechanikai csúszás; az impulzusmérés alatt letiltott megszakítások miatt a jeladót külön, veszteségmentes számlálóval vagy megszakítási tervvel kell integrálni |
+| Optikai felületkövető | Nincs görgőcsúszás, a felület menti elmozdulást követheti | Felület- és fényérzékeny; rögzítés, kalibrálás és az OLED-del közös I²C-busz ellenőrzése szükséges |
+| További impulzus utáni minták | Jobban leírhatják a lecsengést és a céljel alakját | Az időzítés a kritikus mintavételi szakaszt érinti; csak oszcilloszkópos ellenőrzés és külön zajmérés után indokolt |
+| Hőmérséklet-/akkufeszültség-kompenzáció | Csökkentheti a környezeti és tápfeszültség-változásból eredő driftet | A feszültség már mérhető, de karakterizálás kell; hőmérséklethez érzékelő és újabb hardveres kalibrálás szükséges |
+
 ### Soros monitor (115200 baud)
 
 > [!WARNING]
@@ -102,7 +136,7 @@ Mélység: d = ∛(K/S). Ez a mélység becslése, nem pontos mérés.
 > van, az Arduino soros portján keresztüli naplózás aktiválódik, az AVR debugger viszont nem. 
 > **A két funkció egyidejűleg nem használható.**
 
-Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s1=512 s2=510 idle=511 zero=0.40 sig=2.80 vbat=11.8`. Az elején `run` (kereső) vagy `setup ch=A0` (DD beállító mód) áll. Az értékek ADC-egységben (0–1023) vannak, 100 impulzusra átlagolva.
+Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s1=512 s2=510 idle=511 zero=0.40 sig=2.80 vbat=11.8`. Az elején `run` (kereső), `center` (középkereső) vagy `setup ch=A0` (DD beállító mód) áll. Középkereső módban a `center_sig`, `noise_th`, `center_state`, `peak`, `return_peak`, `peak_sample` és `return_sample` mezők is megjelennek. A mintasorszám diagnosztikai adat, nem fizikai távolság. Az értékek ADC-egységben (0–1023) vannak, 100 impulzusra átlagolva.
 
 | Mező | Jelentés |
 |---|---|

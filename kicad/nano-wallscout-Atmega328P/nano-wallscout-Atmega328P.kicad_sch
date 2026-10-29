@@ -13150,7 +13150,7 @@
 				)
 			)
 		)
-		(property "Description" "SSD1306 OLED module, 0.91 inch, 128x32, I2C"
+		(property "Description" "SSD1306 OLED module, 0.91 inch, 128x64, I2C"
 			(at 128.27 193.294 0)
 			(hide yes)
 			(show_name no)
