@@ -2,6 +2,7 @@
 
 > [!NOTE]
 > A projekt egy kézi impulzusindukciós (PI) elven működő - **mélységbecsléssel ellátott** - betonvas-kereső, amely két D alakú tekerccsel (DD elrendezés) működik. 
+>
 > Platform: **Arduino Nano (ATmega328P)**.
 
 | Jellemző | Érték |
