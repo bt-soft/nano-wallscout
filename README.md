@@ -31,7 +31,7 @@ Az [adó mágneses terének](doc/Fémkereső%20tekercsek%20betonvas%20kereséshe
 
 ![DD-tekercs](doc/DD-coil.svg)
 
-Ennek eredményeként fém jelenléte nélkül az RX tekercsre elsősorban a maradék mágneses áthallás és a zaj jut. Fém jelenlétében a benne indukálódó örvényáramok mágneses tere megváltoztatja a vevőtekercsben mérhető jelet. A megfelelően beállított DD-tekercspár esetén a fém nélküli alapjel alacsony, így a céltárgy által okozott jelváltozás jól érzékelhető.
+Ennek eredményeként fém jelenléte nélkül az RX tekercsre elsősorban a **maradék mágneses áthallás** és a **zaj** jut. Fém jelenlétében a benne indukálódó örvényáramok mágneses tere megváltoztatja a vevőtekercsben mérhető jelet. A megfelelően beállított DD-tekercspár esetén a fém nélküli alapjel alacsony, így a céltárgy által okozott jelváltozás jól érzékelhető.
 
 A nagyobb tekercs megfelelő kialakítás esetén növelheti az érzékelési mélységet, de az elérhető eredmény a tekercsek geometriájától, induktivitásától, ellenállásától, a meghajtóáramtól és a vevő érzékenységétől is függ. A nagyobb tekercs térben kiterjedtebb érzékelési mezőt hozhat létre, ami ugyan növelheti a hatótávolságot, ugyanakkor ronthatja a céltárgy pontos helyének behatárolását.
 
