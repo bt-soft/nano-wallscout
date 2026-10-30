@@ -133,14 +133,6 @@ Kalibráláskor a kereső legyen levegőben, fémtől távol és a végleges mec
 
 Elfogadási próbák: fém nélküli stabil/zajos mérés; egyetlen széles csúcs oda-vissza pásztázása; egyetlen rövid küszöb feletti tüske; változó és többcsúcsú jel; két közeli fémtárgy; lassú nullpontvándorlás; gyenge vagy hatótávon túli cél; hosszan egy helyben tartott cél; nullázás vagy DD-mód váltása középkeresés közben. A visszatérő csúcs nem erősíthető meg egyetlen tüskéből: a logikának a völgy után két egymást követő emelkedő mintát, majd több csökkenő mintát és a csúcserősségek egyezését igényli. Ezek szoftveres feltételek, nem garantálják a betonvas tényleges geometriai középvonalát.
 
-### Későbbi hardveres bővítések
-
-| Bővítés | Előny | Korlát / integráció |
-|---|---|---|
-| Mérőgörgő és kvadratúrajeladó | Ismert irányú, ismételhető fal menti pozíció; valódi térbeli csúcs-összehasonlítást tenne lehetővé | Mechanikai csúszás; az impulzusmérés alatt letiltott megszakítások miatt a jeladót külön, veszteségmentes számlálóval vagy megszakítási tervvel kell integrálni |
-| Optikai felületkövető | Nincs görgőcsúszás, a felület menti elmozdulást követheti | Felület- és fényérzékeny; rögzítés, kalibrálás és az OLED-del közös I²C-busz ellenőrzése szükséges |
-| További impulzus utáni minták | Jobban leírhatják a lecsengést és a céljel alakját | Az időzítés a kritikus mintavételi szakaszt érinti; csak oszcilloszkópos ellenőrzés és külön zajmérés után indokolt |
-| Hőmérséklet-/akkufeszültség-kompenzáció | Csökkentheti a környezeti és tápfeszültség-változásból eredő driftet | A feszültség már mérhető, de karakterizálás kell; hőmérséklethez érzékelő és újabb hardveres kalibrálás szükséges |
 
 ### Soros monitor (115200 baud)
 
@@ -267,17 +259,16 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 
 | Db | Alkatrész |
 |---|---|
-| 1 | Arduino Nano (A1, ATmega328P) |
-| 1 | MCP6004 (U2) |
-| 1 | IRLZ44N (Q2) – Tx kapcsoló |
-| 1 | 2N2222 (Q1) – buzzer-meghajtó |
-| 1 | SSD1306 I²C OLED (U1) |
+| 1 | Arduino Nano (vagy ATmega328P) |
+| 1 | MCP6004  |
+| 1 | IRLZ44N  – Tx kapcsoló |
+| 1 | 2N2222  – buzzer-meghajtó |
+| 1 | SSD1306 I²C OLED  |
 | 2 | 1 mH-es D-tekercs: Ltx1 (Tx) és Lrx1 (Rx) |
-| 1 | UF4007 (D2), 1 db ZPY36 / 1 W zener (D3), 1 db 1N4148 (D1, a buzzer fordított diódája) |
+| 1 | UF4007 , 1 db ZPY36 / 1 W zener , 1 db 1N4148 (a buzzer fordított diódája) |
 | 1 | Buzzer (BZ1, 15 Ω) |
 | 2 | nyomógomb: SW1 (kalibrálás), SW2 (nullázás) |
-| – | Ellenállások: R1 = 150 Ω (buzzer soros), R2 = 1 kΩ (Q1 bázis), R3 = 100 kΩ és R4 = 33 kΩ (akkuosztó), R5 = 390 Ω (U2D kimenet → A0), R6 = R7 = 100 kΩ (Vmid osztó), R8 = 100 kΩ és R9 = 10 kΩ (U2B), R10 = 1 kΩ (U2A → U2B), R11 = 100 kΩ és R12 = 10 kΩ (U2A), R13 = 10 kΩ (Rx soros bemenet), R14 = 2,2 kΩ-os trimmer (Rx csillapítás), R15 = 1 kΩ és R16 = 4,7 kΩ-os trimmer (Tx csillapítás), R17 = 100 Ω (Q2 kapu soros), R18 = 10 kΩ (Q2 kapu lehúzó) |
-| – | Kondenzátorok: C1 = 100 µF / 25 V és C2 = 100 nF (+BATT), C3 = 100 nF (A1 akkuosztó), C4 = 10 µF (Vmid), C5 = 100 nF és C6 = 1000 µF / 16 V (+5 V) |
+| – | Ellenállások, Kondenzátorok |
 
 ## Beüzemelés
 
@@ -334,4 +325,8 @@ pio run                      # régi bootloaderes Nano (nano környezet)
 pio run -e nano_newboot      # új (115200 baudos) bootloader
 pio run -t upload            # feltöltés
 ```
-Az USB-t programozáshoz használd. A kapcsolás nem tartalmaz külön USB-visszatáplálást gátló diódát; a külső táp és az USB egyidejű használatánál vedd figyelembe a használt Nano-modul tápáramkörét.
+> [!WARNING]
+> Nano esetén az USB-t csak a programozáshoz használd!
+> Az USB bár képes meghajtani az adókört, de feleslegesen terheli azt. 
+> A kapcsolás csak a Nano USB-visszatáplálást gátló diódáját használja; a külső táp és az USB egyidejű használatánál vedd figyelembe a használt [Nano-modul tápáramkörét.](https://europe1.discourse-cdn.com/arduino/original/4X/3/1/4/3149e64bf4e90a746684c5a5d9e10b392fd5081a.jpeg)
+ 

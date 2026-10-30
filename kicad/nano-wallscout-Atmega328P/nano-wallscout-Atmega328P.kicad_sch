@@ -11002,7 +11002,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "71e3274e-076e-4993-91b6-619a01d56d4a")
-		(property "Reference" "D3"
+		(property "Reference" "D2"
 			(at 269.24 129.5399 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11088,7 +11088,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "D3")
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -11348,7 +11348,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "799d0946-5f70-485d-aa65-619d1074192f")
-		(property "Reference" "U4"
+		(property "Reference" "U2"
 			(at 168.656 107.442 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11446,7 +11446,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "U4")
+					(reference "U2")
 					(unit 3)
 				)
 			)
@@ -11464,7 +11464,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7d2c7f38-afe1-4184-924a-d6cdc81cb85f")
-		(property "Reference" "D2"
+		(property "Reference" "D1"
 			(at 43.18 162.5599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11550,7 +11550,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "D2")
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -12123,7 +12123,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "94580cff-4004-4c83-807b-e66901bb0cc0")
-		(property "Reference" "D1"
+		(property "Reference" "D4"
 			(at 40.64 24.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12207,7 +12207,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "D1")
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -12708,7 +12708,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a48921af-5c7a-484d-83f2-b3c6e10f34b8")
-		(property "Reference" "U2"
+		(property "Reference" "U4"
 			(at 72.39 24.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12774,7 +12774,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "U2")
+					(reference "U4")
 					(unit 1)
 				)
 			)
@@ -13273,7 +13273,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "bbf5ddd1-b6d9-4265-bd19-cce9b8bc7a07")
-		(property "Reference" "U4"
+		(property "Reference" "U2"
 			(at 174.752 70.104 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -13371,7 +13371,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "U4")
+					(reference "U2")
 					(unit 2)
 				)
 			)
@@ -14852,7 +14852,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "e050a160-0428-4cc3-a06f-d5cce291fc5d")
-		(property "Reference" "U4"
+		(property "Reference" "U2"
 			(at 206.248 66.802 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -14950,7 +14950,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "U4")
+					(reference "U2")
 					(unit 1)
 				)
 			)
@@ -15087,7 +15087,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "e94fc2d4-efa5-4fc6-91d3-546c515a0ced")
-		(property "Reference" "U4"
+		(property "Reference" "U2"
 			(at 151.892 72.39 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15185,7 +15185,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "U4")
+					(reference "U2")
 					(unit 4)
 				)
 			)
@@ -15362,7 +15362,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "f1db08aa-3a56-4ef4-89b6-ebc402d7ca26")
-		(property "Reference" "D4"
+		(property "Reference" "D3"
 			(at 269.24 140.9699 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -15426,7 +15426,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "D4")
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -15526,7 +15526,7 @@
 		(dnp no)
 		(uuid "f5cb8a66-4d78-4b69-8ad8-d829d6c261be")
 		(property "Reference" "R16"
-			(at 228.854 141.478 90)
+			(at 228.6 133.35 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15537,7 +15537,7 @@
 			)
 		)
 		(property "Value" "100"
-			(at 229.108 138.938 90)
+			(at 228.854 138.684 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
