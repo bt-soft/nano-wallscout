@@ -1,7 +1,7 @@
 # Pulzusindukciós (PI) betonvas-kereső – Arduino Nano + DD tekercs + MCP6004 + IRLZ44N + SSD1306
 
 > [!NOTE]
-> A projekt egy kézi impulzusindukciós (PI) elven működő betonvas-kereső, két D alakú tekerccsel (DD elrendezés) működik. 
+> A projekt egy kézi impulzusindukciós (PI) elven működő - **mélységbecsléssel ellátott** - betonvas-kereső, amely két D alakú tekerccsel (DD elrendezés) működik. 
 > Platform: **Arduino Nano (ATmega328P)**.
 
 | Jellemző | Érték |
