@@ -67,14 +67,8 @@ static const uint32_t LONG_PRESS_MS = 1000;
 /** @brief A nullpont lassú követésének súlya küszöb alatti jelnél. */
 static const float DRIFT_FOLLOW = 0.04f;
 
-/** @brief Ennyi egymás utáni állandó mérés (≈3 s) után indul az automatikus újranullázás. */
-static const uint16_t STEADY_CYCLES = 20;
-
-/** @brief Az automatikus újranullázás súlya mérésenként. */
-static const float REZERO_FOLLOW = 0.05f;
-
-/** @brief Küszöb alatti idő az előjelzár feloldásához milliszekundumban. */
-static const uint16_t POLARITY_RELEASE_MS = 1000;
+/** @brief Ennyi egymást követő alapvonal-közeli mérés kell a találat utáni visszaálláshoz. */
+static const uint8_t RECOVERY_STABLE_SAMPLES = 8;
 
 /** @brief Ennyi egymást követő küszöb feletti mérés kell a jelölt megerősítéséhez. */
 static const uint8_t CENTER_CONFIRM_SAMPLES = 2;
@@ -104,9 +98,9 @@ static const float CENTER_RETURN_MIN_TOLERANCE = 2.0f;
 static const float CENTER_NOISY_THRESHOLD = 8.0f;
 
 /** @brief A középkereső gördülő előjeles jelgrafikonjának fix elemszáma. */
-static const uint8_t CENTER_HISTORY_SIZE = 32;
+static const uint8_t GRAPH_HISTORY_SIZE = 32;
 
-/** @brief Az exponenciális simítás (jelzés utáni visszamenet) súlya normál üzemmódban. A kisebb érték lassabban követi a jelváltozásokat.  */
+/** @brief Az exponenciális simítás súlya normál üzemmódban. A kisebb érték lassabban követi a jelváltozásokat. */
 static const float SMOOTH_RUN = 0.5f;
 
 /** @brief Az exponenciális simítás súlya DD-beállító módban. A kisebb érték lassabban követi a jelváltozásokat. */

@@ -1,8 +1,7 @@
-#include "sensor.h"
-
 #include <avr/io.h>
 
 #include "config.h"
+#include "sensor.h"
 
 bool g_zeroSeen = false, g_calSeen = false;
 

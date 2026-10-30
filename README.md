@@ -136,17 +136,20 @@ Elfogadási próbák: fém nélküli stabil/zajos mérés; egyetlen széles csú
 > van, az Arduino soros portján keresztüli naplózás aktiválódik, az AVR debugger viszont nem. 
 > **A két funkció egyidejűleg nem használható.**
 
-Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 s1=512 s2=510 idle=511 zero=0.40 sig=2.80 vbat=11.8`. Az elején `run` (kereső), `center` (középkereső) vagy `setup ch=A0` (DD beállító mód) áll. Középkereső módban a `center_sig`, `noise_th`, `center_state`, `peak`, `return_peak`, `peak_sample` és `return_sample` mezők is megjelennek. A mintasorszám diagnosztikai adat, nem fizikai távolság. Az értékek ADC-egységben (0–1023) vannak, 100 impulzusra átlagolva.
+Minden mérés (kb. 0,1–0,2 s) után egy sor jelenik meg, pl. `run diff=3.20 raw_diff=3.20 s1=512 s2=510 idle=511 zero=0.40 sig=2.80 vbat=11.8`. Az elején `run` (kereső), `center` (középkereső) vagy `setup ch=A0` (DD beállító mód) áll. Középkereső módban a `center_sig`, `noise_th`, `center_state`, `peak`, `return_peak`, `peak_sample` és `return_sample` mezők is megjelennek. A mintasorszám diagnosztikai adat, nem fizikai távolság. Az értékek ADC-egységben (0–1023) vannak, 100 impulzusra átlagolva.
 
 | Mező | Jelentés |
 |---|---|
 | `s1` | Az első mintavétel átlaga az A0 bemeneten: a Tx kikapcsolása után 60 µs-mal (`T_SAMPLE1`). Ebben van a fém örvényáramának lecsengő jele. Nyugalmi értéke ≈ 512 (Vmid). 950 fölött vagy 70 alatt az erősítő telít, ekkor `TULVEZERLES`. |
 | `s2` | Referencia (alapvonal) mintavétel átlaga: a kikapcsolás után 600 µs-mal (`T_SAMPLE2`), amikorra az örvényáram már lecsengett. Nyugalmi értéke szintén ≈ 512. |
-| `diff` | `s1 − s2`, előjeles, simítva (exponenciális átlag: normál módban 0,3, beállító módban 0,1 súllyal; 60-nál nagyobb ugrásnál újraindul). Ez a nullázatlan jel. DD beállító módban ez látszik a kijelzőn. |
+| `raw_diff` | Az aktuális `s1 − s2` különbség simítás nélkül. A visszaállás ellenőrzése ezt és a nyers `s1`, `s2` értékeket használja. |
+| `diff` | `s1 − s2`, előjeles, simítva (exponenciális átlag: normál módban 0,5, beállító módban 0,1 súllyal; 60-nál nagyobb ugrásnál újraindul). Ez a nullázatlan jel. DD beállító módban ez látszik a kijelzőn. |
 | `idle` | DC-ellenőrzés: az A0 értéke impulzus nélkül, 3 ms-mal a mérés után (8 minta átlaga). Nyugalmi értéke ≈ 512. Ha 900 fölött vagy 120 alatt van, a bemenet DC-szintje hibás, a kijelzőn `DC HIBA!` jelenik meg. |
-| `zero` | A nullpont: a `diff` értéke levegőben, a nullázáskor átlagolva (15 mérés). Futás közben lassan követi a driftet (csak a küszöb alatti jel mellett). Beállító módban nem használt. |
+| `zero` | A nullpont: induláskor a levegőben mért 15 `diff` átlagából indul. Keresés közben csak a detektálási küszöb alatti, nem találatként kezelt jelnél követi lassan a driftet. Találatkor befagy; tartós, állandó jel nem nullázódik újra automatikusan. |
 | `sig` | A nullázott jel: `diff − zero`. A kijelzőn ennek abszolút értéke látszik, ez adja az oszlopot, a csipogó hangját és a mélységbecslést (`d = ∛(K/\|sig\|)`). Nullázás és beállító mód alatt 0. |
 | `vbat` | Akkufeszültség (V), a belső 1,1 V-os referenciával korrigálva. |
+
+Találat után a firmware megtartja a jel előjelét, és az ellenkező irányú átmeneti kilengést nem indítja új találatként. A visszaállás csak akkor fejeződik be, ha nyolc egymást követő mérésben a nyers `s1`, `s2` és `s1 − s2` értékek visszatértek az eltárolt alapvonal közelébe. Ekkor a nullpont és a szűrőállapot együtt, az ellenőrzött mérésekből áll be újra. Túlvezérlés vagy DC-hiba alatt ez a visszaállás nem fogadható el.
 
 ### Miért elég a Nano?
 

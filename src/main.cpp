@@ -9,7 +9,7 @@
 
 // A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
 // https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
-#define __DEBUG__
+// #define __DEBUG__
 // #define __DEBUG_SERIAL_LOGGING__
 
 #include <Arduino.h>
@@ -40,6 +40,9 @@ static const uint8_t CHANNEL = 0;
 struct Measurement {
     /** Az S1- és S2-minták átlagai ADC-egységben. */
     float s1Mean, s2Mean;
+
+    /** Az S1 − S2 nyers, nem simított különbsége. */
+    float rawDiff;
 
     /** Az S1 − S2 különbség simított értéke. */
     float diff;
@@ -89,7 +92,7 @@ struct State {
     bool centerHistoryMode = false;
 
     /** Fix méretű gördülő amplitúdógrafikon a középkereső módhoz. */
-    int8_t centerHistory[CENTER_HISTORY_SIZE] = {};
+    int8_t centerHistory[GRAPH_HISTORY_SIZE] = {};
     uint8_t centerHistoryCount = 0, centerHistoryNext = 0;
     CenterFinder centerFinder;
 
@@ -105,6 +108,8 @@ struct State {
     /** A nullázáshoz összegyűjtött minták száma és összesítése. */
     uint16_t zeroCount = 0;
     float zeroAcc = 0, zeroSq = 0, zero = 0;
+    float zeroS1Acc = 0, zeroS2Acc = 0, zeroRawDiffAcc = 0;
+    float baselineS1 = 0, baselineS2 = 0, baselineDiff = 0;
 
     /** A zajszinthez igazított futási küszöb. */
     float runTh = DETECT_TH;
@@ -115,12 +120,10 @@ struct State {
     /** Az aktuális találat előjele; ellenkező előjelnél a jel el van nyomva. */
     int8_t signalPolarity = 0;
 
-    /** A küszöb alatti állapot kezdete az előjelzár feloldásához. */
-    uint32_t polarityQuietSince = 0;
-
-    /** Az előző simított különbség és az egymás utáni állandó mérések száma. */
-    float prevDiff = 0;
-    uint16_t steadyCount = 0;
+    /** Találat utáni visszaállás; stabil alapvonal-visszatérésig a nulla befagy. */
+    bool recoveryActive = false;
+    uint8_t recoveryCount = 0;
+    float recoveryS1Acc = 0, recoveryS2Acc = 0, recoveryDiffAcc = 0;
 
     /** A DD-beállító módban eddig mért legkisebb abszolút áthallás. */
     float best = 1e9f;
@@ -171,8 +174,10 @@ static Measurement acquire() {
     m.s1Mean = (float)s1 / N_PULSES;
     m.s2Mean = (float)s2 / N_PULSES;
 
+    m.rawDiff = (float)((int32_t)s1 - (int32_t)s2) / N_PULSES;
+
     // A simított különbség kiszámítása az S1 és S2 átlagok alapján.
-    m.diff = smoothDiff((float)((int32_t)s1 - (int32_t)s2) / N_PULSES);
+    m.diff = smoothDiff(m.rawDiff);
 
     // A túlterhelés és DC-hiba jelzőinek beállítása.
     m.overload = m.s1Mean > OVERLOAD_HIGH || m.s1Mean < OVERLOAD_LOW;
@@ -191,13 +196,19 @@ static void restartZeroing() {
     st.zeroCount = 0;
     st.zeroAcc = 0;
     st.signalPolarity = 0;
-    st.polarityQuietSince = 0;
-    st.steadyCount = 0;
+    st.recoveryActive = false;
+    st.recoveryCount = 0;
+    st.recoveryS1Acc = 0;
+    st.recoveryS2Acc = 0;
+    st.recoveryDiffAcc = 0;
     st.detOn = false;
     st.centerFinder.reset();
-    st.centerHistoryMode = false;
     st.centerHistoryCount = 0;
     st.centerHistoryNext = 0;
+
+    // A simított különbség és a csatorna inicializálása.
+    st.smooth = 0;
+    st.smoothCh = 255;
 }
 
 /**
@@ -218,6 +229,7 @@ static bool handleZeroButton(uint32_t now) {
         st.zeroLong = true;
         st.setupMode = true;
         st.centerMode = false;
+        st.centerHistoryMode = false;
         st.best = 1e9f;
         restartZeroing();
         st.confirmUntil = now + 150;
@@ -254,8 +266,7 @@ static void handleCalButton(uint32_t now) {
     }
 
     if (!g_calSeen && st.calPressStart) {
-        if (!st.calDone && !st.setupMode && st.zeroCount >= ZERO_UPDATES &&
-            now - st.calPressStart < LONG_PRESS_MS) {
+        if (!st.calDone && !st.setupMode && st.zeroCount >= ZERO_UPDATES && now - st.calPressStart < LONG_PRESS_MS) {
             if (!st.centerMode) {
                 st.centerMode = true;
                 st.centerHistoryMode = false;
@@ -328,15 +339,24 @@ static void runZeroing(const Measurement &m, Outcome &out) {
     // Ha ez az első minta, nullázzuk a négyzetösszeget is.
     if (st.zeroCount == 0) {
         st.zeroSq = 0;
+        st.zeroS1Acc = 0;
+        st.zeroS2Acc = 0;
+        st.zeroRawDiffAcc = 0;
     }
 
     st.zeroAcc += m.diff;
     st.zeroSq += m.diff * m.diff;
+    st.zeroS1Acc += m.s1Mean;
+    st.zeroS2Acc += m.s2Mean;
+    st.zeroRawDiffAcc += m.rawDiff;
     st.zeroCount++;
 
     // Ha elértük a szükséges mintaszámot, számítsuk ki a nullát és a zajküszöböt.
     if (st.zeroCount == ZERO_UPDATES) {
         st.zero = st.zeroAcc / ZERO_UPDATES;
+        st.baselineS1 = st.zeroS1Acc / ZERO_UPDATES;
+        st.baselineS2 = st.zeroS2Acc / ZERO_UPDATES;
+        st.baselineDiff = st.zeroRawDiffAcc / ZERO_UPDATES;
         const float var = st.zeroSq / ZERO_UPDATES - st.zero * st.zero;
         st.runTh = max(DETECT_TH, 5.0f * sqrtf(max(var, 0.0f)));
         st.detOn = false;
@@ -381,56 +401,69 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     const float rawSig = out.sig;
     const float rawMag = fabsf(rawSig);
 
-    // Ha még nincs jel polaritása, és a jel eléri a küszöböt, állítsuk be a polaritást.
+    // A találat előjelét a stabil alapvonal-visszatérésig megtartjuk.
     if (st.signalPolarity == 0 && rawMag >= st.runTh) {
         st.signalPolarity = rawSig < 0 ? -1 : 1;
+        st.recoveryActive = true;
+        st.recoveryCount = 0;
+        st.recoveryS1Acc = 0;
+        st.recoveryS2Acc = 0;
+        st.recoveryDiffAcc = 0;
     }
 
-    // Ha van jel polaritása, ellenőrizzük, hogy a jel csendes-e a polaritás visszaállításához.
-    if (st.signalPolarity != 0) {
+    if (st.signalPolarity != 0 && rawSig * st.signalPolarity < 0) {
+        out.sig = 0;
+    }
 
-        // Ha a jel csendes a polaritás visszaállításához, kezdjük el a számlálást.
-        if (rawMag < st.runTh) {
-            if (!st.polarityQuietSince)
-                st.polarityQuietSince = now;
-            if (now - st.polarityQuietSince >= POLARITY_RELEASE_MS) {
-                st.signalPolarity = 0;
-                st.polarityQuietSince = 0;
+    bool recovered = false;
+    if (st.recoveryActive && !st.centerMode) {
+        const float channelTolerance = max(2.0f, 2.0f * st.runTh);
+        const bool baselineReturned =
+            !m.overload && !m.dcFault && fabsf(m.rawDiff - st.baselineDiff) < 0.5f * st.runTh && fabsf(m.s1Mean - st.baselineS1) < channelTolerance && fabsf(m.s2Mean - st.baselineS2) < channelTolerance;
+
+        if (baselineReturned) {
+            st.recoveryS1Acc += m.s1Mean;
+            st.recoveryS2Acc += m.s2Mean;
+            st.recoveryDiffAcc += m.rawDiff;
+            if (st.recoveryCount < RECOVERY_STABLE_SAMPLES) {
+                ++st.recoveryCount;
             }
         } else {
-            st.polarityQuietSince = 0;
+            st.recoveryCount = 0;
+            st.recoveryS1Acc = 0;
+            st.recoveryS2Acc = 0;
+            st.recoveryDiffAcc = 0;
         }
-        if (st.signalPolarity != 0 && rawSig * st.signalPolarity < 0)
-            out.sig = 0;
-    }
 
-    // Hosszan álló jel nem mozgó fém, hanem nullpont-eltolódás: lassan újranullázunk.
-    const bool steady = !st.centerMode && fabsf(m.diff - st.prevDiff) < 0.3f * st.runTh;
-    st.prevDiff = m.diff;
-    if (steady) {
-        if (st.steadyCount < 255)
-            st.steadyCount++;
-    } else {
-        st.steadyCount = 0;
-    }
-
-    // Ellenőrizzük, hogy a jel hosszú ideje áll-e, ami a nullpont-eltolódás jele lehet.
-    const bool rezero = !st.centerMode && st.steadyCount >= STEADY_CYCLES;
-    if (rezero) {
-        st.zero += REZERO_FOLLOW * rawSig;
-        out.sig = m.diff - st.zero;
-        if (fabsf(out.sig) < st.runTh)
+        if (st.recoveryCount >= RECOVERY_STABLE_SAMPLES) {
+            const float sampleCount = (float)st.recoveryCount;
+            st.baselineS1 = st.recoveryS1Acc / sampleCount;
+            st.baselineS2 = st.recoveryS2Acc / sampleCount;
+            st.baselineDiff = st.recoveryDiffAcc / sampleCount;
+            st.zero = st.baselineDiff;
+            st.smooth = st.zero;
             st.signalPolarity = 0;
+            st.recoveryActive = false;
+            st.recoveryCount = 0;
+            st.recoveryS1Acc = 0;
+            st.recoveryS2Acc = 0;
+            st.recoveryDiffAcc = 0;
+            st.detOn = false;
+            out.sig = 0;
+            recovered = true;
+        }
     }
 
-    // Frissítjük a jel nagyságát a kimeneti adatokban.
     out.mag = fabsf(out.sig);
-    // Ha a jel nem hosszú ideje áll, és a jel nagysága a küszöb alatt van, követjük a driftet.
-    if (!st.centerMode && !rezero && out.mag < st.runTh) {
+    if (!st.centerMode && !st.recoveryActive && !recovered && out.mag < st.runTh) {
         st.zero += DRIFT_FOLLOW * out.sig;
+        st.baselineS1 += DRIFT_FOLLOW * (m.s1Mean - st.baselineS1);
+        st.baselineS2 += DRIFT_FOLLOW * (m.s2Mean - st.baselineS2);
+        st.baselineDiff += DRIFT_FOLLOW * (m.rawDiff - st.baselineDiff);
     }
-    // Frissítjük a detektor állapotát a jel nagysága alapján.
-    st.detOn = out.mag >= (st.detOn ? 0.6f * st.runTh : st.runTh);
+    if (!recovered) {
+        st.detOn = out.mag >= (st.detOn ? 0.6f * st.runTh : st.runTh);
+    }
     // Frissítjük a detektor kimeneti állapotát a jel nagysága és az érzékelő túlterheltsége alapján.
     out.det = st.detOn && !m.overload;
 
@@ -479,6 +512,9 @@ static void logSerial(const Measurement &m, const Outcome &out) {
 
     Serial.print(F(" diff=")); // Különbség a mérés és a nulla között
     Serial.print(m.diff, 2);
+
+    Serial.print(F(" raw_diff="));
+    Serial.print(m.rawDiff, 2);
 
     Serial.print(F(" s1=")); // S1 mérés átlagértéke, a kikapcsolás után 60 µs-mal. Ekkor a tárgy örvényárama még jelen van.
     Serial.print(m.s1Mean, 0);
@@ -567,8 +603,7 @@ void loop() {
         runDetect(m, now, out); // Egyébként a detektálási üzemmódot.
         if (st.centerMode) {
             const float centerSig = m.diff - st.zero;
-            const bool newlyLocked =
-                st.centerFinder.update(fabsf(centerSig), st.runTh, !m.overload && !m.dcFault, now);
+            const bool newlyLocked = st.centerFinder.update(fabsf(centerSig), st.runTh, !m.overload && !m.dcFault, now);
             if (newlyLocked) {
                 st.confirmUntil = now + 150;
             }
@@ -577,13 +612,10 @@ void loop() {
             int16_t historyValue = historyScale > 0 ? (int16_t)(fabsf(centerSig) * 32.0f / historyScale) : 0;
             historyValue = constrain(historyValue, 0, 32);
             st.centerHistory[st.centerHistoryNext] = (int8_t)historyValue;
-            st.centerHistoryNext = (st.centerHistoryNext + 1) % CENTER_HISTORY_SIZE;
-            if (st.centerHistoryCount < CENTER_HISTORY_SIZE) {
+            st.centerHistoryNext = (st.centerHistoryNext + 1) % GRAPH_HISTORY_SIZE;
+            if (st.centerHistoryCount < GRAPH_HISTORY_SIZE) {
                 ++st.centerHistoryCount;
             }
-        }
-        if (st.centerMode) {
-            out.freq = 0;
         }
     }
 
@@ -592,10 +624,8 @@ void loop() {
     if (st.setupMode) {
         drawSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
     } else if (st.centerMode && st.zeroCount >= ZERO_UPDATES) {
-        drawCenter(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(),
-                   st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault,
-                   st.centerHistoryMode, st.centerFinder.stage(), st.centerHistory, st.centerHistoryCount,
-                   st.centerHistoryNext);
+        drawCenter(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.centerHistoryMode, st.centerFinder.stage(), st.centerHistory,
+                   st.centerHistoryCount, st.centerHistoryNext);
     } else {
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);
     }
