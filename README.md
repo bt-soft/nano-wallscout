@@ -27,7 +27,7 @@ A Q2 lezárásakor a mágneses tér gyorsan összeomlik. Ez a tekercsben nagy fe
 - A tárgy jelenléte így a lecsengés „farkában” mérhető többletjelként jelenik meg.
 
 ### A DD elrendezés és a közvetlen áthallás kioltása
-Az adó mágneses terének közvetlenül az RX-be jutó része sokszorosan nagyobb lenne a fém jelénél. A két D alakú tekercs átfedésénél azonban a vevőtekercs két felét az adótér ellentétes irányban metszi, ezért a **kölcsönös induktivitás (M) a megfelelő átfedésnél nullára csökken**. A pontos átfedés a beállítási eljárás (DD beállító mód) feladata. A nullpont két oldalán M előjele ellentétes, ezért a beállításkor az előjelváltást kell keresni.
+Az [adó mágneses terének](doc/Fémkereső%20tekercsek%20betonvas%20kereséshez.png) közvetlenül az RX-be jutó része sokszorosan nagyobb lenne a fém jelénél. A két D alakú tekercs átfedésénél azonban a vevőtekercs két felét az adótér ellentétes irányban metszi, ezért a **kölcsönös induktivitás (M) a megfelelő átfedésnél nullára csökken**. A pontos átfedés a beállítási eljárás (DD beállító mód) feladata. A nullpont két oldalán M előjele ellentétes, ezért a beállításkor az előjelváltást kell keresni.
 
 ![DD-tekercs](doc/DD-coil.svg)
 
