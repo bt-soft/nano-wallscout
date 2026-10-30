@@ -14,7 +14,7 @@
 
 
 ## Az induction balance működési elve
-A kereső két tekercset használ: egy **adó (TX)** és egy **vevő (RX)** tekercset. A tekercsek D alakúak, és az egyenes oldalaikkal részben egymásra vannak csúsztatva (DD elrendezés). Az alábbiak a működés fizikai alapjait foglalják össze.
+A kereső két tekercset használ: egy **adó (TX)** és egy **vevő (RX)** tekercset. A [tekercsek D alakúak](https://abl.gtu.edu.tr/dosya/102/~saksoy/Metal%20Detectors/1%20GENERAL%20OVERVIEW/2%20OPERATIONAL%20PRINCIPLES/2.1%20ANTENNAS.pdf), és az egyenes oldalaikkal részben egymásra vannak csúsztatva (DD elrendezés). Az alábbiak a működés fizikai alapjait foglalják össze.
 
 ### Az adóimpulzus és a mágneses tér
 A Q2 kapcsolótranzisztor bekapcsolásakor az Ltx1 adótekercsre a tápfeszültség kerül, és az árama az induktivitás miatt lineárisan nő: `I ≈ U · t / L`. 12 V-nál, 60 µs-os impulzusnál és 1 mH-s tekercsnél ez elméletileg kb. 0,7 A; a tekercs ellenállása miatt a valós csúcsáram kb. 0,6 A. Az áram körül mágneses tér épül fel, amelynek energiája `E = ½ · L · I²`.
@@ -255,14 +255,14 @@ Q2 kikapcsolásakor a tekercs árama nem tud azonnal megszűnni, ezért flyback-
 
 Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete előtt; az Lrx1-gyel párhuzamosan (a Vmid felé) az R14 (2,2 kΩ-os trimmer) csillapít. A Vmid osztót R6 (felső) és R7 (alsó) alkotja, egyenként 100 kΩ.
 
-## Alkatrészlista
+## Főbb alkatrészek listája
 
 | Db | Alkatrész |
 |---|---|
-| 1 | Arduino Nano (vagy ATmega328P) |
+| 1 | Arduino Nano (vagy ATmega328P + 16Mhz kvarc) |
 | 1 | MCP6004  |
-| 1 | IRLZ44N  – Tx kapcsoló |
-| 1 | 2N2222  – buzzer-meghajtó |
+| 1 | IRLZ44N – Tx kapcsoló |
+| 1 | 2N2222 – buzzer-meghajtó |
 | 1 | SSD1306 I²C OLED  |
 | 2 | 1 mH-es D-tekercs: Ltx1 (Tx) és Lrx1 (Rx) |
 | 1 | UF4007 , 1 db ZPY36 / 1 W zener , 1 db 1N4148 (a buzzer fordított diódája) |
