@@ -15,6 +15,12 @@
 void displayInit();
 
 /**
+ * @brief Kikapcsolja az OLED-et (power save), és leállítja az I²C-buszt.
+ * Ébresztéskor a displayInit() újra inicializálja.
+ */
+void displaySleep();
+
+/**
  * @brief Megjeleníti a kereső normál üzemmódjának adatait.
  * @param msg Opcionális állapotüzenet; null érték esetén a mérési adat jelenik meg.
  * @param mag A jel abszolút értéke.

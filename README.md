@@ -63,6 +63,19 @@ Az impulzus utáni jel lecsengésének időbeli jellemzői elvileg információt
 7. Indításkor automatikus nullázás történik (a kereső legyen levegőben). Az alapvonal lassan követi a driftet. Egy találat előjelét a firmware megtartja; az ellenkező előjelű kilengést csak 1 másodpercnyi küszöb alatti jel után kezdi új találatként kezelni. Ha a jel kb. 3 másodpercnél tovább állandó marad (pl. nullpont-eltolódás), a firmware lassan újranulláz; egy mozdulatlanul tartott fém így néhány másodperc után elhalkul.
 8. A kijelző oszlopot, számértéket és (kalibrálás után) becsült mélységet mutat. A hangjelzés magassága a jellel nő.
 
+### Szoftverműködés – bevezető
+
+A firmware az időkritikus részeken az **AVR hardverregisztereket közvetlenül kezeli** (`PORTD`, `PIND`, `DDRD`, `TCNT1`, `TCCR1/2`, `ADCSRA`, `ADMUX`, `PCMSK2` stb.) az Arduino `digitalWrite`/`analogRead`-jellegű, lassabb és nagyobb kódú burkolófüggvényei helyett. Ez minimalizálja a kód méretét (a program a Nano 30 KB-os flash-ébe fér), és tartja a futási sebességet: a 60 µs-os adóimpulzus, a kikapcsolás utáni S1/S2 mintavétel (0,5 µs-os Timer1-időalap, gyors, 1 MHz-es ADC-órajel) és a hangjelző (Timer2 hardveres kimenet, CPU-terhelés nélkül) így determinisztikus időzítéssel fut.
+
+### Alvó mód (energiatakarékosság)
+
+Ha **5 percig** nincs aktivitás, a műszer a lehető legkisebb fogyasztású **Power-down** módba kapcsol. Aktivitásnak számít: gombnyomás, aktív találat, vagy a nullázás utáni zajküszöböt meghaladó jelváltozás (a zaj nem tartja ébren). Az időkorlát a `config.h` `IDLE_SLEEP_MS` értéke.
+
+Alvás előtt a firmware kikapcsolja a hangjelzőt, az adókaput (az adó nem kap impulzust), az OLED-et (power save, I²C leállítva), az ADC-t és az analóg bemenetek digitális pufferét, a Brown-out detektort és a watchdogot, valamint az összes perifériát (`power_all_disable`).
+
+Ébresztés: a **kalibráló vagy a nullázó gomb** megnyomásával (pin change megszakítás), illetve a tápfeszültség újrakapcsolásával. Ébredés után a készülék újrainicializálódik, megvárja a gomb felengedését (az ébresztő nyomás nem lesz parancs), majd az indításhoz hasonlóan újranulláz – ilyenkor a kereső legyen levegőben.
+
+Megjegyzés: a vevő (erősítő) tápját a firmware nem tudja kapcsolni, mert nincs rá vezérlőláb; az adó viszont impulzus nélkül áramot nem vesz fel. A legkisebb alvóáramhoz a vevő és a kijelző tápja hardveresen is leválasztható egy későbbi fejlesztésben.
 
 
 

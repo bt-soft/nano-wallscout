@@ -20,13 +20,19 @@ static inline uint16_t adcRead() {
  * @brief Gyors, 1 MHz-es ADC-órajelet állít be az előosztó 16-ra állításával.
  *
  */
-static void adcFast() { ADCSRA = _BV(ADEN) | _BV(ADPS2); }
+static void adcFast() {
+    // előosztó 16-ra állítva
+    ADCSRA = _BV(ADEN) | _BV(ADPS2);
+}
 
 /**
  * @brief Lassú ADC-órajelet állít be az előosztó 128-ra állításával.
  *
  */
-static void adcSlow() { ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0); }
+static void adcSlow() {
+    // előosztó 128-ra állítva
+    ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
+}
 
 /**
  * @brief Beállítja a gombokat, a kapukimenetet, a Timer1-et és az ADC-t.
@@ -50,6 +56,7 @@ void sensorInit() {
 
 /**
  * @brief Végrehajt egy mérőimpulzust, és a kikapcsolás után két mintát vesz.
+ *
  * @param s1 Az első minta kimeneti hivatkozása.
  * @param s2 A referencia-minta kimeneti hivatkozása.
  * @note A mintavétel az ADC-konverzió indulása után körülbelül másfél ADC-órajelre történik.
@@ -172,6 +179,7 @@ void measure(uint32_t &sum1, uint32_t &sum2, uint8_t ch) {
 
 /**
  * @brief Nyolc ADC-mintából kiszámítja az A0 nyugalmi szintjét.
+ *
  * @return Az átlagos A0-érték ADC-egységben.
  */
 uint16_t readIdleLevel() {

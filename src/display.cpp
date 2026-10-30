@@ -21,6 +21,14 @@ void displayInit() {
 }
 
 /**
+ * @brief Kikapcsolja az OLED-kijelzőt és lezárja az I²C-buszt.
+ */
+void displaySleep() {
+    oled.setPowerSave(1);
+    Wire.end();
+}
+
+/**
  * @brief Kirajzolja a fejléc címét és az akkumulátor feszültségét.
  *
  * @param title A fejlécben megjelenő cím.

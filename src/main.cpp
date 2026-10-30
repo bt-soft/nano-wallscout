@@ -13,6 +13,9 @@
 // #define __DEBUG_SERIAL_LOGGING__
 
 #include <Arduino.h>
+#include <avr/interrupt.h>
+#include <avr/power.h>
+#include <avr/sleep.h>
 #include <avr/wdt.h>
 #include <math.h>
 
@@ -615,6 +618,67 @@ static void logSerial(const Measurement &m, const Outcome &out) {
 }
 #endif
 
+/** @brief Gombváltás ébresztő megszakítása (PD4/PD5); csak az alvásból ébreszt. */
+ISR(PCINT2_vect) {
+    // Pin Change Interrupt kezelése (PD4/PD5)
+}
+
+/** @brief Az utolsó aktivitás ideje és a zajt meghaladó változás referenciaértéke. */
+static uint32_t lastActivity = 0;     // Utolsó aktivitás ideje milliszekundumban a LowPower állapothoz
+static float activityRef = 0;         // Aktivitás referenciaértéke
+static bool activityRefValid = false; // Aktivitás referencia érvényessége
+
+/**
+ * @brief Mély alvó módba kapcsol; gombnyomásra ébred, majd újraindítja a mérést.
+ *
+ * Kikapcsolja a tápot (kapu), a hangjelzőt, a kijelzőt, az ADC-t és minden perifériát,
+ * a BOD-ot és a watchdogot, majd Power-down alvásba lép.
+ */
+static void enterDeepSleep() {
+    beepOff();               // Hangjelző kikapcsolása
+    PORTD &= ~_BV(GATE_BIT); // Adó kikapcsolva
+    displaySleep();          // Kijelző alvó módba kapcsolása
+
+    wdt_disable(); // Watchdog letiltása
+    ADCSRA = 0;    // ADC letiltása
+    DIDR0 = 0x3F;  // ADC0-ADC5 bemenetek letiltása
+    DIDR1 = 0x03;  // ADC6-ADC7 bemenetek letiltása
+
+    PCIFR = _BV(PCIF2);                   // Pin Change Interrupt Flag 2 törlése
+    PCMSK2 = _BV(PCINT20) | _BV(PCINT21); // Pin Change Mask beállítása PD4/PD5-re
+    PCICR |= _BV(PCIE2);                  // Pin Change Interrupt 2 engedélyezése
+
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN); // Power-down alvás mód beállítása
+    power_all_disable();                 // Minden periféria letiltása
+    cli();                               // Globális megszakítások letiltása
+    sleep_enable();                      // Alvás engedélyezése
+    sleep_bod_disable();                 // BOD letiltása alvás közben
+    sei();                               // Globális megszakítások engedélyezése
+    sleep_cpu();                         // CPU alvásba küldése
+    sleep_disable();                     // Alvás letiltása az ébredés után
+
+    PCICR &= ~_BV(PCIE2); // Pin Change Interrupt 2 letiltása
+    PCMSK2 = 0;           // Pin Change Mask törlése
+    power_all_enable();   // Minden periféria újra engedélyezése
+
+    // Az ébresztő gomb felengedéséig várunk, hogy ne értelmeződjön gombnyomásként.
+    delay(50);
+    while (!(PIND & _BV(PIN_BTN_CAL)) || !(PIND & _BV(PIN_BTN_ZERO))) {
+        // Várakozás valamelyik gomb felengedésére
+    }
+    delay(50);
+
+    st = State();             // Állapot inicializálása
+    activityRefValid = false; // Aktivitás referencia érvényességének visszaállítása
+    sensorInit();             // Érzékelő inicializálása
+    beepInit();               // Hangjelző inicializálása
+    displayInit();            // Kijelző inicializálása
+#if USE_WATCHDOG
+    wdt_enable(WDTO_1S); // Watchdog engedélyezése 1 másodperces időzítővel
+#endif
+    lastActivity = millis(); // Utolsó aktivitás idejének beállítása az aktuális időre
+}
+
 /**
  * @brief Elindítja a soros portot, az érzékelőt, a hangjelzőt és a kijelzőt.
  *
@@ -646,6 +710,22 @@ void setup() {
 void loop() {
     const Measurement m = acquire();
     const uint32_t now = millis();
+
+    // Aktivitás: gombnyomás, találat, vagy a zajszintet meghaladó jelváltozás.
+    const float activityTh = max(DETECT_TH, st.runTh);
+    if (!activityRefValid) {
+        activityRef = m.diff;
+        activityRefValid = true;
+        lastActivity = now;
+    }
+    if (g_zeroSeen || g_calSeen || st.detOn || fabsf(m.diff - activityRef) >= activityTh) {
+        activityRef = m.diff;
+        lastActivity = now;
+    }
+    if (now - lastActivity >= IDLE_SLEEP_MS) {
+        enterDeepSleep();
+        return;
+    }
 
     // Kezeljük a nulla gombot.
     if (handleZeroButton(now)) {
