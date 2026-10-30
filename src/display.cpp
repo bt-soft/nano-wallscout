@@ -15,9 +15,9 @@ static U8G2_SSD1306_128X64_NONAME_1_HW_I2C oled(U8G2_R0);
  */
 void displayInit() {
     Wire.begin();
-    Wire.setWireTimeout(3000, true);
+    Wire.setWireTimeout(3000, true); // I²C busz időkorlát beállítása 3000 ms-ra.
     oled.begin();
-    oled.setBusClock(400000);
+    oled.setBusClock(400000); // I²C busz órajele 400 kHz-re állítva.
 }
 
 /**
