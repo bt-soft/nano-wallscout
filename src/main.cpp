@@ -26,6 +26,7 @@
 #include "center_finder.h"
 #include "config.h"
 #include "display.h"
+#include "operating_mode.h"
 #include "sensor.h"
 #include "utils.h"
 
@@ -84,16 +85,12 @@ struct Outcome {
  * @brief A főciklus állapotát, a gombokat és a simítás adatait tárolja.
  */
 struct State {
-    /** Igaz, ha a DD-beállító mód aktív. */
-    bool setupMode = false;
+    /** A készülék aktuális mérési és kijelzési üzemmódja. */
+    OperatingMode mode = OperatingMode::SEARCH;
 
-    /** Igaz, ha a külön középkereső mód aktív. */
-    bool centerMode = false;
-
-    /** Igaz, ha a távolságtanító képernyő aktív; kérés esetén az aktuális jel lesz az 5 cm-es érték. */
-    bool teachMode = false, teachRequest = false;
+    /** Igaz, ha a tanítóképernyőn rögzítést kértek. */
+    bool teachRequest = false;
     uint32_t teachFailUntil = 0;
-    bool signalTimeMode = false;
 
     /** A Jel-Ido nézet gördülő amplitúdógrafikonja. */
     int8_t signalTimeGraph[SIGNAL_TIME_GRAPH_SIZE] = {};
@@ -140,6 +137,9 @@ struct State {
 /** @brief A program globális mérési és üzemmód-állapota. */
 static State st;
 
+/** @brief Igaz, ha valamelyik középkereső grafikus nézet aktív. */
+static bool isCenterFinderMode(OperatingMode mode) { return mode == OperatingMode::CENTER_FINDER || mode == OperatingMode::SIGNAL_TIME; }
+
 /**
  * @brief Simítja az S1 − S2 különbséget exponenciális átlagolással.
  *
@@ -153,7 +153,7 @@ static float smoothDiff(float diff) {
         st.smooth = diff;
         st.smoothCh = CHANNEL;
     } else {
-        st.smooth += (st.setupMode ? SMOOTH_SETUP : SMOOTH_RUN) * (diff - st.smooth);
+        st.smooth += (st.mode == OperatingMode::DD_SETUP ? SMOOTH_SETUP : SMOOTH_RUN) * (diff - st.smooth);
     }
 
     return st.smooth;
@@ -211,7 +211,9 @@ static void restartZeroing() {
     st.centerFinder.reset();
     st.signalTimeGraphCount = 0;
     st.signalTimeGraphNext = 0;
-    st.teachMode = false;
+    if (st.mode == OperatingMode::TEACH) {
+        st.mode = OperatingMode::SEARCH;
+    }
     st.teachRequest = false;
 
     // A simított különbség és a csatorna inicializálása.
@@ -234,11 +236,9 @@ static bool handleZeroButton(uint32_t now) {
     }
 
     // Ha a gomb rövid ideje van nyomva, és még nem telt el a hosszú nyomás ideje, ne csináljunk semmit.
-    if (g_zeroSeen && !st.setupMode && !st.zeroLong && now - st.zeroPressStart > LONG_PRESS_MS) {
+    if (g_zeroSeen && st.mode != OperatingMode::DD_SETUP && !st.zeroLong && now - st.zeroPressStart > LONG_PRESS_MS) {
         st.zeroLong = true;
-        st.setupMode = true;
-        st.centerMode = false;
-        st.signalTimeMode = false;
+        st.mode = OperatingMode::DD_SETUP;
         st.best = 1e9f;
         restartZeroing();
         st.confirmUntil = now + 150;
@@ -248,14 +248,14 @@ static bool handleZeroButton(uint32_t now) {
     // Ha a gomb hosszú megnyomás után felengedésre kerül, ne csináljunk semmit.
     if (!g_zeroSeen && st.zeroPressStart) {
         if (!st.zeroLong) {
-            if (st.teachMode) {
+            if (st.mode == OperatingMode::TEACH) {
                 // A tanítóképernyőből a nullázógomb kilép, újranullázás nélkül.
-                st.teachMode = false;
+                st.mode = OperatingMode::SEARCH;
                 st.teachRequest = false;
                 st.confirmUntil = now + 150;
             } else {
-                if (st.setupMode) {
-                    st.setupMode = false;
+                if (st.mode == OperatingMode::DD_SETUP) {
+                    st.mode = OperatingMode::SEARCH;
                     st.confirmUntil = now + 150;
                 }
                 restartZeroing();
@@ -280,19 +280,17 @@ static void handleCalButton(uint32_t now) {
     if (g_calSeen && !st.calPressStart) {
         st.calPressStart = now;
         st.calDone = false;
-        if (st.setupMode) {
+        if (st.mode == OperatingMode::DD_SETUP) {
             st.best = 1e9f; // A minimum érték inicializálása a beállító módban.
         }
     }
 
-    const bool ready = !st.setupMode && st.zeroCount >= ZERO_UPDATES;
+    const bool ready = st.mode != OperatingMode::DD_SETUP && st.zeroCount >= ZERO_UPDATES;
 
     if (g_calSeen && st.calPressStart && !st.calDone && ready && now - st.calPressStart >= LONG_PRESS_MS) {
         st.calDone = true;
-        st.teachMode = !st.teachMode;
+        st.mode = st.mode == OperatingMode::TEACH ? OperatingMode::SEARCH : OperatingMode::TEACH;
         st.teachRequest = false;
-        st.centerMode = false;
-        st.signalTimeMode = false;
         st.flashUntil = 0;
         st.teachFailUntil = 0;
         st.confirmUntil = now + 150;
@@ -300,20 +298,18 @@ static void handleCalButton(uint32_t now) {
 
     if (!g_calSeen && st.calPressStart) {
         if (!st.calDone && ready && now - st.calPressStart < LONG_PRESS_MS) {
-            if (st.teachMode) {
+            if (st.mode == OperatingMode::TEACH) {
                 st.teachRequest = true;
-            } else if (!st.centerMode) {
-                st.centerMode = true;
-                st.signalTimeMode = false;
+            } else if (st.mode == OperatingMode::SEARCH) {
+                st.mode = OperatingMode::CENTER_FINDER;
                 st.centerFinder.reset();
                 st.signalTimeGraphCount = 0;
                 st.signalTimeGraphNext = 0;
                 st.flashUntil = 0;
-            } else if (!st.signalTimeMode) {
-                st.signalTimeMode = true;
+            } else if (st.mode == OperatingMode::CENTER_FINDER) {
+                st.mode = OperatingMode::SIGNAL_TIME;
             } else {
-                st.centerMode = false;
-                st.signalTimeMode = false;
+                st.mode = OperatingMode::SEARCH;
             }
             st.confirmUntil = now + 150;
         }
@@ -410,7 +406,7 @@ static void runZeroing(const Measurement &m, Outcome &out) {
  *
  */
 static void handleCalibration(const Measurement &m, uint32_t now, Outcome &out) {
-    if (!st.teachMode) {
+    if (st.mode != OperatingMode::TEACH) {
         return;
     }
 
@@ -464,7 +460,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     }
 
     bool recovered = false;
-    if (st.recoveryActive && !st.centerMode) {
+    if (st.recoveryActive && !isCenterFinderMode(st.mode)) {
         const float channelTolerance = max(2.0f, 2.0f * st.runTh);
         const bool baselineReturned =
             !m.overload && !m.dcFault && fabsf(m.rawDiff - st.baselineDiff) < 0.5f * st.runTh && fabsf(m.s1Mean - st.baselineS1) < channelTolerance && fabsf(m.s2Mean - st.baselineS2) < channelTolerance;
@@ -503,7 +499,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     }
 
     out.mag = fabsf(out.sig);
-    if (!st.centerMode && !st.teachMode && !st.recoveryActive && !recovered && out.mag < st.runTh) {
+    if (!isCenterFinderMode(st.mode) && st.mode != OperatingMode::TEACH && !st.recoveryActive && !recovered && out.mag < st.runTh) {
         st.zero += DRIFT_FOLLOW * out.sig;
         st.baselineS1 += DRIFT_FOLLOW * (m.s1Mean - st.baselineS1);
         st.baselineS2 += DRIFT_FOLLOW * (m.s2Mean - st.baselineS2);
@@ -552,8 +548,8 @@ static void updateBeeper(uint16_t freq, uint32_t now) {
 #if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
 static void logSerial(const Measurement &m, const Outcome &out) {
 
-    Serial.print(st.setupMode ? F("setup") : (st.centerMode ? F("center") : F("run")));
-    if (st.setupMode) {
+    Serial.print(st.mode == OperatingMode::DD_SETUP ? F("setup") : (isCenterFinderMode(st.mode) ? F("center") : F("run")));
+    if (st.mode == OperatingMode::DD_SETUP) {
         Serial.print(F(" ch=A"));
         Serial.print(CHANNEL);
     }
@@ -582,7 +578,7 @@ static void logSerial(const Measurement &m, const Outcome &out) {
     Serial.print(F(" vbat=")); // Akkumulátor feszültség
     Serial.print(m.vbat, 2);
 
-    if (st.centerMode) {
+    if (isCenterFinderMode(st.mode)) {
         Serial.print(F(" center_sig="));
         Serial.print(m.diff - st.zero, 2);
         Serial.print(F(" noise_th="));
@@ -643,7 +639,7 @@ void loop() {
     handleCalButton(now);
 
     Outcome out;
-    if (st.setupMode) {
+    if (st.mode == OperatingMode::DD_SETUP) {
         runSetupMode(m, out); // Futtatjuk a beállítási üzemmódot.
 
     } else if (st.zeroCount < ZERO_UPDATES) {
@@ -652,7 +648,7 @@ void loop() {
     } else {
         runDetect(m, now, out); // Egyébként a detektálási üzemmódot.
 
-        if (st.centerMode) {
+        if (isCenterFinderMode(st.mode)) {
             const float centerSig = m.diff - st.zero;
             const bool newlyLocked = st.centerFinder.update(fabsf(centerSig), st.runTh, !m.overload && !m.dcFault, now);
             if (newlyLocked) {
@@ -672,18 +668,18 @@ void loop() {
 
     updateBeeper(out.freq, now); // Frissítjük a hangjelző állapotát és frekvenciáját.
 
-    if (st.setupMode) {
+    if (st.mode == OperatingMode::DD_SETUP) {
         // DD-beállító képernyő kirajzolása
         drawDDSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
 
-    } else if (st.teachMode && st.zeroCount >= ZERO_UPDATES) {
+    } else if (st.mode == OperatingMode::TEACH && st.zeroCount >= ZERO_UPDATES) {
         // Távolságtanító képernyő kirajzolása
         drawTeach(out.msg, fabsf(m.diff - st.zero), st.runTh, m.vbat, m.overload);
 
-    } else if (st.centerMode && st.zeroCount >= ZERO_UPDATES) {
+    } else if (isCenterFinderMode(st.mode) && st.zeroCount >= ZERO_UPDATES) {
         // Középkereső képernyő kirajzolása
-        drawCenterFinder(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.signalTimeMode, st.centerFinder.stage(),
-                         st.signalTimeGraph, st.signalTimeGraphCount, st.signalTimeGraphNext);
+        drawCenterFinder(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.mode, st.centerFinder.stage(), st.signalTimeGraph,
+                         st.signalTimeGraphCount, st.signalTimeGraphNext);
     } else {
         // Normál üzemmód képernyő kirajzolása
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);

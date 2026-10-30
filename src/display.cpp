@@ -135,13 +135,13 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
  * @param vbat Az akkumulátor feszültsége voltban.
  * @param overload Igaz, ha az erősítő túlvezérlésben van.
  * @param dcFault Igaz, ha DC hiba történt.
- * @param signalTimeMode Igaz, ha a Jel-Ido grafikon látható.
+ * @param mode Az aktuális középkereső vagy Jel-Ido üzemmód.
  * @param stage A középponti szakasz.
  * @param signalTimeGraph Az időbeli grafikon mintáit tároló tömb.
  * @param signalTimeGraphCount A grafikon aktuális mintaszáma.
  * @param signalTimeGraphNext A következő grafikonminta helye.
  */
-void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, bool signalTimeMode, CenterStage stage, const int8_t *signalTimeGraph,
+void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, OperatingMode mode, CenterStage stage, const int8_t *signalTimeGraph,
                       uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext) {
     char num[10], peakText[8], returnText[8];
     dtostrf(fabsf(sig), 1, 1, num);
@@ -153,17 +153,17 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
     oled.firstPage();
 
     do {
-        drawHeader(signalTimeMode ? "Jel-Ido" : "Kozep keres", vbat);
+        drawHeader(mode == OperatingMode::SIGNAL_TIME ? "Jel-Ido" : "Kozep keres", vbat);
         oled.setFont(u8g2_font_6x10_tr);
         const char *status = dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : (msg ? msg : centerStageLabel(stage)));
-        if (!signalTimeMode || dcFault || overload) {
-            oled.drawStr(signalTimeMode ? 128 - oled.getStrWidth(status) : 0, 20, status);
+        if (mode != OperatingMode::SIGNAL_TIME || dcFault || overload) {
+            oled.drawStr(mode == OperatingMode::SIGNAL_TIME ? 128 - oled.getStrWidth(status) : 0, 20, status);
         }
 
         int graphTop, graphBottom;
 
         // A grafikon helyét a Jel-Ido vagy a középkereső nézet határozza meg.
-        if (signalTimeMode) {
+        if (mode == OperatingMode::SIGNAL_TIME) {
             oled.setFont(u8g2_font_helvB12_tr);
             dtostrf(sig, 1, 0, num); // Egész számra kerekítve konvertáljuk a számot sztringgé
             // Ha a szám -0, akkor 0-ra cseréljük
