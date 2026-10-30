@@ -9,8 +9,8 @@
 
 // A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
 // https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
-// #define __DEBUG__
-// #define __DEBUG_SERIAL_LOGGING__
+#define __DEBUG__
+#define __DEBUG_SERIAL_LOGGING__
 
 #include <Arduino.h>
 #include <avr/interrupt.h>
@@ -172,14 +172,6 @@ static float smoothDiff(float diff) {
 static Measurement acquire() {
     Measurement m;
     uint32_t s1, s2;
-
-    // A hangjelző a mérés alatt néma: a buzzer árama és az I²C-forgalom zavarná az ADC-t.
-    // Hamis riasztást tart fent a buzzer, ezért a mérés alatt ki kell kapcsolni.
-    // A hang kissé szaggatott lehet, mert a mérési ablakokban megszakad.
-    // Cserébe nem zavarja a mérést.
-    // A következő updateBeeper() hívás kapcsolja vissza a hangot.
-    beepOff();
-    delay(1);
 
     measure(s1, s2, CHANNEL); // impulzusmérés a megadott csatornán
 

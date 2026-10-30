@@ -302,7 +302,7 @@ void drawDDSetup(float diff, float best, float s1, bool overload, bool dcFault, 
         oled.setFont(u8g2_font_6x10_tr);
 
         if (ok) {
-            oled.drawStr(90, 28, "NULL OK");
+            oled.drawStr(128 - oled.getStrWidth("NULL OK"), 28, "NULL OK");
         }
         oled.drawStr(0, 44, line);
         oled.drawFrame(0, 48, 128, 14);
