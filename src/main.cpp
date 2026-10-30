@@ -90,6 +90,8 @@ struct State {
 
     /** Igaz, ha a tanítóképernyőn rögzítést kértek. */
     bool teachRequest = false;
+
+    /** Igaz, ha a tanító mód sikertelen volt és meddig érvényes a tiltás. */
     uint32_t teachFailUntil = 0;
 
     /** A Jel-Ido nézet gördülő amplitúdógrafikonja. */
