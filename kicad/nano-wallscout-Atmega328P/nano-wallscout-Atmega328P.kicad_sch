@@ -10914,7 +10914,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "71790eec-f126-4e93-a587-55cb2af0b95a")
-		(property "Reference" "Q1"
+		(property "Reference" "Q2"
 			(at 248.412 125.73 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10984,7 +10984,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "Q1")
+					(reference "Q2")
 					(unit 1)
 				)
 			)
@@ -12623,7 +12623,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a355ce8c-9616-42d6-8348-208f2edec247")
-		(property "Reference" "Q2"
+		(property "Reference" "Q1"
 			(at 34.29 177.7999 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12690,7 +12690,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "Q2")
+					(reference "Q1")
 					(unit 1)
 				)
 			)

@@ -10,31 +10,31 @@
  *
  * D4: kalibrálógomb;
  * D5: nullázó- és DD-beállítógomb;
- * D2: Q1 FET kapuja.
+ * D2: Q2 FET kapuja.
  * D3: hangjelző;
  * A0: mérőjel;
  * A1: akkumulátorfeszültség-osztó.
  * A4 és A5: OLED I²C-kapcsolat.
  */
-#define GATE_BIT PD2     // Q1 kapu lábának bitje a PORTD regiszterben
+#define GATE_BIT PD2     // Q2 FET Gate lábának bitje a PORTD regiszterben
 #define PIN_BUZZER PD3   // Hangjelző lábának bitje a PORTD regiszterben
 #define PIN_BTN_CAL PD4  // Kalibrálógomb lába
 #define PIN_BTN_ZERO PD5 // Nullázó- és DD-beállítógomb lába
 
-/** @brief A Q1 bekapcsolási ideje mikroszekundumban. */
+/** @brief A Q2 FET bekapcsolási ideje mikroszekundumban. */
 static const uint16_t T_ON = 60;
 
 /** @brief Az impulzusok periódusideje mikroszekundumban. */
 static const uint16_t T_PERIOD = 1000;
 
-/** @brief Az első minta időpontja a Q1 kikapcsolása után, mikroszekundumban. */
+/** @brief Az első minta időpontja a Q2 FET kikapcsolása után, mikroszekundumban. */
 static const uint16_t T_SAMPLE1 = 60;
 
-/** @brief A referencia-minta időpontja a Q1 kikapcsolása után,
+/** @brief A referencia-minta időpontja a Q2 FET kikapcsolása után,
  * mikroszekundumban. */
 static const uint16_t T_SAMPLE2 = 600;
 
-/** @brief A DD-csatolás mintavételi időpontja a Q1 bekapcsolása után,  mikroszekundumban. */
+/** @brief A DD-csatolás mintavételi időpontja a Q2 bekapcsolása után,  mikroszekundumban. */
 static const uint16_t T_COUPLE = 40;
 
 /** @brief Az egy méréshez átlagolt impulzusok száma. */
