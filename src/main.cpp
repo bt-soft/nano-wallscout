@@ -13,13 +13,13 @@
 // #define __DEBUG_SERIAL_LOGGING__
 
 #include <Arduino.h>
+#include <avr/wdt.h>
+#include <math.h>
+
 #if defined(__DEBUG__) && !defined(__DEBUG_SERIAL_LOGGING__)
 #include <app_api.h>
 #include <avr8-stub.h>
 #endif
-
-#include <avr/wdt.h>
-#include <math.h>
 
 #include "beeper.h"
 #include "calibration.h"
