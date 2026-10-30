@@ -142,6 +142,7 @@ static State st;
 
 /**
  * @brief Simítja az S1 − S2 különbséget exponenciális átlagolással.
+ *
  * @param diff Az új, simítandó mérési különbség.
  * @return A simított különbség.
  */
@@ -160,6 +161,7 @@ static float smoothDiff(float diff) {
 
 /**
  * @brief Elvégzi az impulzusmérést, és kiszámítja a mérés állapotjelzőit.
+ *
  * @return Az átlagolt mintákat, a nyugalmi szintet és az akkufeszültséget tartalmazó mérés.
  */
 static Measurement acquire() {
@@ -219,6 +221,7 @@ static void restartZeroing() {
 
 /**
  * @brief Kezeli a nullázógomb rövid és hosszú megnyomását.
+ *
  * @param now Az aktuális idő milliszekundumban.
  * @return Igaz, ha üzemmódváltás történt, ezért a mérési ciklust ki kell hagyni.
  */
@@ -266,12 +269,14 @@ static bool handleZeroButton(uint32_t now) {
 
 /**
  * @brief Rögzíti a kalibrálógomb állapotát, és kezeli a rövid és hosszú nyomást.
+ *
  * @param now Az aktuális idő milliszekundumban.
  *
  * Rövid nyomás: középkereső módváltás, tanítóképernyőn az 5 cm-es érték rögzítése.
  * Hosszú nyomás: belépés a tanítóképernyőre, illetve kilépés belőle.
  */
 static void handleCalButton(uint32_t now) {
+
     if (g_calSeen && !st.calPressStart) {
         st.calPressStart = now;
         st.calDone = false;
@@ -318,6 +323,7 @@ static void handleCalButton(uint32_t now) {
 
 /**
  * @brief A DD-beállító mód áthallásához hangfrekvenciát rendel.
+ *
  * @param a Az áthallás abszolút értéke.
  * @return A hangjelző frekvenciája hertzben.
  */
@@ -332,6 +338,7 @@ static uint16_t setupFreq(float a) {
 
 /**
  * @brief Frissíti a DD-beállító mód minimumát és hangjelzését.
+ *
  * @param m Az aktuális mérési eredmény.
  * @param out A mód által frissítendő hang- és kijelzési adatok.
  *
@@ -360,9 +367,9 @@ static void runSetupMode(const Measurement &m, Outcome &out) {
 
 /**
  * @brief Összegyűjti a nullázási mintákat, és meghatározza a zajküszöböt.
+ *
  * @param m Az aktuális mérési eredmény.
  * @param out A nullázási állapotüzenet kimenete.
- *
  */
 static void runZeroing(const Measurement &m, Outcome &out) {
 
@@ -396,6 +403,7 @@ static void runZeroing(const Measurement &m, Outcome &out) {
 
 /**
  * @brief Elvégzi a gombnyomásra indított mélységkalibrálást.
+ *
  * @param m Az aktuális mérési eredmény.
  * @param now Az aktuális idő milliszekundumban.
  * @param out A kalibrálás kijelzési és hangjelzési adatai.
@@ -431,10 +439,10 @@ static void handleCalibration(const Measurement &m, uint32_t now, Outcome &out) 
 
 /**
  * @brief Kiszámítja a nullázott jelet, és frissíti a találat állapotát.
+ *
  * @param m Az aktuális mérési eredmény.
  * @param now Az aktuális idő milliszekundumban.
  * @param out A találat, a hang és a kijelzés kimeneti adatai.
- *
  */
 static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     out.sig = m.diff - st.zero;
@@ -637,10 +645,13 @@ void loop() {
     Outcome out;
     if (st.setupMode) {
         runSetupMode(m, out); // Futtatjuk a beállítási üzemmódot.
+
     } else if (st.zeroCount < ZERO_UPDATES) {
         runZeroing(m, out); // Futtatjuk a nulla beállítási üzemmódot.
+
     } else {
         runDetect(m, now, out); // Egyébként a detektálási üzemmódot.
+
         if (st.centerMode) {
             const float centerSig = m.diff - st.zero;
             const bool newlyLocked = st.centerFinder.update(fabsf(centerSig), st.runTh, !m.overload && !m.dcFault, now);
@@ -662,13 +673,19 @@ void loop() {
     updateBeeper(out.freq, now); // Frissítjük a hangjelző állapotát és frekvenciáját.
 
     if (st.setupMode) {
-        drawSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
+        // DD-beállító képernyő kirajzolása
+        drawDDSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
+
     } else if (st.teachMode && st.zeroCount >= ZERO_UPDATES) {
+        // Távolságtanító képernyő kirajzolása
         drawTeach(out.msg, fabsf(m.diff - st.zero), st.runTh, m.vbat, m.overload);
+
     } else if (st.centerMode && st.zeroCount >= ZERO_UPDATES) {
-        drawCenterFinder(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault,
-                         st.signalTimeMode, st.centerFinder.stage(), st.signalTimeGraph, st.signalTimeGraphCount, st.signalTimeGraphNext);
+        // Középkereső képernyő kirajzolása
+        drawCenterFinder(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.signalTimeMode, st.centerFinder.stage(),
+                         st.signalTimeGraph, st.signalTimeGraphCount, st.signalTimeGraphNext);
     } else {
+        // Normál üzemmód képernyő kirajzolása
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);
     }
 

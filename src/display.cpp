@@ -195,12 +195,19 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
             graphBottom = 63; // A grafikon alja a sáv alatt
         }
 
+        // Grafikon kirajzolása
         oled.drawHLine(0, graphBottom, 128);
+
+        // Grafikon aljának pozíciója
         const int graphHeight = graphBottom - graphTop;
+
+        // Pöttyözött küszöbvonal rajzolása
         const int thresholdY = graphBottom - graphHeight / 4;
         for (int x = 0; x < 128; x += 3) {
             oled.drawPixel(x, thresholdY);
         }
+
+        // Grafikon kirajzolása a jelértékek alapján
         for (uint8_t i = 0; i < signalTimeGraphCount; ++i) {
             const uint8_t index = signalTimeGraphCount < SIGNAL_TIME_GRAPH_SIZE ? i : (signalTimeGraphNext + i) % SIGNAL_TIME_GRAPH_SIZE;
             const int x = 128 - signalTimeGraphCount * 4 + i * 4;
@@ -227,7 +234,7 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
  * @param vbat Az akkumulátor feszültsége voltban.
  *
  */
-void drawSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat) {
+void drawDDSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat) {
     char num[10], bst[10], s1s[8], line[24] = "min ";
     const float v = overload ? s1 - 512.0f : diff;
     dtostrf(v, 1, 1, num);

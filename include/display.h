@@ -38,9 +38,8 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
 /**
  * @brief Megjeleníti a középkereső állapotát vagy a Jel-Ido grafikonját.
  */
-void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat,
-                      bool overload, bool dcFault, bool signalTimeMode, CenterStage stage,
-                      const int8_t *signalTimeGraph, uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext);
+void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, bool signalTimeMode, CenterStage stage, const int8_t *signalTimeGraph,
+                      uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext);
 
 /**
  * @brief Megjeleníti az áthallást és a telítési adatokat DD-beállító módban.
@@ -52,4 +51,4 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
  * @param vbat Az akkumulátor feszültsége voltban.
  *
  */
-void drawSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat);
+void drawDDSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat);
