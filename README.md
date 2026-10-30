@@ -206,6 +206,23 @@ Két azonos tekercs szükséges: **80 menet, 0,3 mm-es zománcozott rézhuzal (C
 7. A DD átfedés behangolása után a tekercseket **merev, fém- és ferritmentes vázra** (fa, műanyag, textolit) rögzítsd. A behangolás igen érzékeny, ezért a tekercsek helyzete rögzítés után nem változhat.
 
 
+### A tekercsek kivezetéseinek polaritása
+
+A tekercsek kivezetéseinek (az Rx vagy a Tx két végének) felcserélésére **nem kell ügyelni**.
+
+- A felcserélés csak 180°-kal fordítja az Rx-jelet: az S1 − S2 előjele megváltozik, a nagysága nem.
+- Az áthallás nullpontja (az átfedés, ahol a közvetlen áthallás eltűnik) ettől nem tűnik el. Az áthallás előjele az átfedés két oldalán amúgy is ellentétes, és a DD-beállító mód az abszolút értékre keres minimumot.
+- A detektálás, a küszöb, a hangjelzés, a középkereső és a mélységbecslés a jel nagyságát használja. Az előjelet a firmware csak a találat lezárásához tartja meg, és ez fordított előjelnél is ugyanúgy működik.
+- A Tx árama a meghajtó MOSFET-től és a flyback-diódától függ, ezért nem a tekercs bekötési irányától.
+- Impulzusos (PI) működésnél az Rx csak a lecsengő tranzienst látja, folytonos adó-vevő fázis nincs, ezért fázismérésre sincs szükség.
+
+**Mi számít valódi hibának?**
+
+- Az áthallás semmilyen átfedésnél sem megy nullára: ez geometriai, elhelyezési vagy árnyékolási hiba, nem polaritáshiba.
+- Az árnyékolás vagy a leföldelés zárt vezetőhurkot alkot (lásd a 6. lépést).
+- Az egyik tekercs menetei tekercselési hiba miatt részben ellentétes irányban futnak; ezt a kivezetések cseréje nem pótolja.
+- A tekercsek fém- vagy ferrittartalmú vázra vannak rögzítve, vagy a rögzítés után elmozdulnak.
+
 ### DD átfedés beállítása (firmware-es segítség a beállításhoz)
 
 Az átfedés beállítása időigényes: a mágneses csatolás a kritikus átfedés közelében igen élesen változik, ezért türelmet és ismételt finombeállítást igényel. A behangolt tekercseket ezután stabilan rögzíteni kell, mert később nem mozdulhatnak el.
