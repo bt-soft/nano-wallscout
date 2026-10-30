@@ -333,7 +333,7 @@ static void handleCalButton(uint32_t now) {
 static uint16_t setupFreq(float a) {
 
     // Számítsuk ki a jel abszolút értékének arányát a teljes skálához képest.
-    const float frac = constrain(log(1.0f + a) / log(1.0f + SETUP_FULL), 0.0f, 1.0f);
+    const float frac = setupFraction(a);
 
     // A frekvencia a 300 Hz és 3000 Hz közötti tartományban változik a jel arányától függően.
     return 300 + (uint16_t)(frac * 2700);
@@ -771,7 +771,7 @@ void loop() {
 
     } else if (st.mode == OperatingMode::TEACH && st.zeroCount >= ZERO_UPDATES) {
         // Távolságtanító képernyő kirajzolása
-        drawTeach(out.msg, fabsf(m.diff - st.zero), st.runTh, m.vbat, m.overload);
+        drawTeach(out.msg, fabsf(m.diff - st.zero), st.runTh, m.vbat, m.overload, (m.diff - st.zero) < 0 ? -1 : 1);
 
     } else if (isCenterFinderMode(st.mode) && st.zeroCount >= ZERO_UPDATES) {
         // Középkereső képernyő kirajzolása

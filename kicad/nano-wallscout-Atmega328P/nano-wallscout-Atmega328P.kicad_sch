@@ -14969,26 +14969,26 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e6b0739d-5a14-4472-8154-13aaba3f4d3d")
-		(property "Reference" "U4"
-			(at 153.67 171.4499 0)
+		(property "Reference" "U2"
+			(at 156.21 171.4499 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "MCP6004"
-			(at 153.67 173.9899 0)
+			(at 156.21 173.9899 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Footprint" "Package_DIP:DIP-14_W7.62mm_LongPads"
@@ -15069,7 +15069,7 @@
 		(instances
 			(project "nano-wallscout-Atmega328P"
 				(path "/34d29903-802b-4e4f-a971-54513bc11f78"
-					(reference "U4")
+					(reference "U2")
 					(unit 5)
 				)
 			)

@@ -38,9 +38,10 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
  * @param threshold A detektálási küszöb; ez alatt nem jelenik meg távolság.
  * @param vbat Az akkumulátor feszültsége voltban.
  * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ * @param orient A vas helyzete: +1 párhuzamos ('|'), -1 merőleges ('-'), 0 ismeretlen.
  *
  */
-void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload);
+void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload, int8_t orient);
 
 /**
  * @brief Megjeleníti a középkereső állapotát vagy a Jel-Ido grafikonját.
@@ -59,3 +60,10 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
  *
  */
 void drawDDSetup(float diff, float best, float s1, bool overload, bool dcFault, float vbat);
+
+/**
+ * @brief A DD-beállító áthallásának logaritmikus aránya a teljes skálához képest.
+ * @param a Az áthallás abszolút értéke.
+ * @return Az arány 0 és 1 között.
+ */
+float setupFraction(float a);

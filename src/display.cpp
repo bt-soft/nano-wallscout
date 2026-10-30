@@ -45,6 +45,21 @@ static void drawHeader(const char *title, float vbat) {
 }
 
 /**
+ * @brief Kirajzolja a vas helyzetét jelző kis ikont (9x9 pixel).
+ *
+ * @param x Az ikon bal szélének X koordinátája.
+ * @param y Az ikon tetejének Y koordinátája.
+ * @param orient +1: párhuzamos ('|'), -1: merőleges ('-'), 0: nincs ikon.
+ */
+static void drawOrientation(int x, int y, int8_t orient) {
+    if (orient > 0) {
+        oled.drawBox(x + 3, y, 3, 9);
+    } else if (orient < 0) {
+        oled.drawBox(x, y + 3, 9, 3);
+    }
+}
+
+/**
  * @brief Kirajzolja a normál keresési képernyőt a jel és a kalibrációs adatok alapján.
  *
  * @param msg Opcionális állapotüzenet; null értéknél a mérési adat jelenik meg.
@@ -99,9 +114,10 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
  * @param threshold A tanítási küszöbérték.
  * @param vbat Az akkumulátor feszültsége voltban.
  * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ * @param orient A vas helyzete: +1 párhuzamos, -1 merőleges, 0 ismeretlen.
  *
  */
-void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload) {
+void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload, int8_t orient) {
     char num[10], dep[14] = "";
     dtostrf(mag, 1, 1, num);
     if (calIsSet() && mag >= threshold) {
@@ -127,6 +143,9 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
         oled.drawStr(0, 46, num);
         oled.setFont(u8g2_font_6x10_tr);
         oled.drawStr(80, 40, dep[0] ? dep : (calIsSet() ? "-- cm" : "nincs kal."));
+        if (!overload && mag >= threshold) {
+            drawOrientation(112, 21, orient);
+        }
         oled.drawFrame(0, 50, 128, 12);
         oled.drawBox(2, 52, w, 8);
     } while (oled.nextPage());
@@ -168,11 +187,12 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
             oled.drawStr(mode == OperatingMode::SIGNAL_TIME ? 128 - oled.getStrWidth(status) : 0, 20, status);
         }
 
+        const int8_t orient = (dcFault || overload || fabsf(sig) < threshold) ? 0 : (sig > 0 ? 1 : -1);
         int graphTop, graphBottom;
 
         // A grafikon helyét a Jel-Ido vagy a középkereső nézet határozza meg.
         if (mode == OperatingMode::SIGNAL_TIME) {
-            oled.setFont(u8g2_font_helvB12_tr);
+            oled.setFont(u8g2_font_helvB12_tn);
             dtostrf(sig, 1, 0, num); // Egész számra kerekítve konvertáljuk a számot sztringgé
             // Ha a szám -0, akkor 0-ra cseréljük
             if (strcmp(num, "-0") == 0) {
@@ -180,7 +200,8 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
                 num[1] = '\0';
             }
             oled.drawStr(0, 22, num);
-            graphTop = 24;    // A grafikon teteje a sáv felett
+            drawOrientation(50, 13, orient);
+            graphTop = 24;     // A grafikon teteje a sáv felett
             graphBottom = 63; // A grafikon alja a sáv felett
 
         } else {
@@ -191,6 +212,7 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
             oled.drawStr(88, 30, peakText);
             oled.drawStr(75, 41, "R:");
             oled.drawStr(88, 41, returnText);
+            drawOrientation(116, 14, orient);
 
             oled.drawFrame(2, 45, 124, 6);
             oled.drawVLine(63, 44, 8);
@@ -232,6 +254,16 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
 }
 
 /**
+ * @brief A DD-beállító áthallásának logaritmikus aránya a teljes skálához képest.
+ * @param a Az áthallás abszolút értéke.
+ * @return Az arány 0 és 1 között.
+ */
+float setupFraction(float a) {
+    static const float logFull = log(1.0f + SETUP_FULL);
+    return constrain(log(1.0f + a) / logFull, 0.0f, 1.0f);
+}
+
+/**
  * @brief Kirajzolja a DD-beállító képernyőt és az előjeles áthallásmérőt.
  *
  * @param diff Az S1 és S2 minták előjeles különbsége.
@@ -256,7 +288,7 @@ void drawDDSetup(float diff, float best, float s1, bool overload, bool dcFault, 
     strcat(line, "  S1 ");
     strcat(line, s1s);
     const float a = fabsf(overload ? 512.0f : diff);
-    const float frac = constrain(log(1.0f + a) / log(1.0f + SETUP_FULL), 0.0f, 1.0f);
+    const float frac = setupFraction(a);
     const int half = (int)(frac * 61) * (v < 0 ? -1 : 1);
     const bool ok = !overload && a < DETECT_TH;
 
