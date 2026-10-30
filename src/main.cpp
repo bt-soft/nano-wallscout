@@ -399,7 +399,7 @@ static void runZeroing(const Measurement &m, Outcome &out) {
         st.detOn = false;
     }
 
-    out.msg = "Nullazas - legben!";
+    out.msg = "Nullazas...";
 }
 
 /**
