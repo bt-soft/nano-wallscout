@@ -81,6 +81,37 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
     } while (oled.nextPage());
 }
 
+void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload) {
+    char num[10], dep[14] = "";
+    dtostrf(mag, 1, 1, num);
+    if (calIsSet() && mag >= threshold) {
+        dtostrf(calDepthCm(mag), 1, 1, dep);
+        strcat(dep, " cm");
+    }
+
+    const int w = (int)(constrain(mag / calFullScale(), 0.0f, 1.0f) * 124);
+
+    oled.firstPage();
+
+    do {
+        drawHeader("TANITAS 5cm", vbat);
+        oled.setFont(u8g2_font_6x10_tr);
+        if (overload) {
+            oled.drawStr(0, 20, "TULVEZERLES");
+        } else if (msg) {
+            oled.drawStr(0, 20, msg);
+        } else {
+            oled.drawStr(0, 20, "Vas 5cm, gomb: rogzit");
+        }
+        oled.setFont(u8g2_font_logisoso24_tn);
+        oled.drawStr(0, 46, num);
+        oled.setFont(u8g2_font_6x10_tr);
+        oled.drawStr(80, 40, dep[0] ? dep : (calIsSet() ? "-- cm" : "nincs kal."));
+        oled.drawFrame(0, 50, 128, 12);
+        oled.drawBox(2, 52, w, 8);
+    } while (oled.nextPage());
+}
+
 void drawCenter(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, bool historyMode, CenterStage stage, const int8_t *history, uint8_t historyCount,
                 uint8_t historyNext) {
     char num[10], peakText[8], returnText[8];

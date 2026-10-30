@@ -89,6 +89,10 @@ struct State {
 
     /** Igaz, ha a külön középkereső mód aktív. */
     bool centerMode = false;
+
+    /** Igaz, ha a távolságtanító képernyő aktív; kérés esetén az aktuális jel lesz az 5 cm-es érték. */
+    bool teachMode = false, teachRequest = false;
+    uint32_t teachFailUntil = 0;
     bool centerHistoryMode = false;
 
     /** Fix méretű gördülő amplitúdógrafikon a középkereső módhoz. */
@@ -205,6 +209,8 @@ static void restartZeroing() {
     st.centerFinder.reset();
     st.centerHistoryCount = 0;
     st.centerHistoryNext = 0;
+    st.teachMode = false;
+    st.teachRequest = false;
 
     // A simított különbség és a csatorna inicializálása.
     st.smooth = 0;
@@ -239,11 +245,18 @@ static bool handleZeroButton(uint32_t now) {
     // Ha a gomb hosszú megnyomás után felengedésre kerül, ne csináljunk semmit.
     if (!g_zeroSeen && st.zeroPressStart) {
         if (!st.zeroLong) {
-            if (st.setupMode) {
-                st.setupMode = false;
+            if (st.teachMode) {
+                // A tanítóképernyőből a nullázógomb kilép, újranullázás nélkül.
+                st.teachMode = false;
+                st.teachRequest = false;
                 st.confirmUntil = now + 150;
+            } else {
+                if (st.setupMode) {
+                    st.setupMode = false;
+                    st.confirmUntil = now + 150;
+                }
+                restartZeroing();
             }
-            restartZeroing();
         }
         st.zeroPressStart = 0;
     }
@@ -252,9 +265,11 @@ static bool handleZeroButton(uint32_t now) {
 }
 
 /**
- * @brief Rögzíti a kalibrálógomb állapotát, és törli a beállító mód minimumát.
+ * @brief Rögzíti a kalibrálógomb állapotát, és kezeli a rövid és hosszú nyomást.
  * @param now Az aktuális idő milliszekundumban.
  *
+ * Rövid nyomás: középkereső módváltás, tanítóképernyőn az 5 cm-es érték rögzítése.
+ * Hosszú nyomás: belépés a tanítóképernyőre, illetve kilépés belőle.
  */
 static void handleCalButton(uint32_t now) {
     if (g_calSeen && !st.calPressStart) {
@@ -265,9 +280,24 @@ static void handleCalButton(uint32_t now) {
         }
     }
 
+    const bool ready = !st.setupMode && st.zeroCount >= ZERO_UPDATES;
+
+    if (g_calSeen && st.calPressStart && !st.calDone && ready && now - st.calPressStart >= LONG_PRESS_MS) {
+        st.calDone = true;
+        st.teachMode = !st.teachMode;
+        st.teachRequest = false;
+        st.centerMode = false;
+        st.centerHistoryMode = false;
+        st.flashUntil = 0;
+        st.teachFailUntil = 0;
+        st.confirmUntil = now + 150;
+    }
+
     if (!g_calSeen && st.calPressStart) {
-        if (!st.calDone && !st.setupMode && st.zeroCount >= ZERO_UPDATES && now - st.calPressStart < LONG_PRESS_MS) {
-            if (!st.centerMode) {
+        if (!st.calDone && ready && now - st.calPressStart < LONG_PRESS_MS) {
+            if (st.teachMode) {
+                st.teachRequest = true;
+            } else if (!st.centerMode) {
                 st.centerMode = true;
                 st.centerHistoryMode = false;
                 st.centerFinder.reset();
@@ -358,7 +388,7 @@ static void runZeroing(const Measurement &m, Outcome &out) {
         st.baselineS2 = st.zeroS2Acc / ZERO_UPDATES;
         st.baselineDiff = st.zeroRawDiffAcc / ZERO_UPDATES;
         const float var = st.zeroSq / ZERO_UPDATES - st.zero * st.zero;
-        st.runTh = max(DETECT_TH, 5.0f * sqrtf(max(var, 0.0f)));
+        st.runTh = max(DETECT_TH, NOISE_TH_FACTOR * sqrtf(max(var, 0.0f)));
         st.detOn = false;
     }
     out.msg = "Nullazas - legben!";
@@ -372,20 +402,30 @@ static void runZeroing(const Measurement &m, Outcome &out) {
  *
  */
 static void handleCalibration(const Measurement &m, uint32_t now, Outcome &out) {
+    if (!st.teachMode) {
+        return;
+    }
 
-    const bool calHeld = g_calSeen && st.calPressStart && !st.calDone;
-    const bool longPress = now - st.calPressStart > LONG_PRESS_MS;
+    // A tanítás a nyers jelből dolgozik, hogy az előjelzár ne befolyásolja.
+    const float teachMag = fabsf(m.diff - st.zero);
 
-    if (calHeld && longPress && out.det) {
-        calSet(calKFromSignal(out.mag));
-        st.calDone = true;
-        st.confirmUntil = now + 300;
-        st.flashUntil = now + 1500;
-    } else if (calHeld) {
-        out.msg = longPress ? (m.overload ? "Tulvezerles!" : "Nincs jel! Vas 5cm") : "Kalibralas...";
+    if (st.teachRequest) {
+        st.teachRequest = false;
+        if (!m.overload && teachMag >= st.runTh) {
+            calSet(calKFromSignal(teachMag));
+            st.confirmUntil = now + 300;
+            st.flashUntil = now + 1500;
+            st.teachFailUntil = 0;
+        } else {
+            st.teachFailUntil = now + 1500;
+            st.flashUntil = 0;
+        }
+    }
 
-    } else if (now < st.flashUntil) {
-        out.msg = "Kalibralva (5 cm)";
+    if (now < st.flashUntil) {
+        out.msg = "Rogzitve: 5 cm";
+    } else if (now < st.teachFailUntil) {
+        out.msg = m.overload ? "Tulvezerles!" : "Nincs jel!";
     }
 }
 
@@ -455,14 +495,14 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     }
 
     out.mag = fabsf(out.sig);
-    if (!st.centerMode && !st.recoveryActive && !recovered && out.mag < st.runTh) {
+    if (!st.centerMode && !st.teachMode && !st.recoveryActive && !recovered && out.mag < st.runTh) {
         st.zero += DRIFT_FOLLOW * out.sig;
         st.baselineS1 += DRIFT_FOLLOW * (m.s1Mean - st.baselineS1);
         st.baselineS2 += DRIFT_FOLLOW * (m.s2Mean - st.baselineS2);
         st.baselineDiff += DRIFT_FOLLOW * (m.rawDiff - st.baselineDiff);
     }
     if (!recovered) {
-        st.detOn = out.mag >= (st.detOn ? 0.6f * st.runTh : st.runTh);
+        st.detOn = out.mag >= (st.detOn ? DETECT_RELEASE_FRACTION * st.runTh : st.runTh);
     }
     // Frissítjük a detektor kimeneti állapotát a jel nagysága és az érzékelő túlterheltsége alapján.
     out.det = st.detOn && !m.overload;
@@ -623,6 +663,8 @@ void loop() {
 
     if (st.setupMode) {
         drawSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
+    } else if (st.teachMode && st.zeroCount >= ZERO_UPDATES) {
+        drawTeach(out.msg, fabsf(m.diff - st.zero), st.runTh, m.vbat, m.overload);
     } else if (st.centerMode && st.zeroCount >= ZERO_UPDATES) {
         drawCenter(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.centerHistoryMode, st.centerFinder.stage(), st.centerHistory,
                    st.centerHistoryCount, st.centerHistoryNext);

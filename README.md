@@ -81,7 +81,7 @@ A mód váltását rövid (150 ms-os), 3 kHz-es csipogás jelzi. A hosszú nyom�
 
 **Arduino D4 – KALIBRÁLÁS / KÖZÉPKERESŐ / `min` törlése**
 
-Normál kereső módban a D4 rövid megnyomásai a következő nézetek között léptetnek: normál keresés → élő `CENTER SCAN` → élő historikus grafikon → normál keresés. A historikus nézet tovább gyűjti a méréseket: az amplitúdó jobbról érkezik, a korábbi minták balra gördülnek, így a jel időbeli alakulása követhető. A grafikon a nullázott jel abszolút értékét mutatja; a szaggatott vízszintes vonal az adaptív küszöb. A hosszú nyomás továbbra is az 5 cm-es kalibrálást végzi. DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul.
+Normál kereső módban a D4 rövid megnyomásai a következő nézetek között léptetnek: normál keresés → élő `CENTER SCAN` → élő historikus grafikon → normál keresés. A historikus nézet tovább gyűjti a méréseket: az amplitúdó jobbról érkezik, a korábbi minták balra gördülnek, így a jel időbeli alakulása követhető. A grafikon a nullázott jel abszolút értékét mutatja; a szaggatott vízszintes vonal az adaptív küszöb. A hosszú nyomás a távolságtanító képernyőt nyitja meg (lásd lent). DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul.
 
 Középkereső módban a kijelző az előjeles, nullázott jelet, annak rövid gördülő grafikonját, a zajküszöböt, az első és a visszapásztázás során mért csúcsot mutatja. A firmware legalább két küszöb feletti mintával jelöltet keres, több csökkenő minta alapján becsül csúcsot, majd visszapásztázás után a két csúcserősséget hasonlítja össze. A `CSUCS MEGEROSITVE` csak ezt a jelerősség-egyezést jelenti: a mintasorszám nem pozíció, így a mód nem mér és nem jelöl ki pontos fizikai középvonalat. A visszapásztázás irányát nem nevezi meg.
 
@@ -89,10 +89,11 @@ A mód bekapcsolásakor a mérő legyen levegőben és fémtől távol. Ha a `ZA
 
 Normál módban:
 
-1. Tarts egy vasat (a használt vastípust) pontosan **5 cm**-re a tekercstől, és nyomd a gombot: a kijelzőn `Kalibralas...`.
-2. Tartsd lenyomva **1 másodpercig**. Ha a jel az érzékelési küszöb fölött van, a firmware eltárolja a `K = jel · 5³` értéket (az `S ≈ K/d³` modellre), az **EEPROM**-ba menti (kikapcsolás után is megmarad), 3 kHz-es csipogás hallatszik, és 1,5 s-ig `Kalibralva (5 cm)` látszik.
-3. Ha 1 s után nincs érzékelt jel, a kalibrálás **nem** történik meg: `Nincs jel! Vas 5cm` (vagy túlvezérlésnél `Tulvezerles!`) jelenik meg. Hozd közelebb a vasat, és tartsd tovább nyomva a gombot; a mentés automatikusan megtörténik, amint van jel.
-4. Nullázás közben (`Nullazas - legben!`) a kalibrálás nem indítható.
+1. Tartsd lenyomva a D4-et **1 másodpercig**: megnyílik a `TANITAS 5cm` képernyő, amely folyamatosan mutatja a vett jelet, egy oszlopot és (érvényes kalibráció esetén) a becsült távolságot. A képernyőn a driftkövetés szünetel.
+2. Tarts egy vasat (a használt vastípust) pontosan **5 cm**-re a tekercstől, és nyomd meg röviden a D4-et. Ha a jel a küszöb fölött van, a firmware eltárolja a `K = jel · 5³` értéket (az `S ≈ K/d³` modellre), az **EEPROM**-ba menti (kikapcsolás után is megmarad), 3 kHz-es csipogás hallatszik, és 1,5 s-ig `Rogzitve: 5 cm` látszik. A képernyő nyitva marad, így a rögzítés tetszőleges számú alkalommal megismételhető, és a becsült távolság azonnal ellenőrizhető.
+3. Ha nincs elég jel, a mentés **nem** történik meg: `Nincs jel!` (vagy túlvezérlésnél `Tulvezerles!`) jelenik meg. Hozd közelebb a vasat, és próbáld újra.
+4. Kilépés: a D5 rövid megnyomása (újranullázás nélkül) vagy a D4 ismételt hosszú nyomása.
+5. Nullázás közben (`Nullazas - legben!`) a tanítóképernyő nem nyitható meg.
 
 Kalibrálás nélkül a kijelzőn `nincs kal.` látszik, és mélység nem jelenik meg.
 

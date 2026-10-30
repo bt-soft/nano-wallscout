@@ -25,6 +25,17 @@ void displayInit();
 void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det);
 
 /**
+ * @brief Megjeleníti a távolságtanító képernyőt: az élő jelet és a becsült távolságot.
+ * @param msg Opcionális állapotüzenet.
+ * @param mag A nullázott jel abszolút értéke.
+ * @param threshold A detektálási küszöb; ez alatt nem jelenik meg távolság.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ *
+ */
+void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload);
+
+/**
  * @brief Megjeleníti a középkeresés állapotát és az előjeles jel rövid történetét.
  */
 void drawCenter(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat,

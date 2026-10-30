@@ -44,7 +44,13 @@ static const uint16_t N_PULSES = 100;
 static const uint16_t TICKS_PER_US = 2;
 
 /** @brief A találat érzékelési küszöbe ADC-egységben. */
-static const float DETECT_TH = 1.5f;
+static const float DETECT_TH = 1.3f;
+
+/** @brief A találat kikapcsolási küszöbe a bekapcsolási küszöb (`runTh`) arányában; ez adja a hiszterézist. */
+static const float DETECT_RELEASE_FRACTION = 0.6f;
+
+/** @brief A nullázáskor mért zaj szórásának szorzója az adaptív küszöbhöz (`runTh`). */
+static const float NOISE_TH_FACTOR = 5.0f;
 
 /** @brief A kalibrálás nélküli teljes kijelzőskálához tartozó jel. */
 static const float FULL_SCALE = 60.0f;
