@@ -200,7 +200,7 @@ void drawCenterFinder(const char *msg, float sig, float threshold, float peak, f
                 num[1] = '\0';
             }
             oled.drawStr(0, 22, num);
-            drawOrientation(50, 13, orient);
+            drawOrientation(116, 14, orient);
             graphTop = 24;     // A grafikon teteje a sáv felett
             graphBottom = 63; // A grafikon alja a sáv felett
 

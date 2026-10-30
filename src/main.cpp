@@ -173,6 +173,14 @@ static Measurement acquire() {
     Measurement m;
     uint32_t s1, s2;
 
+    // A hangjelző a mérés alatt néma: a buzzer árama és az I²C-forgalom zavarná az ADC-t.
+    // Hamis riasztást tart fent a buzzer, ezért a mérés alatt ki kell kapcsolni.
+    // A hang kissé szaggatott lehet, mert a mérési ablakokban megszakad.
+    // Cserébe nem zavarja a mérést.
+    // A következő updateBeeper() hívás kapcsolja vissza a hangot.
+    beepOff();
+    delay(1);
+
     measure(s1, s2, CHANNEL); // impulzusmérés a megadott csatornán
 
     wdt_reset(); // watchdog reset a rendszer biztonsága érdekében
@@ -468,7 +476,8 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     }
 
     // Ha a jel előjelét már meghatároztuk, és az aktuális jel ellentétes előjelű, nullázzuk a kimeneti jelet.
-    if (st.signalPolarity != 0 && rawSig * st.signalPolarity < 0) {
+    // Középkereső módokban nincs visszaállás, és mindkét előjelnek hangot kell adnia.
+    if (st.signalPolarity != 0 && rawSig * st.signalPolarity < 0 && !isCenterFinderMode(st.mode)) {
         out.sig = 0;
     }
 
