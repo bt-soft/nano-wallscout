@@ -97,11 +97,14 @@ void drawCenter(const char *msg, float sig, float threshold, float peak, float r
         oled.setFont(u8g2_font_6x10_tr);
         const char *status = dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : (msg ? msg : centerStageLabel(stage)));
         if (!historyMode || dcFault || overload) {
-            oled.drawStr(0, 20, status);
+            oled.drawStr(historyMode ? 128 - oled.getStrWidth(status) : 0, 20, status);
         }
 
         int graphTop, graphBottom;
         if (historyMode) {
+            oled.setFont(u8g2_font_helvB12_tr);
+            dtostrf(sig, 1, 0, num);
+            oled.drawStr(0, 22, num);
             graphTop = 24;    // A grafikon teteje a sáv felett
             graphBottom = 63; // A grafikon alja a sáv felett
         } else {
