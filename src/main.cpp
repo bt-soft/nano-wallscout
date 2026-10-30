@@ -93,11 +93,11 @@ struct State {
     /** Igaz, ha a távolságtanító képernyő aktív; kérés esetén az aktuális jel lesz az 5 cm-es érték. */
     bool teachMode = false, teachRequest = false;
     uint32_t teachFailUntil = 0;
-    bool centerHistoryMode = false;
+    bool signalTimeMode = false;
 
-    /** Fix méretű gördülő amplitúdógrafikon a középkereső módhoz. */
-    int8_t centerHistory[GRAPH_HISTORY_SIZE] = {};
-    uint8_t centerHistoryCount = 0, centerHistoryNext = 0;
+    /** A Jel-Ido nézet gördülő amplitúdógrafikonja. */
+    int8_t signalTimeGraph[SIGNAL_TIME_GRAPH_SIZE] = {};
+    uint8_t signalTimeGraphCount = 0, signalTimeGraphNext = 0;
     CenterFinder centerFinder;
 
     /** A kalibráló- és nullázógomb lenyomásának kezdőideje. */
@@ -207,8 +207,8 @@ static void restartZeroing() {
     st.recoveryDiffAcc = 0;
     st.detOn = false;
     st.centerFinder.reset();
-    st.centerHistoryCount = 0;
-    st.centerHistoryNext = 0;
+    st.signalTimeGraphCount = 0;
+    st.signalTimeGraphNext = 0;
     st.teachMode = false;
     st.teachRequest = false;
 
@@ -235,7 +235,7 @@ static bool handleZeroButton(uint32_t now) {
         st.zeroLong = true;
         st.setupMode = true;
         st.centerMode = false;
-        st.centerHistoryMode = false;
+        st.signalTimeMode = false;
         st.best = 1e9f;
         restartZeroing();
         st.confirmUntil = now + 150;
@@ -287,7 +287,7 @@ static void handleCalButton(uint32_t now) {
         st.teachMode = !st.teachMode;
         st.teachRequest = false;
         st.centerMode = false;
-        st.centerHistoryMode = false;
+        st.signalTimeMode = false;
         st.flashUntil = 0;
         st.teachFailUntil = 0;
         st.confirmUntil = now + 150;
@@ -299,16 +299,16 @@ static void handleCalButton(uint32_t now) {
                 st.teachRequest = true;
             } else if (!st.centerMode) {
                 st.centerMode = true;
-                st.centerHistoryMode = false;
+                st.signalTimeMode = false;
                 st.centerFinder.reset();
-                st.centerHistoryCount = 0;
-                st.centerHistoryNext = 0;
+                st.signalTimeGraphCount = 0;
+                st.signalTimeGraphNext = 0;
                 st.flashUntil = 0;
-            } else if (!st.centerHistoryMode) {
-                st.centerHistoryMode = true;
+            } else if (!st.signalTimeMode) {
+                st.signalTimeMode = true;
             } else {
                 st.centerMode = false;
-                st.centerHistoryMode = false;
+                st.signalTimeMode = false;
             }
             st.confirmUntil = now + 150;
         }
@@ -648,13 +648,13 @@ void loop() {
                 st.confirmUntil = now + 150;
             }
 
-            const float historyScale = st.runTh * 4.0f;
-            int16_t historyValue = historyScale > 0 ? (int16_t)(fabsf(centerSig) * 32.0f / historyScale) : 0;
-            historyValue = constrain(historyValue, 0, 32);
-            st.centerHistory[st.centerHistoryNext] = (int8_t)historyValue;
-            st.centerHistoryNext = (st.centerHistoryNext + 1) % GRAPH_HISTORY_SIZE;
-            if (st.centerHistoryCount < GRAPH_HISTORY_SIZE) {
-                ++st.centerHistoryCount;
+            const float signalTimeScale = st.runTh * 4.0f;
+            int16_t signalTimeValue = signalTimeScale > 0 ? (int16_t)(fabsf(centerSig) * 32.0f / signalTimeScale) : 0;
+            signalTimeValue = constrain(signalTimeValue, 0, 32);
+            st.signalTimeGraph[st.signalTimeGraphNext] = (int8_t)signalTimeValue;
+            st.signalTimeGraphNext = (st.signalTimeGraphNext + 1) % SIGNAL_TIME_GRAPH_SIZE;
+            if (st.signalTimeGraphCount < SIGNAL_TIME_GRAPH_SIZE) {
+                ++st.signalTimeGraphCount;
             }
         }
     }
@@ -666,8 +666,8 @@ void loop() {
     } else if (st.teachMode && st.zeroCount >= ZERO_UPDATES) {
         drawTeach(out.msg, fabsf(m.diff - st.zero), st.runTh, m.vbat, m.overload);
     } else if (st.centerMode && st.zeroCount >= ZERO_UPDATES) {
-        drawCenter(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.centerHistoryMode, st.centerFinder.stage(), st.centerHistory,
-                   st.centerHistoryCount, st.centerHistoryNext);
+        drawCenterFinder(out.msg, m.diff - st.zero, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault,
+                         st.signalTimeMode, st.centerFinder.stage(), st.signalTimeGraph, st.signalTimeGraphCount, st.signalTimeGraphNext);
     } else {
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);
     }

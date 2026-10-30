@@ -59,13 +59,15 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
     oled.firstPage();
 
     do {
-        drawHeader("PI Scout", vbat);
+        drawHeader("Kereses", vbat);
         if (msg) {
             oled.setFont(u8g2_font_6x10_tr);
             oled.drawStr(0, 34, msg);
+
         } else if (overload) {
             oled.setFont(u8g2_font_10x20_tr);
             oled.drawStr(0, 36, "TULVEZERLES");
+
         } else {
             oled.setFont(u8g2_font_logisoso24_tn);
             oled.drawStr(0, 40, num);
@@ -81,6 +83,16 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
     } while (oled.nextPage());
 }
 
+/**
+ * @brief Kirajzolja a tanítási képernyőt a jel és a kalibrációs adatok alapján.
+ *
+ * @param msg Opcionális állapotüzenet; null értéknél a mérési adat jelenik meg.
+ * @param mag A jel abszolút értéke.
+ * @param threshold A tanítási küszöbérték.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ *
+ */
 void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload) {
     char num[10], dep[14] = "";
     dtostrf(mag, 1, 1, num);
@@ -94,7 +106,7 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
     oled.firstPage();
 
     do {
-        drawHeader("TANITAS 5cm", vbat);
+        drawHeader("Tanitas 5cm", vbat);
         oled.setFont(u8g2_font_6x10_tr);
         if (overload) {
             oled.drawStr(0, 20, "TULVEZERLES");
@@ -112,8 +124,25 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
     } while (oled.nextPage());
 }
 
-void drawCenter(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, bool historyMode, CenterStage stage, const int8_t *history, uint8_t historyCount,
-                uint8_t historyNext) {
+/**
+ * @brief Kirajzolja a középponti keresés képernyőt a jel, küszöbérték, csúcsérték és egyéb paraméterek alapján.
+ *
+ * @param msg Opcionális állapotüzenet.
+ * @param sig A jel abszolút értéke.
+ * @param threshold A középponti küszöbérték.
+ * @param peak A csúcsérték.
+ * @param returnPeak A visszatérési csúcsérték.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ * @param dcFault Igaz, ha DC hiba történt.
+ * @param signalTimeMode Igaz, ha a Jel-Ido grafikon látható.
+ * @param stage A középponti szakasz.
+ * @param signalTimeGraph Az időbeli grafikon mintáit tároló tömb.
+ * @param signalTimeGraphCount A grafikon aktuális mintaszáma.
+ * @param signalTimeGraphNext A következő grafikonminta helye.
+ */
+void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, bool signalTimeMode, CenterStage stage, const int8_t *signalTimeGraph,
+                      uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext) {
     char num[10], peakText[8], returnText[8];
     dtostrf(fabsf(sig), 1, 1, num);
     dtostrf(peak, 1, 1, peakText);
@@ -124,20 +153,28 @@ void drawCenter(const char *msg, float sig, float threshold, float peak, float r
     oled.firstPage();
 
     do {
-        drawHeader(historyMode ? "HISTORIKUS" : "CENTER SCAN", vbat);
+        drawHeader(signalTimeMode ? "Jel-Ido" : "Kozep keres", vbat);
         oled.setFont(u8g2_font_6x10_tr);
         const char *status = dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : (msg ? msg : centerStageLabel(stage)));
-        if (!historyMode || dcFault || overload) {
-            oled.drawStr(historyMode ? 128 - oled.getStrWidth(status) : 0, 20, status);
+        if (!signalTimeMode || dcFault || overload) {
+            oled.drawStr(signalTimeMode ? 128 - oled.getStrWidth(status) : 0, 20, status);
         }
 
         int graphTop, graphBottom;
-        if (historyMode) {
+
+        // A grafikon helyét a Jel-Ido vagy a középkereső nézet határozza meg.
+        if (signalTimeMode) {
             oled.setFont(u8g2_font_helvB12_tr);
-            dtostrf(sig, 1, 0, num);
+            dtostrf(sig, 1, 0, num); // Egész számra kerekítve konvertáljuk a számot sztringgé
+            // Ha a szám -0, akkor 0-ra cseréljük
+            if (strcmp(num, "-0") == 0) {
+                num[0] = '0';
+                num[1] = '\0';
+            }
             oled.drawStr(0, 22, num);
             graphTop = 24;    // A grafikon teteje a sáv felett
             graphBottom = 63; // A grafikon alja a sáv felett
+
         } else {
             oled.setFont(u8g2_font_logisoso24_tn);
             oled.drawStr(0, 42, num);
@@ -164,15 +201,15 @@ void drawCenter(const char *msg, float sig, float threshold, float peak, float r
         for (int x = 0; x < 128; x += 3) {
             oled.drawPixel(x, thresholdY);
         }
-        for (uint8_t i = 0; i < historyCount; ++i) {
-            const uint8_t index = historyCount < GRAPH_HISTORY_SIZE ? i : (historyNext + i) % GRAPH_HISTORY_SIZE;
-            const int x = 128 - historyCount * 4 + i * 4;
-            const int y = graphBottom - (int)history[index] * graphHeight / 32;
+        for (uint8_t i = 0; i < signalTimeGraphCount; ++i) {
+            const uint8_t index = signalTimeGraphCount < SIGNAL_TIME_GRAPH_SIZE ? i : (signalTimeGraphNext + i) % SIGNAL_TIME_GRAPH_SIZE;
+            const int x = 128 - signalTimeGraphCount * 4 + i * 4;
+            const int y = graphBottom - (int)signalTimeGraph[index] * graphHeight / 32;
             oled.drawPixel(x, y);
             if (i > 0) {
-                const uint8_t previous = historyCount < GRAPH_HISTORY_SIZE ? i - 1 : (historyNext + i - 1) % GRAPH_HISTORY_SIZE;
+                const uint8_t previous = signalTimeGraphCount < SIGNAL_TIME_GRAPH_SIZE ? i - 1 : (signalTimeGraphNext + i - 1) % SIGNAL_TIME_GRAPH_SIZE;
                 const int previousX = x - 4;
-                const int previousY = graphBottom - (int)history[previous] * graphHeight / 32;
+                const int previousY = graphBottom - (int)signalTimeGraph[previous] * graphHeight / 32;
                 oled.drawLine(previousX, previousY, x, y);
             }
         }

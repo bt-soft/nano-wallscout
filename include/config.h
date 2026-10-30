@@ -103,8 +103,8 @@ static const float CENTER_RETURN_MIN_TOLERANCE = 2.0f;
 /** @brief E feletti adaptív küszöbnél a középkereső zajos mérést jelez. Hangolása valós mérést igényel. */
 static const float CENTER_NOISY_THRESHOLD = 8.0f;
 
-/** @brief A középkereső gördülő előjeles jelgrafikonjának fix elemszáma. */
-static const uint8_t GRAPH_HISTORY_SIZE = 32;
+/** @brief A Jel-Ido nézet gördülő jelgrafikonjának rögzített mintaszáma. */
+static const uint8_t SIGNAL_TIME_GRAPH_SIZE = 32;
 
 /** @brief Az exponenciális simítás súlya normál üzemmódban. A kisebb érték lassabban követi a jelváltozásokat. */
 static const float SMOOTH_RUN = 0.5f;

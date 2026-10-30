@@ -81,7 +81,7 @@ A mód váltását rövid (150 ms-os), 3 kHz-es csipogás jelzi. A hosszú nyom�
 
 **Arduino D4 – KALIBRÁLÁS / KÖZÉPKERESŐ / `min` törlése**
 
-Normál kereső módban a D4 rövid megnyomásai a következő nézetek között léptetnek: normál keresés → élő `CENTER SCAN` → élő historikus grafikon → normál keresés. A historikus nézet tovább gyűjti a méréseket: az amplitúdó jobbról érkezik, a korábbi minták balra gördülnek, így a jel időbeli alakulása követhető. A grafikon a nullázott jel abszolút értékét mutatja; a szaggatott vízszintes vonal az adaptív küszöb. A hosszú nyomás a távolságtanító képernyőt nyitja meg (lásd lent). DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul.
+Normál kereső módban a D4 rövid megnyomásai a következő nézetek között léptetnek: normál keresés → élő `CENTER SCAN` → `Jel-Ido` grafikon → normál keresés. A grafikon folyamatosan gyűjti a méréseket: az amplitúdó jobbról érkezik, a korábbi minták balra gördülnek, így a jel erősségének időbeli alakulása követhető. A grafikon a nullázott jel abszolút értékét mutatja; a szaggatott vízszintes vonal az adaptív küszöb. A hosszú nyomás a távolságtanító képernyőt nyitja meg (lásd lent). DD beállító módban a D4 megnyomása törli a `min` értéket (eddigi legkisebb abszolút áthallás), és újra a következő mérésből indul.
 
 Középkereső módban a kijelző az előjeles, nullázott jelet, annak rövid gördülő grafikonját, a zajküszöböt, az első és a visszapásztázás során mért csúcsot mutatja. A firmware legalább két küszöb feletti mintával jelöltet keres, több csökkenő minta alapján becsül csúcsot, majd visszapásztázás után a két csúcserősséget hasonlítja össze. A `CSUCS MEGEROSITVE` csak ezt a jelerősség-egyezést jelenti: a mintasorszám nem pozíció, így a mód nem mér és nem jelöl ki pontos fizikai középvonalat. A visszapásztázás irányát nem nevezi meg.
 
@@ -114,7 +114,7 @@ Az induló értékek a `include/config.h` fájlban vannak; prototípuson, ismert
 | `CENTER_RETURN_TOLERANCE_FRACTION` | 0,35 | A két irányban mért csúcserősség megengedett relatív eltérése |
 | `CENTER_RETURN_MIN_TOLERANCE` | 2,0 | A csúcsegyezés minimális tűrése a zajküszöb többszörösében |
 | `CENTER_NOISY_THRESHOLD` | 8,0 | Ezen adaptív küszöb felett zajos mérés figyelmeztetés |
-| `CENTER_HISTORY_SIZE` | 32 | A gördülő grafikon rögzített mintaszáma |
+| `SIGNAL_TIME_GRAPH_SIZE` | 32 | A Jel-Ido grafikon rögzített mintaszáma |
 
 Kalibráláskor a kereső legyen levegőben, fémtől távol és a végleges mechanikai elrendezésben. Fém nélküli stabil, majd zajos környezetben ellenőrizd a soros `noise_th` értéket; a `CENTER_NOISY_THRESHOLD`-öt és a többi értéket csak ilyen mérések után módosítsd. Ezután tesztelj több ismert átmérőjű és mélységű betonvassal, mindkét pásztázási irányban és különböző kézi sebességgel. Jegyezd fel a megismételt csúcsok eltérését, a téves találatokat és a fel nem ismert célokat.
 

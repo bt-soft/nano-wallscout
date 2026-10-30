@@ -36,11 +36,11 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
 void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload);
 
 /**
- * @brief Megjeleníti a középkeresés állapotát és az előjeles jel rövid történetét.
+ * @brief Megjeleníti a középkereső állapotát vagy a Jel-Ido grafikonját.
  */
-void drawCenter(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat,
-                bool overload, bool dcFault, bool historyMode, CenterStage stage,
-                const int8_t *history, uint8_t historyCount, uint8_t historyNext);
+void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat,
+                      bool overload, bool dcFault, bool signalTimeMode, CenterStage stage,
+                      const int8_t *signalTimeGraph, uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext);
 
 /**
  * @brief Megjeleníti az áthallást és a telítési adatokat DD-beállító módban.
