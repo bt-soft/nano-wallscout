@@ -88,8 +88,8 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
             oled.drawStr(0, 34, msg);
 
         } else if (overload) {
-            oled.setFont(u8g2_font_10x20_tr);
-            oled.drawStr(0, 36, "TULVEZERLES");
+            oled.setFont(u8g2_font_6x10_tr);
+            oled.drawStr(0, 34, "TULVEZERLES");
 
         } else {
             oled.setFont(u8g2_font_logisoso24_tn);
@@ -297,8 +297,8 @@ void drawDDSetup(float diff, float best, float s1, bool overload, bool dcFault, 
     do {
         drawHeader(dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : "DD beallitas"), vbat);
 
-        oled.setFont(u8g2_font_10x20_tr);
-        oled.drawStr(0, 31, num);
+        oled.setFont(u8g2_font_helvB12_tn);
+        oled.drawStr(0, 30, num);
         oled.setFont(u8g2_font_6x10_tr);
 
         if (ok) {

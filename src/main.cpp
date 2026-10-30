@@ -9,8 +9,7 @@
 
 // A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
 // https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
-#define __DEBUG__
-#define __DEBUG_SERIAL_LOGGING__
+// #define __DEBUG__
 
 #include <Arduino.h>
 #include <avr/interrupt.h>
@@ -18,11 +17,6 @@
 #include <avr/sleep.h>
 #include <avr/wdt.h>
 #include <math.h>
-
-#if defined(__DEBUG__) && !defined(__DEBUG_SERIAL_LOGGING__)
-#include <app_api.h>
-#include <avr8-stub.h>
-#endif
 
 #include "beeper.h"
 #include "calibration.h"
@@ -523,6 +517,11 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
         st.baselineS2 += DRIFT_FOLLOW * (m.s2Mean - st.baselineS2);
         st.baselineDiff += DRIFT_FOLLOW * (m.rawDiff - st.baselineDiff);
     }
+    // Középkereső módban a nulla nem követi a driftet, ezért egy elmozdult alapvonal a hiszterézis-sávban
+    // (release..runTh) bent tartaná a találatot. Itt, csak ebben a sávban, lassan követjük a nullát.
+    if (isCenterFinderMode(st.mode) && st.detOn && out.mag < st.runTh) {
+        st.zero += (DRIFT_FOLLOW * 0.25f) * out.sig;
+    }
     if (!recovered) {
         st.detOn = out.mag >= (st.detOn ? DETECT_RELEASE_FRACTION * st.runTh : st.runTh);
     }
@@ -565,10 +564,11 @@ static void updateBeeper(uint16_t freq, uint32_t now) {
  * @param m Az aktuális mérési eredmény.
  * @param out Az üzemmód kimeneti adatai.
  */
-#if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
+#ifdef __DEBUG__
 static void logSerial(const Measurement &m, const Outcome &out) {
 
-    Serial.print(st.mode == OperatingMode::DD_SETUP ? F("setup") : (isCenterFinderMode(st.mode) ? F("center") : F("run")));
+    // Üzemmód: S=DD-beállító, T=Jel-Ido, C=középkereső, R=normál.
+    Serial.print(st.mode == OperatingMode::DD_SETUP ? 'S' : (st.mode == OperatingMode::SIGNAL_TIME ? 'T' : (isCenterFinderMode(st.mode) ? 'C' : 'R')));
     if (st.mode == OperatingMode::DD_SETUP) {
         Serial.print(F(" ch=A"));
         Serial.print(CHANNEL);
@@ -577,7 +577,7 @@ static void logSerial(const Measurement &m, const Outcome &out) {
     Serial.print(F(" diff=")); // Különbség a mérés és a nulla között
     Serial.print(m.diff, 2);
 
-    Serial.print(F(" raw_diff="));
+    Serial.print(F(" raw=")); // Nyers, nem simított különbség
     Serial.print(m.rawDiff, 2);
 
     Serial.print(F(" s1=")); // S1 mérés átlagértéke, a kikapcsolás után 60 µs-mal. Ekkor a tárgy örvényárama még jelen van.
@@ -599,20 +599,12 @@ static void logSerial(const Measurement &m, const Outcome &out) {
     Serial.print(m.vbat, 2);
 
     if (isCenterFinderMode(st.mode)) {
-        Serial.print(F(" center_sig="));
-        Serial.print(m.diff - st.zero, 2);
-        Serial.print(F(" noise_th="));
+        Serial.print(F(" th="));
         Serial.print(st.runTh, 2);
-        Serial.print(F(" center_state="));
-        Serial.print(centerStageLabel(st.centerFinder.stage()));
-        Serial.print(F(" peak="));
+        Serial.print(F(" pk="));
         Serial.print(st.centerFinder.peakMagnitude(), 2);
-        Serial.print(F(" return_peak="));
+        Serial.print(F(" rp="));
         Serial.print(st.centerFinder.returnMagnitude(), 2);
-        Serial.print(F(" peak_sample="));
-        Serial.print(st.centerFinder.peakSample());
-        Serial.print(F(" return_sample="));
-        Serial.print(st.centerFinder.returnSample());
     }
 
     Serial.println();
@@ -687,11 +679,7 @@ static void enterDeepSleep() {
 void setup() {
 
 #ifdef __DEBUG__
-#ifdef __DEBUG_SERIAL_LOGGING__
     Serial.begin(115200);
-#else
-    debug_init();
-#endif
 #endif
 
     sensorInit();  // érzékelő inicializálása
@@ -783,7 +771,7 @@ void loop() {
         drawNormal(out.msg, out.mag, m.vbat, m.overload, out.det);
     }
 
-#if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
+#ifdef __DEBUG__
     // 500 milliszekundumonként naplózzuk a soros porton.
     static long lastLog = 0;
     if (timeHasPassed(lastLog, 500)) {
