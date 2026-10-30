@@ -289,6 +289,7 @@ static void handleCalButton(uint32_t now) {
 
     const bool ready = st.mode != OperatingMode::DD_SETUP && st.zeroCount >= ZERO_UPDATES;
 
+    // Ha a kalibrálógomb hosszú megnyomásra került, lépjünk be vagy ki a tanító módba.
     if (g_calSeen && st.calPressStart && !st.calDone && ready && now - st.calPressStart >= LONG_PRESS_MS) {
         st.calDone = true;
         st.mode = st.mode == OperatingMode::TEACH ? OperatingMode::SEARCH : OperatingMode::TEACH;
@@ -298,6 +299,7 @@ static void handleCalButton(uint32_t now) {
         st.confirmUntil = now + 150;
     }
 
+    // Ha a kalibrálógomb rövid megnyomásra került, kezeljük a módváltást vagy a rögzítést.
     if (!g_calSeen && st.calPressStart) {
         if (!st.calDone && ready && now - st.calPressStart < LONG_PRESS_MS) {
             if (st.mode == OperatingMode::TEACH) {
@@ -396,6 +398,7 @@ static void runZeroing(const Measurement &m, Outcome &out) {
         st.runTh = max(DETECT_TH, NOISE_TH_FACTOR * sqrtf(max(var, 0.0f)));
         st.detOn = false;
     }
+
     out.msg = "Nullazas - legben!";
 }
 
@@ -408,6 +411,8 @@ static void runZeroing(const Measurement &m, Outcome &out) {
  *
  */
 static void handleCalibration(const Measurement &m, uint32_t now, Outcome &out) {
+
+    // Ha nem tanító módban vagyunk, kilépünk.
     if (st.mode != OperatingMode::TEACH) {
         return;
     }
@@ -415,6 +420,7 @@ static void handleCalibration(const Measurement &m, uint32_t now, Outcome &out) 
     // A tanítás a nyers jelből dolgozik, hogy az előjelzár ne befolyásolja.
     const float teachMag = fabsf(m.diff - st.zero);
 
+    // Ha a tanító mód aktiválva lett, ellenőrizzük a feltételeket.
     if (st.teachRequest) {
         st.teachRequest = false;
         if (!m.overload && teachMag >= st.runTh) {
@@ -428,6 +434,7 @@ static void handleCalibration(const Measurement &m, uint32_t now, Outcome &out) 
         }
     }
 
+    // Ha a tanító mód sikeres volt, jelenítsük meg a rögzítés üzenetét.
     if (now < st.flashUntil) {
         out.msg = "Rogzitve: 5 cm";
     } else if (now < st.teachFailUntil) {
@@ -457,10 +464,12 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
         st.recoveryDiffAcc = 0;
     }
 
+    // Ha a jel előjelét már meghatároztuk, és az aktuális jel ellentétes előjelű, nullázzuk a kimeneti jelet.
     if (st.signalPolarity != 0 && rawSig * st.signalPolarity < 0) {
         out.sig = 0;
     }
 
+    // Ha a jel előjelét a stabil alapvonal-visszatérésig megtartottuk, ellenőrizzük a visszaállást.
     bool recovered = false;
     if (st.recoveryActive && !isCenterFinderMode(st.mode)) {
         const float channelTolerance = max(2.0f, 2.0f * st.runTh);
@@ -471,6 +480,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
             st.recoveryS1Acc += m.s1Mean;
             st.recoveryS2Acc += m.s2Mean;
             st.recoveryDiffAcc += m.rawDiff;
+            // Növeljük a visszaállás számlálót, ha még nem értük el a stabil minták számát.
             if (st.recoveryCount < RECOVERY_STABLE_SAMPLES) {
                 ++st.recoveryCount;
             }
@@ -481,6 +491,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
             st.recoveryDiffAcc = 0;
         }
 
+        // Ha a visszaállás számláló elérte a stabil minták számát, frissítjük az alapvonalat.
         if (st.recoveryCount >= RECOVERY_STABLE_SAMPLES) {
             const float sampleCount = (float)st.recoveryCount;
             st.baselineS1 = st.recoveryS1Acc / sampleCount;
@@ -500,6 +511,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
         }
     }
 
+    // Ha a visszaállás nem történt meg, frissítjük az alapvonalat a jel driftje alapján.
     out.mag = fabsf(out.sig);
     if (!isCenterFinderMode(st.mode) && st.mode != OperatingMode::TEACH && !st.recoveryActive && !recovered && out.mag < st.runTh) {
         st.zero += DRIFT_FOLLOW * out.sig;
@@ -516,6 +528,7 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
     // Kezeljük a kalibrációt, ha szükséges.
     handleCalibration(m, now, out);
 
+    // Ha a detektor aktív, számítsuk ki a hangfrekvenciát a jel nagysága alapján.
     if (out.det) {
         // Kiszámítjuk a hangfrekvenciát a jel nagysága alapján.
         out.freq = 800 + (uint16_t)(constrain(out.mag / calFullScale(), 0.0f, 1.0f) * 2200);
@@ -524,9 +537,10 @@ static void runDetect(const Measurement &m, uint32_t now, Outcome &out) {
 
 /**
  * @brief Frissíti a hangjelző állapotát és frekvenciáját.
+ *
  * @param freq A kért hangfrekvencia hertzben; nulla esetén a hangjelző kikapcsol.
  * @param now Az aktuális idő milliszekundumban.
- *
+ * @note A hangjelző frekvenciáját a detektor kimeneti állapota és a jel nagysága alapján számítjuk ki.
  */
 static void updateBeeper(uint16_t freq, uint32_t now) {
 
@@ -543,9 +557,9 @@ static void updateBeeper(uint16_t freq, uint32_t now) {
 
 /**
  * @brief Kiírja a mérési eredményeket a soros portra.
+ *
  * @param m Az aktuális mérési eredmény.
  * @param out Az üzemmód kimeneti adatai.
- *
  */
 #if defined(__DEBUG__) && defined(__DEBUG_SERIAL_LOGGING__)
 static void logSerial(const Measurement &m, const Outcome &out) {
@@ -650,6 +664,7 @@ void loop() {
     } else {
         runDetect(m, now, out); // Egyébként a detektálási üzemmódot.
 
+        // Ha középkereső módban vagyunk, frissítjük a középkereső állapotát.
         if (isCenterFinderMode(st.mode)) {
             const float centerSig = m.diff - st.zero;
             const bool newlyLocked = st.centerFinder.update(fabsf(centerSig), st.runTh, !m.overload && !m.dcFault, now);
