@@ -163,7 +163,7 @@ static bool handleZeroButton(uint32_t now) {
     if (g_zeroSeen && st.mode != OperatingMode::DD_SETUP && !st.zeroLong && now - st.zeroPressStart > LONG_PRESS_MS) {
         st.zeroLong = true;
         st.mode = OperatingMode::DD_SETUP;
-        st.best = 1e9f;
+        st.best = FLT_MAX;
         restartZeroing();
         st.confirmUntil = now + 150;
         return true;
@@ -201,11 +201,12 @@ static bool handleZeroButton(uint32_t now) {
  */
 static void handleCalButton(uint32_t now) {
 
+    // Ha a gombot most láttuk először nyomva, rögzítsük az időpontot.
     if (g_calSeen && !st.calPressStart) {
         st.calPressStart = now;
         st.calDone = false;
         if (st.mode == OperatingMode::DD_SETUP) {
-            st.best = 1e9f; // A minimum érték inicializálása a beállító módban.
+            st.best = FLT_MAX; // A minimum érték inicializálása a beállító módban.
         }
     }
 

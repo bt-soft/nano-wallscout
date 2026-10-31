@@ -1,5 +1,6 @@
 #pragma once
 
+#include <float.h>
 #include <stdint.h>
 
 #include "config.h"
@@ -94,7 +95,7 @@ struct State {
     bool detOn = false;
 
     /** A DD-beállító módban eddig mért legkisebb abszolút áthallás. */
-    float best = 1e9f;
+    float best = FLT_MAX;
 
     /** Az exponenciálisan simított mérési érték és annak csatornája. */
     float smooth = 0;

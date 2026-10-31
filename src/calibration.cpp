@@ -1,4 +1,5 @@
 #include <EEPROM.h>
+#include <float.h>
 #include <math.h>
 
 #include "calibration.h"
@@ -17,7 +18,7 @@ void calLoad() {
     EEPROM.get(0, g_calK); // Betölti a kalibrációs állandót az EEPROM-ból.
 
     // Ellenőrzi, hogy a kalibrációs állandó érvényes tartományban van-e.
-    if (!(g_calK > 0 && g_calK < 1e9f)) {
+    if (!(g_calK > 0 && g_calK < FLT_MAX)) {
         g_calK = 0; // Érvénytelen érték esetén alaphelyzetbe állítja a kalibrációt.
     }
 }
