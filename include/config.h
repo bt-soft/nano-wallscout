@@ -6,6 +6,21 @@
 #include <Arduino.h>
 
 /**
+ * @brief Engedélyezi a soros naplózást és a hibakeresést.
+ *
+ *  A Soros naplózás és az AVR8-stub hibakeresés együtt nem használható!!
+ *  https://docs.platformio.org/en/stable/plus/debug-tools/avr-stub.html
+ */
+// #define __DEBUG__
+
+/**
+ * @brief Középkereső képernyő fordítása
+ *
+ * Ezt kikapcsolva a kód nem kerül a firmware-be
+ */
+// #define ENABLE_CENTER_FINDER_SCREEN
+
+/**
  * @brief Az Arduino Nano lábkiosztása a kapcsolási rajz szerint.
  *
  * D4: kalibrálógomb;
@@ -71,10 +86,7 @@ static const uint16_t ZERO_UPDATES = 15;
 static const uint32_t LONG_PRESS_MS = 1000;
 
 /** @brief A nullpont lassú követésének súlya küszöb alatti jelnél. */
-static const float DRIFT_FOLLOW = 0.04f;
-
-/** @brief Ennyi egymást követő alapvonal-közeli mérés kell a találat utáni visszaálláshoz. */
-static const uint8_t RECOVERY_STABLE_SAMPLES = 8;
+static const float DRIFT_FOLLOW = 0.02f;
 
 /** @brief Ennyi egymást követő küszöb feletti mérés kell a jelölt megerősítéséhez. */
 static const uint8_t CENTER_CONFIRM_SAMPLES = 2;
@@ -127,7 +139,14 @@ static const uint16_t IDLE_HIGH = 900;
 /** @brief A DC-hiba alsó ADC-küszöbe. */
 static const uint16_t IDLE_LOW = 120;
 
-/** @brief Bekapcsolja vagy kikapcsolja a hardveres watchdog használatát.
+/**
+ * @brief A mérőjel ADC-csatornája; a beállító mód is ezt a jelutat használja.
+ */
+static const uint8_t CHANNEL = 0;
+
+/**
+ * @brief Bekapcsolja vagy kikapcsolja a hardveres watchdog használatát.
+ *
  * A watchdog a rendszer lefagyása esetén újraindítja a kütyüt
  */
 #define USE_WATCHDOG 1

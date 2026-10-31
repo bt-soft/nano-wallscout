@@ -3,6 +3,8 @@
 #include "center_finder.h"
 #include "config.h"
 
+#if ENABLE_CENTER_FINDER_SCREEN
+
 /**
  * @file center_finder.cpp
  * @brief Középkereső implementációja.
@@ -254,3 +256,5 @@ const char *centerStageLabel(CenterStage stage) {
 
     return "KERES";
 }
+
+#endif // ENABLE_CENTER_FINDER_SCREEN

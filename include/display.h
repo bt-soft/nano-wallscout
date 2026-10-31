@@ -5,8 +5,11 @@
 
 #include <Arduino.h>
 
+#include "config.h"
+#include "signal_graph.h"
+#if ENABLE_CENTER_FINDER_SCREEN
 #include "center_finder.h"
-#include "operating_mode.h"
+#endif
 
 /**
  * @brief Inicializálja az I²C-kapcsolatot és az OLED-kijelzőt.
@@ -44,10 +47,16 @@ void drawNormal(const char *msg, float mag, float vbat, bool overload, bool det)
 void drawTeach(const char *msg, float mag, float threshold, float vbat, bool overload, int8_t orient);
 
 /**
- * @brief Megjeleníti a középkereső állapotát vagy a Jel-Ido grafikonját.
+ * @brief Megjeleníti a Jel-Ido képernyőt: az előjeles jelet, a vas helyzetét és a gördülő grafikont.
  */
-void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, OperatingMode mode,
-                      CenterStage stage, const int8_t *signalTimeGraph, uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext);
+void drawSignalTime(float sig, float threshold, float vbat, bool overload, bool dcFault, const SignalGraph &graph);
+
+#if ENABLE_CENTER_FINDER_SCREEN
+/**
+ * @brief Megjeleníti a középkereső állapotát, a csúcs- és visszatérési értéket és a grafikont.
+ */
+void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, CenterStage stage, const SignalGraph &graph);
+#endif
 
 /**
  * @brief Megjeleníti az áthallást és a telítési adatokat DD-beállító módban.

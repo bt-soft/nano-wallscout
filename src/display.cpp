@@ -152,106 +152,134 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
 }
 
 /**
- * @brief Kirajzolja a középponti keresés képernyőt a jel, küszöbérték, csúcsérték és egyéb paraméterek alapján.
+ * @brief Kirajzolja a gördülő jelgrafikont és a pöttyözött küszöbvonalat.
+ *
+ * @param graph A kirajzolandó minták.
+ * @param top A grafikon területének teteje (pixel).
+ * @param bottom A grafikon alapvonala (pixel).
+ */
+static void drawGraph(const SignalGraph &graph, int top, int bottom) {
+    oled.drawHLine(0, bottom, 128);
+
+    const int height = bottom - top;
+
+    // Pöttyözött küszöbvonal
+    const int thresholdY = bottom - height / 4;
+    for (int x = 0; x < 128; x += 3) {
+        oled.drawPixel(x, thresholdY);
+    }
+
+    int prevX = 0, prevY = 0;
+    for (uint8_t i = 0; i < graph.count; ++i) {
+        const int x = 128 - graph.count * 4 + i * 4;
+        const int y = bottom - (int)graph.at(i) * height / 32;
+        oled.drawPixel(x, y);
+        if (i > 0) {
+            oled.drawLine(prevX, prevY, x, y);
+        }
+        prevX = x;
+        prevY = y;
+    }
+}
+
+/**
+ * @brief A vas helyzete a jel előjele alapján; 0, ha hiba van vagy a jel a küszöb alatt marad.
+ *
+ * @param sig Az előjeles jel.
+ * @param threshold A detektálási küszöbérték.
+ * @param fault Igaz, ha hiba történt (DC hiba vagy túlvezérlés).
+ *
+ * @return A vas helyzete: 0, ha hiba van vagy a jel a küszöb alatt marad; 1, ha a jel pozitív; -1, ha a jel negatív.
+ */
+static int8_t orientOf(float sig, float threshold, bool fault) { return (fault || fabsf(sig) < threshold) ? 0 : (sig > 0 ? 1 : -1); }
+
+/**
+ * @brief Kirajzolja a Jel-Ido képernyőt: az előjeles jelet, a vas helyzetét és a gördülő grafikont.
+ *
+ * @param sig Az előjeles, nullázott jel.
+ * @param threshold A detektálási küszöbérték.
+ * @param vbat Az akkumulátor feszültsége voltban.
+ * @param overload Igaz, ha az erősítő túlvezérlésben van.
+ * @param dcFault Igaz, ha DC hiba történt.
+ * @param graph A grafikon mintái.
+ */
+void drawSignalTime(float sig, float threshold, float vbat, bool overload, bool dcFault, const SignalGraph &graph) {
+    char num[10];
+    dtostrf(sig, 1, 0, num); // Egész számra kerekítve
+    if (strcmp(num, "-0") == 0) {
+        num[0] = '0';
+        num[1] = '\0';
+    }
+
+    const bool fault = dcFault || overload;
+    const char *status = dcFault ? "DC HIBA!" : "TULVEZERLES";
+
+    oled.firstPage();
+
+    do {
+        drawHeader("Jel-Ido", vbat);
+        if (fault) {
+            oled.setFont(u8g2_font_6x10_tr);
+            oled.drawStr(128 - oled.getStrWidth(status), 20, status);
+        }
+        oled.setFont(u8g2_font_helvB12_tn);
+        oled.drawStr(0, 22, num);
+        drawOrientation(116, 14, orientOf(sig, threshold, fault));
+        drawGraph(graph, 24, 63);
+    } while (oled.nextPage());
+}
+
+#if ENABLE_CENTER_FINDER_SCREEN
+/**
+ * @brief Kirajzolja a középkereső képernyőt: a jelet, a csúcs- és visszatérési értéket, a kitérés-sávot és a grafikont.
  *
  * @param msg Opcionális állapotüzenet.
- * @param sig A jel abszolút értéke.
- * @param threshold A középponti küszöbérték.
+ * @param sig Az előjeles, nullázott jel.
+ * @param threshold A detektálási küszöbérték.
  * @param peak A csúcsérték.
  * @param returnPeak A visszatérési csúcsérték.
  * @param vbat Az akkumulátor feszültsége voltban.
  * @param overload Igaz, ha az erősítő túlvezérlésben van.
  * @param dcFault Igaz, ha DC hiba történt.
- * @param mode Az aktuális középkereső vagy Jel-Ido üzemmód.
- * @param stage A középponti szakasz.
- * @param signalTimeGraph Az időbeli grafikon mintáit tároló tömb.
- * @param signalTimeGraphCount A grafikon aktuális mintaszáma.
- * @param signalTimeGraphNext A következő grafikonminta helye.
+ * @param stage A középkereső aktuális szakasza.
+ * @param graph A grafikon mintái.
  */
-void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, OperatingMode mode, CenterStage stage, const int8_t *signalTimeGraph,
-                      uint8_t signalTimeGraphCount, uint8_t signalTimeGraphNext) {
+void drawCenterFinder(const char *msg, float sig, float threshold, float peak, float returnPeak, float vbat, bool overload, bool dcFault, CenterStage stage, const SignalGraph &graph) {
     char num[10], peakText[8], returnText[8];
     dtostrf(fabsf(sig), 1, 1, num);
     dtostrf(peak, 1, 1, peakText);
     dtostrf(returnPeak, 1, 1, returnText);
 
     const int half = (int)(constrain(sig / (threshold * 4.0f), -1.0f, 1.0f) * 58.0f);
+    const char *status = dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : (msg ? msg : centerStageLabel(stage)));
 
     oled.firstPage();
 
     do {
-        drawHeader(mode == OperatingMode::SIGNAL_TIME ? "Jel-Ido" : "Kozep keres", vbat);
+        drawHeader("Kozep keres", vbat);
         oled.setFont(u8g2_font_6x10_tr);
-        const char *status = dcFault ? "DC HIBA!" : (overload ? "TULVEZERLES" : (msg ? msg : centerStageLabel(stage)));
-        if (mode != OperatingMode::SIGNAL_TIME || dcFault || overload) {
-            oled.drawStr(mode == OperatingMode::SIGNAL_TIME ? 128 - oled.getStrWidth(status) : 0, 20, status);
-        }
+        oled.drawStr(0, 20, status);
+        drawOrientation(116, 14, orientOf(sig, threshold, dcFault || overload));
 
-        const int8_t orient = (dcFault || overload || fabsf(sig) < threshold) ? 0 : (sig > 0 ? 1 : -1);
-        int graphTop, graphBottom;
+        oled.setFont(u8g2_font_logisoso24_tn);
+        oled.drawStr(0, 42, num);
+        oled.setFont(u8g2_font_6x10_tr);
+        oled.drawStr(75, 30, "P:");
+        oled.drawStr(88, 30, peakText);
+        oled.drawStr(75, 41, "R:");
+        oled.drawStr(88, 41, returnText);
 
-        // A grafikon helyét a Jel-Ido vagy a középkereső nézet határozza meg.
-        if (mode == OperatingMode::SIGNAL_TIME) {
-            oled.setFont(u8g2_font_helvB12_tn);
-            dtostrf(sig, 1, 0, num); // Egész számra kerekítve konvertáljuk a számot sztringgé
-            // Ha a szám -0, akkor 0-ra cseréljük
-            if (strcmp(num, "-0") == 0) {
-                num[0] = '0';
-                num[1] = '\0';
-            }
-            oled.drawStr(0, 22, num);
-            drawOrientation(116, 14, orient);
-            graphTop = 24;     // A grafikon teteje a sáv felett
-            graphBottom = 63; // A grafikon alja a sáv felett
-
+        oled.drawFrame(2, 45, 124, 6);
+        oled.drawVLine(63, 44, 8);
+        if (half >= 0) {
+            oled.drawBox(64, 46, half, 4);
         } else {
-            oled.setFont(u8g2_font_logisoso24_tn);
-            oled.drawStr(0, 42, num);
-            oled.setFont(u8g2_font_6x10_tr);
-            oled.drawStr(75, 30, "P:");
-            oled.drawStr(88, 30, peakText);
-            oled.drawStr(75, 41, "R:");
-            oled.drawStr(88, 41, returnText);
-            drawOrientation(116, 14, orient);
-
-            oled.drawFrame(2, 45, 124, 6);
-            oled.drawVLine(63, 44, 8);
-            if (half >= 0) {
-                oled.drawBox(64, 46, half, 4);
-            } else {
-                oled.drawBox(64 + half, 46, -half, 4);
-            }
-            graphTop = 53;    // A grafikon teteje a sáv alatt
-            graphBottom = 63; // A grafikon alja a sáv alatt
+            oled.drawBox(64 + half, 46, -half, 4);
         }
-
-        // Grafikon kirajzolása
-        oled.drawHLine(0, graphBottom, 128);
-
-        // Grafikon aljának pozíciója
-        const int graphHeight = graphBottom - graphTop;
-
-        // Pöttyözött küszöbvonal rajzolása
-        const int thresholdY = graphBottom - graphHeight / 4;
-        for (int x = 0; x < 128; x += 3) {
-            oled.drawPixel(x, thresholdY);
-        }
-
-        // Grafikon kirajzolása a jelértékek alapján
-        for (uint8_t i = 0; i < signalTimeGraphCount; ++i) {
-            const uint8_t index = signalTimeGraphCount < SIGNAL_TIME_GRAPH_SIZE ? i : (signalTimeGraphNext + i) % SIGNAL_TIME_GRAPH_SIZE;
-            const int x = 128 - signalTimeGraphCount * 4 + i * 4;
-            const int y = graphBottom - (int)signalTimeGraph[index] * graphHeight / 32;
-            oled.drawPixel(x, y);
-            if (i > 0) {
-                const uint8_t previous = signalTimeGraphCount < SIGNAL_TIME_GRAPH_SIZE ? i - 1 : (signalTimeGraphNext + i - 1) % SIGNAL_TIME_GRAPH_SIZE;
-                const int previousX = x - 4;
-                const int previousY = graphBottom - (int)signalTimeGraph[previous] * graphHeight / 32;
-                oled.drawLine(previousX, previousY, x, y);
-            }
-        }
+        drawGraph(graph, 53, 63);
     } while (oled.nextPage());
 }
+#endif // ENABLE_CENTER_FINDER_SCREEN
 
 /**
  * @brief A DD-beállító áthallásának logaritmikus aránya a teljes skálához képest.
@@ -264,7 +292,7 @@ float setupFraction(float a) {
 }
 
 /**
- * @brief Kirajzolja a DD-beállító képernyőt és az előjeles áthallásmérőt.
+ * @brief A DD-beállító képernyőt és az előjeles áthallásmérőt rajzolja ki.
  *
  * @param diff Az S1 és S2 minták előjeles különbsége.
  * @param best Az eddig mért legkisebb abszolút áthallás.
