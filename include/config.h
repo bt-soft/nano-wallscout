@@ -147,9 +147,9 @@ static const uint8_t CHANNEL = 0;
 /**
  * @brief Bekapcsolja vagy kikapcsolja a hardveres watchdog használatát.
  *
- * A watchdog a rendszer lefagyása esetén újraindítja a kütyüt
+ * A watchdog a rendszer lefagyása esetén újraindítja a kütyüt.
  */
 #define USE_WATCHDOG 1
 
-/** Ennyi inaktivitás (ms) után a műszer mély alvó módba kapcsol (5 perc). */
-#define IDLE_SLEEP_MS (1000UL * 60UL * 5UL)
+/** Ennyi inaktivitás (ms) után a kütyü alvó módba kapcsol  */
+#define IDLE_SLEEP_MS (1000UL * 60UL * 5UL) // 5 perc
