@@ -242,7 +242,7 @@ void drawSignalTime(float sig, float threshold, float vbat, bool overload, bool 
     } while (oled.nextPage());
 }
 
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
 /**
  * @brief Kirajzolja a középkereső képernyőt: a jelet, a csúcs- és visszatérési értéket, a kitérés-sávot és a grafikont.
  *

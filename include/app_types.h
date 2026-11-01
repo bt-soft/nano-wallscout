@@ -6,7 +6,7 @@
 #include "config.h"
 #include "operating_mode.h"
 #include "signal_graph.h"
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
 #include "center_finder.h"
 #endif
 
@@ -71,7 +71,7 @@ struct State {
 
     /** A Jel-Ido és a középkereső nézet gördülő amplitúdógrafikonja. */
     SignalGraph graph;
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
     CenterFinder centerFinder;
 #endif
 

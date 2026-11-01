@@ -3,7 +3,7 @@
 #include "center_finder.h"
 #include "config.h"
 
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
 
 /**
  * @file center_finder.cpp

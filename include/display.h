@@ -7,7 +7,7 @@
 
 #include "config.h"
 #include "signal_graph.h"
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
 #include "center_finder.h"
 #endif
 
@@ -56,7 +56,7 @@ void drawTeach(const char *msg, float mag, float threshold, float vbat, bool ove
  */
 void drawSignalTime(float sig, float threshold, float vbat, bool overload, bool dcFault, const SignalGraph &graph);
 
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
 /**
  * @brief Megjeleníti a középkereső állapotát, a csúcs- és visszatérési értéket és a grafikont.
  */

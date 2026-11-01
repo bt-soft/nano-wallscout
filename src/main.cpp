@@ -48,7 +48,7 @@ static bool isGraphMode(OperatingMode mode) { return mode == OperatingMode::CENT
  */
 static OperatingMode nextScreen(OperatingMode mode) {
     switch (mode) {
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
         case OperatingMode::SEARCH:
             return OperatingMode::CENTER_FINDER;
         case OperatingMode::CENTER_FINDER:
@@ -67,7 +67,7 @@ static OperatingMode nextScreen(OperatingMode mode) {
  */
 static void resetGraphs() {
     st.graph.reset();
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
     st.centerFinder.reset();
 #endif
 }
@@ -384,7 +384,7 @@ static void updateGraphs(const Measurement &m, const Outcome &out, uint32_t now)
         return;
     }
 
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
     if (st.centerFinder.update(out.mag, st.runTh, !m.overload && !m.dcFault, now)) {
         st.confirmUntil = now + 150; // Új középpont: hangjelzés
     }
@@ -475,7 +475,7 @@ static void render(const Measurement &m, const Outcome &out) {
             case OperatingMode::TEACH:
                 drawTeach(out.msg, out.mag, st.runTh, m.vbat, m.overload, out.sig < 0 ? -1 : 1);
                 return;
-#if ENABLE_CENTER_FINDER_SCREEN
+#ifdef ENABLE_CENTER_FINDER_SCREEN
             case OperatingMode::CENTER_FINDER:
                 drawCenterFinder(out.msg, out.sig, st.runTh, st.centerFinder.peakMagnitude(), st.centerFinder.returnMagnitude(), m.vbat, m.overload, m.dcFault, st.centerFinder.stage(), st.graph);
                 return;
