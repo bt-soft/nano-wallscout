@@ -7,3 +7,5 @@
 **/*.kicad-pro.lck
 **/*.kicad-sch.lck
 **/*.kicad-pcb.lck
+
+blog

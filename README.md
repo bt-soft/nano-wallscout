@@ -14,7 +14,7 @@
  *Az értékek a tesztelési körülményektől, a tekercs geometriájától és a beállításoktól függnek.
 
 
-## Az induction balance működési elve
+## Az impulzusindukció működési elve
 A kereső két tekercset használ: egy **adó (TX)** és egy **vevő (RX)** tekercset. A [tekercsek D alakúak](https://abl.gtu.edu.tr/dosya/102/~saksoy/Metal%20Detectors/1%20GENERAL%20OVERVIEW/2%20OPERATIONAL%20PRINCIPLES/2.1%20ANTENNAS.pdf), és az egyenes oldalaikkal részben egymásra vannak csúsztatva (DD elrendezés). Az alábbiak a működés fizikai alapjait foglalják össze.
 
 ### Az adóimpulzus és a mágneses tér

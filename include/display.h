@@ -18,6 +18,11 @@
 void displayInit();
 
 /**
+ * @brief Kirajzolja az indulási bannert (keret és "Nano WallScout" felirat).
+ */
+void drawBanner();
+
+/**
  * @brief Kikapcsolja az OLED-et (power save), és leállítja az I²C-buszt.
  * Ébresztéskor a displayInit() újra inicializálja.
  */

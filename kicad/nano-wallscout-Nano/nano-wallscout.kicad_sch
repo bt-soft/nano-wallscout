@@ -6135,7 +6135,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "11ca2376-893c-43de-ab78-3370830752a7")
-		(property "Reference" "SW2"
+		(property "Reference" "SW1"
 			(at 27.686 85.344 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6145,7 +6145,7 @@
 				)
 			)
 		)
-		(property "Value" "Nullázás"
+		(property "Value" "Kalibrálás"
 			(at 41.402 85.598 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6197,7 +6197,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "SW2")
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -7349,83 +7349,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+5V")
-		(at 31.75 121.92 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "4f100a00-b073-4c3f-ab4c-0919279f2f7c")
-		(property "Reference" "#PWR02"
-			(at 31.75 125.73 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+5V"
-			(at 28.194 119.888 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 31.75 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 31.75 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 31.75 121.92 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "ea82a7e2-42f4-4639-9a51-df6d766f4aa8")
-		)
-		(instances
-			(project "nano-wallscout"
-				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "#PWR02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Amplifier_Operational:MCP6004")
 		(at 116.84 92.71 0)
 		(mirror y)
@@ -8158,7 +8081,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "150"
+		(property "Value" "390"
 			(at 25.908 128.27 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9892,7 +9815,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "c4ecf2bd-b79c-4068-b481-93b44f7cde02")
-		(property "Reference" "SW1"
+		(property "Reference" "SW2"
 			(at 27.686 91.948 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9902,7 +9825,7 @@
 				)
 			)
 		)
-		(property "Value" "Kalibrálás"
+		(property "Value" "Nullázás"
 			(at 40.386 92.202 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9954,7 +9877,7 @@
 		(instances
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
-					(reference "SW1")
+					(reference "SW2")
 					(unit 1)
 				)
 			)
@@ -10520,6 +10443,85 @@
 			(project "nano-wallscout"
 				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
 					(reference "#PWR09")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+BATT")
+		(at 31.75 121.92 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "db291558-7bee-44c1-9348-542e352ec014")
+		(property "Reference" "#PWR030"
+			(at 31.75 125.73 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+BATT"
+			(at 34.29 120.6499 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+BATT\""
+			(at 31.75 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c4b45500-69bb-4b97-bc9e-3d5810c9cf9d")
+		)
+		(instances
+			(project "nano-wallscout"
+				(path "/0d35483a-0b12-46cc-b9f2-896fd6831779"
+					(reference "#PWR030")
 					(unit 1)
 				)
 			)

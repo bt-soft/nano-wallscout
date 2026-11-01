@@ -21,6 +21,19 @@ void displayInit() {
 }
 
 /**
+ * @brief Kirajzolja az indulási bannert: keret a teljes képernyő (128x64) körül és a program neve.
+ */
+void drawBanner() {
+    const char *title = "Nano WallScout";
+    oled.firstPage();
+    do {
+        oled.drawFrame(0, 0, 128, 64);
+        oled.setFont(u8g2_font_7x13B_tr);
+        oled.drawStr((128 - oled.getStrWidth(title)) / 2, 36, title); // Középre igazítása
+    } while (oled.nextPage());
+}
+
+/**
  * @brief Kikapcsolja az OLED-kijelzőt és lezárja az I²C-buszt.
  */
 void displaySleep() {

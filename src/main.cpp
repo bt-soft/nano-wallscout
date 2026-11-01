@@ -112,13 +112,13 @@ static Measurement acquire() {
     m.idle = readIdleLevel(); // nyugalmi szint olvasása
     m.vbat = readBattery();   // akkufeszültség olvasása
 
-    m.s1Mean = (float)s1 / N_PULSES;
-    m.s2Mean = (float)s2 / N_PULSES;
-    m.rawDiff = (float)((int32_t)s1 - (int32_t)s2) / N_PULSES;
-    m.diff = smoothDiff(m.rawDiff);
+    m.s1Mean = (float)s1 / N_PULSES;                           // Átlagolt S1 jel
+    m.s2Mean = (float)s2 / N_PULSES;                           // Átlagolt S2 jel
+    m.rawDiff = (float)((int32_t)s1 - (int32_t)s2) / N_PULSES; // Nyers különbség az átlagolt jelekből
+    m.diff = smoothDiff(m.rawDiff);                            // Simított különbség
 
-    m.overload = m.s1Mean > OVERLOAD_HIGH || m.s1Mean < OVERLOAD_LOW;
-    m.dcFault = m.idle > IDLE_HIGH || m.idle < IDLE_LOW;
+    m.overload = m.s1Mean > OVERLOAD_HIGH || m.s1Mean < OVERLOAD_LOW; // Túlvezérlés ellenőrzése
+    m.dcFault = m.idle > IDLE_HIGH || m.idle < IDLE_LOW;              // DC hiba ellenőrzése
 
     return m;
 }
@@ -435,10 +435,35 @@ static Outcome process(const Measurement &m, uint32_t now) {
 // Megjelenítés
 // ---------------------------------------------------------------------------
 
+// Igaz, amíg a bekapcsolás utáni első nullázás tart (ekkor a banner látszik).
+static bool g_bootBanner = true;
+
+/**
+ * @brief Bekapcsoláskor az első nullázás alatt megjeleníti a bannert.
+ * @return Igaz, ha a banner látszik, és a normál képernyőt nem kell rajzolni.
+ */
+static bool showBootBanner() {
+    if (!g_bootBanner) {
+        return false;
+    }
+    if (st.zeroCount >= ZERO_UPDATES) {
+        g_bootBanner = false;
+        return false;
+    }
+    drawBanner();
+    return true;
+}
+
 /**
  * @brief Kirajzolja az aktuális üzemmód képernyőjét.
  */
 static void render(const Measurement &m, const Outcome &out) {
+
+    // Ha a boot banner látszik, ne rajzoljunk semmi mást.
+    if (showBootBanner()) {
+        return;
+    }
+
     if (st.mode == OperatingMode::DD_SETUP) {
         drawDDSetup(m.diff, st.best, m.s1Mean, m.overload, m.dcFault, m.vbat);
         return;
@@ -523,6 +548,7 @@ static void enterDeepSleep() {
     }
     delay(50);
 
+    g_bootBanner = true;      // Boot banner megjelenítésének engedélyezése az ébredéskor
     st = State();             // Állapot inicializálása
     activityRefValid = false; // Aktivitás referencia érvényességének visszaállítása
     sensorInit();             // Érzékelő inicializálása
