@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" font-family="Arial, sans-serif" font-size="13">
+  <rect width="900" height="520" fill="#0b1a12"/>
+
+  <!-- 1. panel: csomagszerkezet -->
+  <text x="20" y="26" fill="#d8ffe0" font-size="15" font-weight="bold">1) Q2 gate (D2) – nagy időalap (~20 ms/osztás): 100 impulzusos csomagok</text>
+  <g stroke="#1f4a2e" stroke-width="1">
+    <path d="M60 50V170M160 50V170M260 50V170M360 50V170M460 50V170M560 50V170M660 50V170M760 50V170M860 50V170"/>
+    <path d="M60 80H860M60 110H860M60 140H860"/>
+  </g>
+  <text x="14" y="88" fill="#7fd99a">5 V</text>
+  <text x="14" y="168" fill="#7fd99a">0 V</text>
+  <!-- csomag 1 -->
+  <rect x="80" y="85" width="300" height="80" fill="#39ff7a" fill-opacity="0.18"/>
+  <path d="M60 165H80" stroke="#39ff7a" stroke-width="2" fill="none"/>
+  <path d="M80 165H380" stroke="#39ff7a" stroke-width="2" stroke-dasharray="1 2" fill="none"/>
+  <path d="M80 165V85H380V165" stroke="#39ff7a" stroke-width="2" fill="none" stroke-dasharray="3 2"/>
+  <!-- szünet -->
+  <path d="M380 165H560" stroke="#39ff7a" stroke-width="2" fill="none"/>
+  <!-- csomag 2 -->
+  <rect x="560" y="85" width="300" height="80" fill="#39ff7a" fill-opacity="0.18"/>
+  <path d="M560 165V85H860V165" stroke="#39ff7a" stroke-width="2" fill="none" stroke-dasharray="3 2"/>
+  <text x="130" y="130" fill="#d8ffe0">100 impulzus (1 kHz)</text>
+  <text x="610" y="130" fill="#d8ffe0">100 impulzus (1 kHz)</text>
+  <text x="400" y="130" fill="#ffd27a">szünet</text>
+  <text x="392" y="148" fill="#ffd27a" font-size="11">kiértékelés,</text>
+  <text x="394" y="161" fill="#ffd27a" font-size="11">OLED, idle</text>
+  <path d="M80 182H380" stroke="#d8ffe0" stroke-width="1.5" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text x="170" y="198" fill="#d8ffe0">kb. 100 ms (N_PULSES × T_PERIOD)</text>
+  <path d="M380 182H560" stroke="#ffd27a" stroke-width="1.5" marker-start="url(#b)" marker-end="url(#b)"/>
+  <text x="400" y="198" fill="#ffd27a">mérésenként változó</text>
+
+  <!-- 2. panel: egy impulzus -->
+  <text x="20" y="238" fill="#d8ffe0" font-size="15" font-weight="bold">2) Egy impulzus periódus (1 ms) – nagyítva (~100 µs/osztás)</text>
+  <g stroke="#1f4a2e" stroke-width="1">
+    <path d="M80 255V500M150 255V500M220 255V500M290 255V500M360 255V500M430 255V500M500 255V500M570 255V500M640 255V500M710 255V500M780 255V500"/>
+  </g>
+
+  <!-- gate -->
+  <text x="14" y="285" fill="#39ff7a">Gate</text>
+  <path d="M80 345V290H122V345H780V290" stroke="#39ff7a" stroke-width="2" fill="none" transform="translate(0 -22) translate(0 22)"/>
+  <path d="M80 345H80" stroke="#39ff7a"/>
+  <text x="84" y="283" fill="#39ff7a" font-size="12">T_ON = 60 µs</text>
+
+  <!-- drain -->
+  <text x="14" y="390" fill="#6ec1ff">Drain</text>
+  <path d="M80 480V470H122V400C125 395 128 400 135 440C150 462 190 472 260 477C380 480 700 480 780 480V470" stroke="#6ec1ff" stroke-width="2" fill="none"/>
+  <text x="130" y="396" fill="#6ec1ff" font-size="12">flyback ~37 V</text>
+  <text x="300" y="470" fill="#6ec1ff" font-size="12">lecsengés (örvényáram „farok”)</text>
+
+  <!-- mintavételek -->
+  <path d="M164 255V500" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <path d="M542 255V500" stroke="#ffd27a" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="168" y="512" fill="#ff6b6b" font-size="12">S1: Tx off + 60 µs</text>
+  <text x="446" y="512" fill="#ffd27a" font-size="12">S2: Tx off + 600 µs</text>
+  <text x="640" y="512" fill="#d8ffe0" font-size="12">jel = S1 − S2</text>
+  <text x="680" y="272" fill="#39ff7a" font-size="12">következő impulzus (T_PERIOD)</text>
+
+  <defs>
+    <marker id="a" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0 0L6 3L0 6z" fill="#d8ffe0"/></marker>
+    <marker id="b" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0 0L6 3L0 6z" fill="#ffd27a"/></marker>
+  </defs>
+</svg>

@@ -282,6 +282,7 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
    - **Mi ez:** az R15 (1 kΩ) és az R16 (4,7 kΩ-os trimmer) soros ága az Ltx1-gyel párhuzamos. Kikapcsoláskor a tekercs és a parazita kapacitások rezgőkört alkotnak; az R16 beállításával hangolható a csillapítás.
    - **Mérés:** szkóppal a Q2 **drainjén** nézd a kikapcsolás utáni lecsengést (10×-es szonda, a földcsipesz a lehető legrövidebben a Q2 source-ához). Triggerelj a gate lefutó élére, az időalap 5–10 µs/osztás legyen. Közben a csúcs maradjon **50 V alatt**.
    ![Tüske_szkóp.jpg](doc/Tüske_szkóp.jpg)
+   ![Jó csillapítás a drain-en](doc/drain_csillapitas.svg)
    - **Beállítás:** az R16 trimmert a legnagyobb ellenállás felől indulva állítsd, amíg a jel a lehető leggyorsabban, **túllövés és visszarezgés nélkül** éri el az alapszintet.
      - Túl nagy csillapítóellenállás (R15 + R16): alulcsillapított, a jel az alapvonal körül **rezeg**, a lecsengés elhúzódik.
      - Túl kis csillapítóellenállás: túlcsillapított, a jel nem rezeg, de **lassan közelít** az alapszinthez, és a tekercs árama is jobban terheli az ellenállást.
@@ -289,12 +290,61 @@ Az Rx bemeneténél az R13 = 10 kΩ soros ellenállást mutat az U2A bemenete el
 4. Kösd be az Lrx1-et, és ellenőrizd az analóg jelutat. Az R13 (10 kΩ) az U2A bemenete elé kerül, az Lrx1-gyel párhuzamosan az R14 (2,2 kΩ-os trimmer) csillapít; R5 (390 Ω) az U2D kimenete és az Arduino A0 között van, nem trimmer. A Vmid-et az R6/R7 (egyenként 100 kΩ) osztó, a C4 és az U2C puffer állítja elő; a rajz nem tartalmaz külön Rx-védődiódát.
    - **Nyugalmi szint:** a tekercsek levegőben, fémtől távol az A0 nyugalmi értéke kb. **2,5 V** legyen. A soros monitoron `s1` ≈ 512 és `s2` ≈ 512. Ha ez jelentősen eltér, ellenőrizd a Vmid-et, a tápot és az MCP6004 bekötését.
    - **Mérés:** szkóppal az **U2A kimenetén (1. láb)**, az U2B kimenetén (7. láb) és az U2D kimenetén (14. láb) ellenőrizd a lecsengést a Tx kikapcsolása után. Triggerelj a gate lefutó élére, és tarts egy vasat a tekercshez, hogy a lecsengés látszódjon. Az U2A/U2B fokozatokat, valamint az U2D puffert lásd a kapcsolási rajzon.
+   ![Rx jelalakok](doc/rx_szkop.svg)
 5. A DD beállító móddal állítsd az átfedést minimális áthallásra (lásd fent), és rögzítsd.
 6. Nézd meg az U2A kimenetén (1. láb), mikor ér vissza a jel az alapszintre. Ha 60 µs-nál később, a `T_SAMPLE1`-et növeld ([config.h](include/config.h)).
 7. Tarts egy vasat a tekercshez: a jel nőjön. Az `abs()` miatt a polaritás nem számít, de a soros monitoron (`sig`) látod.
 8. Ha telít (`TULVEZERLES`), javítsd az átfedést. Az erősítő ellenállásait ne módosítsd találomra; az értékeket a kapcsolási rajz rögzíti.
 9. Kalibrálás 5 cm-nél, majd ellenőrzés 6 és 8 cm-nél.
 
+
+## A kütyü felélesztése – lépésről lépésre
+
+Ez a rövid útmutató a [Beüzemelés](#beüzemelés) fejezet sorrendjét követi, kiegészítve azzal, hogy mit hol mérj, és mit kell látnod. Mindig áramkorlátos tápról, először tekercsek nélkül kezdj.
+
+### 1. Táp és vezérlés (tekercsek nélkül)
+
+1. **Táp:** a `+BATT` bemenetre áramkorlátos táp (kezdetben ~100 mA), a Nano 5 V-os sínjén 5 V legyen. Az USB-t csak programozáshoz használd.
+2. **Firmware:** `pio run -t upload`. Indulás után az OLED-en a `Nullazas - legben!` felirat látszik kb. 2 s-ig, utána a normál kereső nézet.
+3. **Kapu (D2 → Q2 gate):** szkóppal a Q2 gate-en **60 µs** széles, 0–5 V-os impulzusok legyenek 1 ms periódussal (R17 = 100 Ω soros, R18 = 10 kΩ lehúzó). Az impulzusok **nem folyamatosak**: egy mérés 100 impulzusból álló csomag (~100 ms), utána szünet jön (kiértékelés, kijelző, DC-ellenőrzés), ezalatt a gate alacsony. Triggerelj a gate felfutó élére; a csomagszerkezet kb. 20–50 ms/osztással látszik. Ha nincs jel, nézd a D2 lábat és a bekötést.
+
+   ![Gate csomagszerkezet](doc/gate_csomag.svg)
+4. **Akku:** a soros monitoron (115200 baud) a `vbat` a valós tápfeszültséget mutassa.
+
+### 2. Adóág (Ltx1)
+
+1. Kösd be az Ltx1-et, a vevőt (Lrx1) még ne.
+2. **Mérés:** a Q2 **drainjén** (10×-es szonda, rövid földcsipesz a source-nál), trigger a gate lefutó élére, 5–10 µs/osztás.
+3. **Elvárt jel:** a bekapcsolás alatt a drain ~0 V, kikapcsoláskor flyback-tüske, amelyet a D2 + D3 ~37 V-ra lecsíp. A csúcs **50 V alatt** maradjon (Q2 VDS,max = 55 V).
+4. **Csillapítás:** az R16 trimmerrel (R15 + R16 a tekerccsel párhuzamosan) állítsd be, hogy a jel a legrövidebb idő alatt, **túllövés és visszarezgés nélkül** érje el az alapszintet. Ha melegszik a Q2 vagy a D2, azonnal kapcsold le.
+
+### 3. Vevőegység (Rx jelút) felélesztése
+
+1. Kösd be az Lrx1-et (R13 = 10 kΩ soros, R14 = 2,2 kΩ trimmer párhuzamosan), a tekercsek legyenek levegőben, fémtől távol.
+2. **Egyenszintek (multiméter):** a Vmid (R6/R7 osztó, C4, U2C puffer) ≈ **2,5 V**; az U2D kimenete (14. láb) és az **A0** is ≈ 2,5 V.
+3. **Soros monitor:** `s1 ≈ 512`, `s2 ≈ 512`, `idle ≈ 511`, `diff` és `sig` a nulla körül ingadozik (néhány egység). Ha `idle` 900 fölé vagy 120 alá megy, a kijelzőn `DC HIBA!` látszik: ellenőrizd a Vmid-et, a tápot és az MCP6004 bekötését.
+4. **Szkóp (trigger a gate lefutó élére), a Tx kikapcsolása után:**
+   - U2A kimenet (1. láb), U2B kimenet (7. láb), U2D kimenet (14. láb): a kezdeti tranziens után a jel az alapszintre (~2,5 V) csenged le. A két fokozat névleges erősítése ~11 × 11 ≈ 121.
+   - Tarts egy vasat a tekercshez: a lecsengés „farka” megemelkedik, a soros monitoron az `s1` eltér az `s2`-től, a `sig` nő, a kijelzőn az oszlop és a hang is emelkedik (az előjel nem számít).
+5. **Mintavételi idő:** ha az U2A kimenete 60 µs-nál később ér vissza az alapszintre, növeld a `T_SAMPLE1` értékét a [config.h](include/config.h)-ban. Az `s1` 950 fölött vagy 70 alatt telít (`TULVEZERLES`), ilyenkor ellenőrizd az áthallást (DD átfedés), ne az erősítést módosítsd.
+
+### 4. A DD nullpont (minimális áthallás) megkeresése
+
+1. A tekercsek fémtől távol, a hangolás idejére lazán rögzítve, egymáson csúsztathatóan.
+2. D5 hosszan (≥ 1 s): a kijelzőn `DD beallitas`. A mód az A0-t méri; kijelzőn és soros monitoron (`setup ch=A0`) az előjeles áthallás (`S1 − S2`), a `min` (eddigi legkisebb abszolút érték) és az `S1` (≈ 512) látszik, alul a logaritmikus oszlop.
+3. Csúsztasd az egyik tekercset a másikhoz képest, a D egyenes oldalainak néhány mm – 1,5 cm-es átfedése körül. Az érték az átfedés két oldalán **előjelet vált**: a nullpont ott van, ahol átbillen.
+4. Finomítsd, amíg a csipogó elhallgat és `NULL OK` látszik (az érték < 1,5). Ha `TULVEZERLES` jelenik meg, az S1 telít, és a `min` nem frissül; csúsztasd tovább, amíg el nem tűnik. A D4 törli a `min` értéket.
+5. Rögzítsd a tekercseket úgy, hogy később ne mozdulhassanak, majd D5 rövid nyomás: kilép a módból és újranulláz.
+6. Ellenőrzés: normál módban levegőben `sig` ≈ 0, a háttérzaj kicsi, a küszöb (`runTh`) alacsony.
+
+### 5. Tanítás (kalibrálás) – mélységbecsléshez
+
+1. Nullázás után (kereső levegőben) tartsd a D4-et **1 s-ig**: `TANITAS 5cm` képernyő.
+2. Tarts egy vasat (a használt vastípust) pontosan **5 cm**-re a tekercstől, majd röviden nyomd meg a D4-et.
+3. Siker: 3 kHz-es csipogás és `Rogzitve: 5 cm`; a `K = jel · 5³` az EEPROM-ba kerül. `Nincs jel!` esetén közelebb kell vinni a vasat, `Tulvezerles!` esetén távolabb. Tetszőleges számú alkalommal megismételhető.
+4. Kilépés: D5 rövid nyomás vagy D4 hosszú nyomás. Ellenőrzés 6 és 8 cm-nél: a becsült távolság (d = ∛(K/S)) hozzávetőlegesen egyezzen. Kalibráció nélkül `nincs kal.` látszik.
+
+Akkucsere vagy hőmérséklet-változás után nullázz újra (D5 rövid nyomás). Ha a jel stabilan zajos, nézd az `idle` és `vbat` mezőket, valamint a buzzer tápágának szűrését.
 
 ## A prototípus próbája
 A prototípus jól viszonylag jól teljesített, bár vannak betonfalak, ahol mindenhol (a teljes felületen) jelez, aminek az okát még nem egészen értem (belső, nem teherhordó betonvas válaszfal...).

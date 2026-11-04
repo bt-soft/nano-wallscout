@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="900"
+   height="560"
+   viewBox="0 0 900 560"
+   font-family="Arial, sans-serif"
+   font-size="13"
+   version="1.1"
+   id="svg18"
+   sodipodi:docname="drain_csillapitas.svg"
+   inkscape:export-filename="drain_csillapitas.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs18" />
+  <sodipodi:namedview
+     id="namedview18"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.4732143"
+     inkscape:cx="450.03636"
+     inkscape:cy="280"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g18" />
+  <rect
+     width="900"
+     height="560"
+     fill="#0b1a12"
+     id="rect1" />
+  <text
+     x="20"
+     y="26"
+     fill="#d8ffe0"
+     font-size="15"
+     font-weight="bold"
+     id="text1">Q2 drain – jó csillapítás (szkópkép: 1 osztás ≈ a táp, pl. 8,6 V; 10 µs/osztás; trigger: gate lefutó él)</text>
+  <!-- rács: 10 x 8 osztás, 80 x 50 px -->
+  <g
+     stroke="#1f4a2e"
+     stroke-width="1"
+     id="g2">
+    <path
+       d="M60 60V460M140 60V460M220 60V460M300 60V460M380 60V460M460 60V460M540 60V460M620 60V460M700 60V460M780 60V460M860 60V460"
+       id="path1" />
+    <path
+       d="M60 60H860M60 110H860M60 160H860M60 210H860M60 260H860M60 310H860M60 360H860M60 410H860M60 460H860"
+       id="path2" />
+  </g>
+  <path
+     d="M60 410H860"
+     stroke="#3b7a52"
+     stroke-width="1.5"
+     id="path3" />
+  <text
+     x="22"
+     y="414"
+     fill="#7fd99a"
+     id="text3">0 V</text>
+  <text
+     x="14"
+     y="364"
+     fill="#7fd99a"
+     id="text4">táp</text>
+  <text
+     x="8"
+     y="196"
+     fill="#ff9d9d"
+     id="text5">~37 V</text>
+  <path
+     d="M60 160H860"
+     stroke="#ff6b6b"
+     stroke-width="1"
+     stroke-dasharray="6 4"
+     id="path5" />
+  <text
+     x="868"
+     y="164"
+     fill="#ff6b6b"
+     font-size="11"
+     id="text6">50 V</text>
+  <!-- rossz esetek (halványan) -->
+  <path
+     d="M690 200L700 300L706 395L720 340L732 372L746 354L760 362L775 358L800 360H860"
+     stroke="#ff6b6b"
+     stroke-width="1.5"
+     fill="none"
+     stroke-dasharray="5 3"
+     id="path6" />
+  <path
+     d="M690 200C720 290 760 330 800 345C830 352 850 355 860 356"
+     stroke="#ffb347"
+     stroke-width="1.5"
+     fill="none"
+     stroke-dasharray="5 3"
+     id="path7" />
+  <!-- jó jel -->
+  <path
+     d="M60 360H120L124 410H600L606 190L690 200C697 250 703 320 716 352C724 360 736 360 760 360H860"
+     stroke="#e7ff5c"
+     stroke-width="3"
+     fill="none"
+     id="path8" />
+  <!-- jelölések -->
+  <text
+     x="190"
+     y="400"
+     fill="#e7ff5c"
+     id="text8">Q2 BE: drain ≈ 0 V (60 µs)</text>
+  <text
+     x="115"
+     y="350"
+     fill="#7fd99a"
+     font-size="12"
+     id="text9">táp</text>
+  <text
+     x="545"
+     y="180"
+     fill="#e7ff5c"
+     font-size="12"
+     id="text10">flyback-csúcs, lapos (D2+D3)</text>
+  <text
+     x="725"
+     y="330"
+     fill="#e7ff5c"
+     font-size="12"
+     id="text11">gyors, egyenletes</text>
+  <text
+     x="725"
+     y="344"
+     fill="#e7ff5c"
+     font-size="12"
+     id="text12">visszatérés a tápszintre</text>
+  <text
+     x="765"
+     y="385"
+     fill="#d8ffe0"
+     font-size="12"
+     id="text13">nincs alullövés,</text>
+  <text
+     x="765"
+     y="400"
+     fill="#d8ffe0"
+     font-size="12"
+     id="text14">nincs visszarezgés</text>
+  <!-- jelmagyarázat -->
+  <g
+     font-size="13"
+     id="g18">
+    <path
+       d="M60 490H100"
+       stroke="#e7ff5c"
+       stroke-width="3"
+       id="path14" />
+    <text
+       x="108"
+       y="494"
+       fill="#e7ff5c"
+       id="text15">jó: kritikus közeli csillapítás (cél)</text>
+    <path
+       d="M360 490H400"
+       stroke="#ff6b6b"
+       stroke-width="1.5"
+       stroke-dasharray="5 3"
+       id="path15" />
+    <text
+       x="408"
+       y="494"
+       fill="#ff9d9d"
+       id="text16">alulcsillapított: alullövés, rezgés</text>
+    <path
+       d="M60 515H100"
+       stroke="#ffb347"
+       stroke-width="1.5"
+       stroke-dasharray="5 3"
+       id="path16" />
+    <text
+       x="108"
+       y="519"
+       fill="#ffb347"
+       id="text17">túlcsillapított: lassan kúszik a tápszintre</text>
+    <text
+       x="60"
+       y="543"
+       fill="#d8ffe0"
+       id="text18">Elvárás: a visszatérés a tápszintre jóval a T_SAMPLE1 (60 µs) előtt befejeződik, a csúcs 50 V alatt marad.</text>
+  </g>
+</svg>
